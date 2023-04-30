@@ -1,0 +1,16 @@
+@import "../../../style.scss";
+
+.onlineUsers {
+    @include themify($themes) {
+        display: flex;
+        width: 100%;
+
+        a {
+            display: flex;
+            width: 100%;
+            gap: 0.4rem;
+            align-items: center;
+            color: themed(textColor);
+        }
+    }
+}

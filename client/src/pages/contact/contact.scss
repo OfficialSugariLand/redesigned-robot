@@ -1,0 +1,47 @@
+@import "../../style.scss";
+
+.contact-us-page {
+    @include themify($themes) {
+        background: themed(bg);
+
+        .contact_container {
+            display: grid;
+            place-items: center;
+            padding: 1rem;
+
+            .contact_wrapper {
+                width: fit-content;
+                display: flex;
+                gap: 2rem;
+
+                a {
+                    background: themed(bgSoft);
+                    font-size: 2rem;
+                    border: 2px solid transparent;
+                    transition: var(--transition);
+                    padding: 1rem;
+                    border-radius: 1.5rem;
+                    color: themed(textColor);
+                }
+
+                a:hover {
+                    background: transparent;
+                    border-color: themed(textColor);
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        .contact_wrapper {
+            gap: 1.5rem !important;
+
+            a {
+                padding: 1rem !important;
+                font-size: 1.2rem !important;
+                border-radius: 1rem !important;
+            }
+        }
+
+    }
+}

@@ -1,0 +1,122 @@
+@import "../../style.scss";
+
+.textBox {
+    @include themify($themes) {
+        display: flex;
+        width: 100%;
+        height: 100vh;
+        background: themed(bg);
+        margin-top: -5rem;
+
+        .textBox_container {
+            display: grid;
+            width: 100%;
+            grid-template-columns: 20% 55% 25%;
+            margin-top: 5rem;
+
+            .textBox_left {
+                display: flex;
+                flex-direction: column;
+                box-shadow: 24px 11px 9px -11px themed(homeLeftRightShadow);
+
+                input {
+                    display: flex;
+                    background: transparent;
+                    padding: 0.6rem;
+                }
+
+                .textBox_chats {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.4rem;
+                    background: themed(conBackground);
+                    padding: 0.4rem;
+                    transition: all 0.3s ease;
+                    cursor: pointer;
+
+                    img {
+                        width: 2rem;
+                        height: 2rem;
+                        border-radius: 50%;
+                    }
+
+                    span {
+                        color: themed(textColor);
+                    }
+
+                    &:hover {
+                        background: transparent;
+                        transition: all 0.3s ease;
+                    }
+                }
+            }
+
+            .textBox_middle {
+                display: flex;
+                width: 100%;
+                padding: 1rem;
+
+                .textBox_empty_container {
+                    display: flex;
+                    width: 100%;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 1rem;
+
+                    svg {
+                        color: themed(textColor);
+                        font-size: 3rem;
+                    }
+
+                    span {
+                        color: themed(textColor);
+                    }
+                }
+            }
+
+            .textBox_right {
+                display: flex;
+                flex-direction: column;
+                box-shadow: -24px 13px 7px -15px themed(homeLeftRightShadow);
+                padding: 1rem;
+                gap: 1rem;
+
+                .textBox_right_container {
+                    display: flex;
+                    height: 12.5rem;
+
+                    img {
+                        display: flex;
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 0.4rem;
+                        //object-fit: cover;
+                    }
+                }
+            }
+        }
+
+        @media screen and (max-width: 1024px) {
+
+            .textBox_right {
+                display: none !important;
+            }
+
+            .textBox_container {
+                grid-template-columns: 30% 70% !important;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+
+            .textBox_middle {
+                display: none !important;
+            }
+
+            .textBox_container {
+                grid-template-columns: 100% !important;
+
+            }
+        }
+    }
+}

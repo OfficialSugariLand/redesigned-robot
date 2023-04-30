@@ -1,0 +1,105 @@
+@import "../../style.scss";
+
+footer {
+    @include themify($themes) {
+        background: themed(topbarFooter);
+        padding-top: 4rem;
+        font-size: 0.9rem;
+        color: themed("textColor");
+        border-top: 1px solid themed(footerBorder);
+        box-shadow: themed(settingsLeftBoxShadow);
+
+        .footer_container {
+            display: grid;
+            grid-template-columns: 26rem 1fr 1fr;
+            gap: 6rem;
+
+            .logo {
+                display: block;
+                max-width: 200px;
+
+                img {
+                    border-radius: 5px;
+                }
+            }
+
+            p {
+                margin-top: 0.5rem;
+            }
+
+            .social_connects {
+                margin-top: 1.5rem;
+                display: flex;
+                gap: 1rem;
+                align-items: center;
+
+                a {
+                    background: themed("social");
+                    padding: 0.7rem;
+                    border-radius: 0.6rem;
+                    border: 2px solid transparent;
+                    transition: var(--transition);
+                }
+
+                :hover {
+                    border-color: themed("textColor");
+                    background: transparent;
+
+                    svg {
+                        color: white;
+                    }
+                }
+
+                svg {
+                    color: themed("bg");
+                }
+            }
+
+            article {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.7rem;
+
+                a {
+                    color: themed("textColor");
+                }
+
+                h4 {
+                    margin-bottom: 0.6rem;
+                    font-size: 1rem;
+                }
+
+            }
+
+        }
+
+        .footer_copyright {
+            color: themed("textColor");
+            text-align: center;
+            padding: 1.5rem 0;
+            border-top: 2px solid var(--color-primary-varient);
+            margin-top: 5rem;
+        }
+    }
+
+    /* Tablets screens media query */
+    @media screen and (max-width: 1024px) {
+        .footer_container {
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem !important;
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        .footer_container {
+            grid-template-columns: 1fr !important;
+            gap: 3rem !important;
+
+            article {
+                align-items: center !important;
+            }
+        }
+    }
+
+}

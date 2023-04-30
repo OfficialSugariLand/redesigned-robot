@@ -1,0 +1,131 @@
+.personal_info {
+    width: 100vw;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+
+    .personal_info_container {
+        height: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6rem;
+
+        .user_personal_info_left {
+            display: flex;
+            flex-direction: column;
+
+            h3 {
+                font-size: 50px;
+                color: plum;
+                margin-bottom: 10px;
+            }
+
+            span {
+                font-size: 24px;
+            }
+        }
+
+        .user_personal_info_right {
+            display: grid;
+            position: relative;
+            background-color: plum;
+            padding: 1rem;
+            box-shadow: -2rem 2rem 5rem rgba(0, 0, 0, 0.5);
+            border-bottom-right-radius: 55px;
+            border-top-left-radius: 55px;
+
+            .user_select_control {
+                display: flex;
+                flex-direction: column;
+
+                .select_container {
+                    display: flex;
+                    flex-direction: column;
+                    margin-bottom: 1rem;
+                }
+
+                select {
+                    height: 50px;
+                    border-radius: 10px;
+                    //border: 1px solid gray;
+                    padding-left: 20px;
+                }
+
+                input {
+                    height: 50px;
+                    border-radius: 10px;
+                    border: 1px solid gray;
+                    margin-bottom: 10px;
+                    padding-left: 20px;
+                }
+
+                .showCheck_gender {
+                    font-size: 12px;
+                    padding: 3px;
+                    color: red;
+                    display: flex;
+                    max-width: fit-content;
+                }
+
+                .showCheck_sex {
+                    font-size: 12px;
+                    padding: 3px;
+                    color: red;
+                    display: flex;
+                    max-width: fit-content;
+                }
+
+                .showCheck_interest {
+                    font-size: 12px;
+                    padding: 3px;
+                    color: red;
+                    display: flex;
+                    max-width: fit-content;
+                }
+
+                .showCheck_status {
+                    font-size: 12px;
+                    padding: 3px;
+                    color: red;
+                    display: flex;
+                    max-width: fit-content;
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 1024px) {
+        .personal_info_container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .user_personal_info_left {
+                align-items: center;
+                justify-content: center;
+                margin-top: -11rem;
+
+                h3 {
+                    display: flex;
+                    font-size: 25px;
+                }
+
+                span {
+                    font-size: larger;
+                }
+            }
+
+            .user_select_control {
+                select {
+                    width: 22rem;
+                }
+            }
+
+            .user_personal_info_right {
+                margin-top: -5rem;
+            }
+        }
+    }
+}

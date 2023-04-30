@@ -1,0 +1,95 @@
+$themes: (
+    light: (textColor: #000,
+        topbar: rgb(204, 121, 204),
+        topbarFooter: rgb(204, 121, 204),
+        bg: white,
+        logo: darkblue,
+        bgSoft: #f6f3f3,
+        bgPopBackground: #e2dede,
+        textColorSoft: #555,
+        postMorevent: rgb(235 233 233),
+        border: lightgray,
+        storyBorder: #e5e5e5,
+        conBackground: #f0eded,
+        footerBorder: rgb(176, 174, 174),
+        homeLeftRightShadow: rgb(208 208 208 / 62%),
+        shadow: rgb(0 0 0 / 62%),
+        profileHeadBorder: #cec6c6,
+        profileHeadShadow: rgb(0 0 0 / 62%),
+        social: var(--color-gray-600),
+        settingsLeftBorder: #d1d1d1,
+        settingsRightHover: #f5f2f2,
+        settingsLeftBoxShadow: 0px 0px 27px -5px rgb(140 140 140 / 62%),
+        settingsRightBtnShadow: 0px 0px 27px -5px rgb(51 49 49 / 62%),
+        settingsRightBtnBorder: #ada9a9,
+        textLeftBorderRight: #e0e0e0,
+        textPreview: #878282,
+        usrLocationbtn: #f6f3f3,
+        uLPPicLight: #e8e5e5,
+    ),
+    dark: (textColor: whitesmoke,
+        topbar: #222,
+        topbarFooter: #555,
+        bg: #222,
+        logo: white,
+        bgSoft: #333,
+        bgPopBackground: #232121,
+        textColorSoft: lightgray,
+        postMorevent: rgb(58 56 56),
+        border: #444,
+        storyBorder: #1b1818,
+        conBackground: #3e3b3b,
+        footerBorder: rgb(107 104 104),
+        shadow: rgb(187 182 182 / 62%),
+        homeLeftRightShadow: rgb(15 12 12 / 62%),
+        profileHeadBorder: #666262,
+        profileHeadShadow: rgb(134 130 130 / 62%),
+        social: var(--color-gray-100),
+        settingsLeftBorder: #5f5c5c,
+        settingsRightHover: rgb(47, 46, 46),
+        settingsLeftBoxShadow: 0px 0px 27px -5px rgb(0 0 0 / 62%),
+        settingsRightBtnShadow: 0px 0px 27px -5px rgb(179 179 179 / 62%),
+        settingsRightBtnBorder: #dbdbdb,
+        textLeftBorderRight: #3b3b3b,
+        textPreview: #aaa8a8,
+        usrLocationbtn: #565555,
+        uLPPicLight: #5b5858,
+    ),
+);
+
+@mixin themify($themes) {
+
+    @each $theme,
+    $map in $themes {
+        .theme-#{$theme} & {
+            $theme-map: () !global;
+
+            @each $key,
+            $submap in $map {
+                $value: map-get(map-get($themes, $theme), "#{$key}");
+                $theme-map: map-merge($theme-map,
+                    ($key: $value,
+                    )) !global;
+            }
+
+            @content;
+            $theme-map: null !global;
+        }
+    }
+}
+
+@function themed($key) {
+    @return map-get($theme-map, $key);
+}
+
+@mixin mobile {
+    @media (max-width: 480px) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (max-width: 960px) {
+        @content;
+    }
+}

@@ -1,0 +1,144 @@
+@import "../../style.scss";
+
+
+.share {
+    @include themify($themes) {
+        width: 70%;
+        border-radius: 10px;
+        -webkit-box-shadow: 0px 0px 27px -5px rgba(0, 0, 0, 0.62);
+        box-shadow: 0px 0px 27px -5px rgba(0, 0, 0, 0.62);
+        margin-top: 20px;
+        background-color: transparent;
+        border: 1px solid white;
+
+        .share_Wrapper {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            padding: 1rem;
+
+
+            .passUserToHome {
+                display: none;
+            }
+
+            .shareTop {
+                display: flex;
+                align-items: center;
+
+                img {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    margin-right: 10px;
+                }
+
+                textArea {
+                    width: 100%;
+                    max-height: 10rem;
+                    background: transparent;
+                    color: themed(textColor);
+                    outline: none;
+                    font-size: 0.7rem;
+                    border-radius: 1rem;
+                    padding: 1rem;
+                    resize: none;
+
+                    &::-webkit-scrollbar {
+                        width: 0px;
+                    }
+
+                    &::placeholder {
+                        color: lightgray;
+                        max-width: 100%;
+                    }
+                }
+            }
+
+            //line divider
+            .shareHr {
+                margin: 20px;
+                background: #c1c1c1;
+                height: 0.1rem;
+            }
+
+            //loaded image
+            .shareImgContainer {
+                padding: 0 20px 10px 20px;
+            }
+
+            .shareCancelImgControl {
+                display: flex;
+                justify-content: flex-end;
+                margin-top: -20px;
+                cursor: pointer;
+                padding-bottom: 4px;
+
+                svg {
+                    display: flex !important;
+                    color: red;
+                }
+            }
+
+            .shareImg {
+                width: 100%;
+                object-fit: cover;
+            }
+
+            .shareBottom {
+                display: flex;
+                justify-content: space-between;
+
+                label {
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+                    gap: 4px;
+
+                    span {
+                        color: themed(textColor);
+                    }
+                }
+
+                .shareOptionFeelings {
+                    display: flex;
+                    align-items: center;
+                    cursor: pointer;
+                    gap: 4px;
+
+                    span {
+                        color: themed(textColor);
+                    }
+                }
+
+                button {
+                    display: flex;
+                    background: transparent;
+                    align-items: center;
+                    cursor: pointer;
+                    gap: 4px;
+
+                    svg {
+                        color: themed(textColor);
+                    }
+
+                    span {
+                        color: themed(textColor);
+                    }
+                }
+            }
+
+        }
+
+        @media screen and (max-width: 1024px) {
+            
+        }
+
+        @media screen and (max-width: 600px) {
+            &.share {
+                width: 100% !important;
+            }
+        }
+    }
+}

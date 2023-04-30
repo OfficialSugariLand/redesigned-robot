@@ -1,0 +1,139 @@
+@import "../../../style.scss";
+
+
+.proShare {
+    @include themify($themes) {
+        width: 35rem;
+        max-width: 35rem;
+        border-radius: 10px;
+        -webkit-box-shadow: 0px 0px 27px -5px rgba(0, 0, 0, 0.62);
+        box-shadow: 0px 0px 27px -5px rgba(0, 0, 0, 0.62);
+        margin-top: 20px;
+        background-color: transparent;
+        border: 1px solid white;
+        padding: 1rem;
+
+        .proShareTop {
+            display: flex;
+            align-items: center;
+
+            img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-right: 10px;
+            }
+
+            textArea {
+                width: 100%;
+                max-height: 10rem;
+                background: transparent;
+                color: themed(textColor);
+                outline: none;
+                font-size: 0.7rem;
+                border-radius: 1rem;
+                padding: 1rem;
+                resize: none;
+
+                &::-webkit-scrollbar {
+                    width: 0px;
+                }
+
+                &::placeholder {
+                    color: lightgray;
+                    max-width: 100%;
+                }
+            }
+
+        }
+
+        //line divider
+        .proShareHr {
+            margin: 20px;
+            background: #c1c1c1;
+            height: 0.1rem;
+        }
+
+        //loaded image
+        .proShareImgContainer {
+            padding: 0 20px 10px 20px;
+        }
+
+        .proShareCancelImgControl {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: -20px;
+            cursor: pointer;
+            padding-bottom: 4px;
+
+            svg {
+                display: flex !important;
+                color: red;
+            }
+        }
+
+        .proShareImg {
+            width: 100%;
+            object-fit: cover;
+        }
+
+        //share bottom
+
+        .proShareBottom {
+            display: flex;
+            justify-content: space-between;
+
+            label {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                gap: 4px;
+
+                span {
+                    color: themed(textColor);
+                }
+            }
+
+            .proShareFeelings {
+                display: flex;
+                align-items: center;
+                cursor: pointer;
+                gap: 4px;
+
+                span {
+                    color: themed(textColor);
+                }
+            }
+
+            button {
+                display: flex;
+                background: transparent;
+                align-items: center;
+                cursor: pointer;
+                gap: 4px;
+
+                svg {
+                    color: themed(textColor);
+                }
+
+                span {
+                    color: themed(textColor);
+                }
+            }
+        }
+
+        @media screen and (max-width: 1024px) {
+            &.proShare {
+                width: 31rem !important;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            &.proShare {
+                width: 24rem !important;
+            }
+        }
+
+    }
+}

@@ -1,0 +1,154 @@
+@import "../../../style.scss";
+
+.photo {
+    @include themify($themes) {
+        display: flex;
+
+        .photo_wrapper {
+            display: flex;
+            padding: 0.4rem;
+
+            .photo_container {
+                display: flex;
+
+                img {
+                    display: flex;
+                    cursor: pointer;
+                }
+
+            }
+
+            .images_open {
+                display: flex;
+                position: fixed;
+                width: 100%;
+                height: 100vh;
+                top: 0;
+                left: 0;
+                right: 0;
+                background: themed(bg);
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+                z-index: 9999;
+            }
+
+            .hide_images {
+                display: none;
+            }
+
+            .show_images {
+                display: block;
+            }
+        }
+
+        /* .images_open {
+            display: flex;
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: themed(bg);
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            z-index: 9999;
+
+            .images_container {
+                display: flex;
+                position: relative;
+                width: auto;
+                max-width: 90%;
+                height: 43rem;
+                //transition-duration: 500ms;
+                transition-delay: 2s;
+                transition-duration: 2s;
+                transition: var(--transition);
+                transition-timing-function: ease;
+
+                .cancel {
+                    display: flex;
+                    position: absolute;
+                    top: 0.6rem;
+                    right: 0.3rem;
+                    background: themed(bg);
+                    padding: 0.3rem;
+                    border-radius: 50%;
+                    cursor: pointer;
+
+                    svg {
+                        display: flex;
+                        color: themed(textColor);
+                    }
+                }
+
+                .arrow_left {
+                    display: none;
+                    position: absolute;
+                    top: 50%;
+                    background: themed(bg);
+                    padding: 0.3rem;
+                    border-radius: 50%;
+                    transition-duration: 2s;
+                    transition: var(--transition);
+                    transition-timing-function: ease;
+                    //transition-duration: 500ms;
+                    cursor: pointer;
+
+                    svg {
+                        display: flex;
+                        color: themed(textColor);
+                    }
+                }
+
+                .arrow_right {
+                    display: none;
+                    position: absolute;
+                    right: 0;
+                    top: 50%;
+                    background: themed(bg);
+                    padding: 0.3rem;
+                    border-radius: 50%;
+                    transition-duration: 2s;
+                    transition: var(--transition);
+                    transition-timing-function: ease;
+                    //transition-duration: 500ms;
+                    cursor: pointer;
+
+                    svg {
+                        display: flex;
+                        color: themed(textColor);
+                    }
+                }
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+
+            .hide_images {
+                display: none;
+            }
+
+            .show_images {
+                display: block;
+            }
+
+            .images_container:hover {
+                transition: var(--transition);
+                //transition-delay: 2s;
+
+                .arrow_left,
+                .arrow_right {
+                    display: flex;
+                    transition: 0.5s;
+                    transition-delay: 2s;
+                }
+            }
+        } */
+
+    }
+}

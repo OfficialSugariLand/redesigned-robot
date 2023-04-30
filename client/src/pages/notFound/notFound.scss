@@ -1,0 +1,33 @@
+@import "../../style.scss";
+
+.notfound_container {
+    @include themify($themes) {
+        background: themed(bg);
+
+        .notfound_page {
+            text-align: center;
+            padding-top: 8rem;
+
+            h1 {
+                color: themed(textColor);
+            }
+
+            .notfound_btn {
+                margin-top: 2rem;
+                margin-bottom: 4rem;
+                display: inline-block;
+                background: themed(bgSoft);
+                padding: 1rem;
+                transition: var(--transition);
+                border: 1px solid transparent;
+                color: themed(textColor);
+                border-radius: 1rem;
+            }
+
+            .notfound_btn:hover {
+                border-color: themed(textColor);
+                background: transparent;
+            }
+        }
+    }
+}

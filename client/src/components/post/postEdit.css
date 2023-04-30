@@ -1,0 +1,125 @@
+.editPostControlBox {
+    display: flex;
+}
+
+.editPostControlBoxWrapper {
+    width: 500px;
+}
+
+.titleControl {
+    display: flex;
+    margin: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    border-bottom: double;
+}
+
+.editPostCancelControl {
+    display: flex;
+}
+
+.editPostCancelWrapper {
+    background-color: rgb(131, 18, 18);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.60s ease;
+    -webkit-transition: all 0.60s ease;
+    -moz-transition: all 0.60s ease;
+    margin-left: 455px;
+    margin-top: -55px;
+}
+
+.editPostCancelWrapper:hover {
+    background-color: rgb(247, 2, 2);
+    transition: all 0.60s ease;
+    -webkit-transition: all 0.60s ease;
+    -moz-transition: all 0.60s ease;
+}
+
+.editPostCancelButton {
+    display: flex;
+    color: brown;
+    background-color: black;
+    border-radius: 50%;
+}
+
+.editTopControl {
+    display: flex;
+    align-items: center;
+    margin: 10px;
+}
+
+.editProfileImg {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.editInputControl {
+    width: 100%;
+    max-lines: 20px;
+}
+
+.editInputControl:focus {
+    outline: none;
+}
+
+.editImgContainer {
+    padding: 0 20px 10px 20px;
+}
+
+.editImgControl {
+    width: 100%;
+    object-fit: cover;
+}
+
+.editPostFormWrapper {
+    display: flex;
+}
+
+.editPostRight {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.editOptions {
+    display: flex;
+    margin-left: 20px;
+}
+
+.editOption {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    cursor: pointer;
+}
+
+.editImgIcon {
+    font-size: 18px;
+    margin-right: 3px;
+}
+
+.exitOptionText {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.editButtonControl {
+    display: flex;
+    margin-left: 225px;
+}
+
+.editPostUpdateButton {
+    display: flex;
+    align-items: center;
+    background-color: cornflowerblue;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}

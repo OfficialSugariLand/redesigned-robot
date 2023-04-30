@@ -1,0 +1,71 @@
+{
+  "name": "react-social",
+  "version": "0.1.0",
+  "homepage": ".",
+  "dependencies": {
+    "@emotion/react": "^11.9.0",
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "@mui/icons-material": "^5.5.1",
+    "@react-native-community/datetimepicker": "^6.1.2",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.4",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/react-transition-group": "^4.4.4",
+    "antd": "^4.20.7",
+    "axios": "^0.26.1",
+    "bcryptjs": "^2.4.3",
+    "crypto-browserify": "^3.12.0",
+    "date-time-pick": "^0.1.43",
+    "date-time-picker": "^0.5.3",
+    "datetimepicker": "^0.1.39",
+    "framer-motion": "^6.5.1",
+    "intl-tel-input": "^17.0.19",
+    "node-polyfill-webpack-plugin": "^2.0.1",
+    "react": "^17.0.2",
+    "react-app-rewired": "^2.2.1",
+    "react-datepicker": "^4.7.0",
+    "react-dom": "^17.0.2",
+    "react-easy-crop": "^4.1.5",
+    "react-icons": "^4.6.0",
+    "react-native-web": "^0.17.7",
+    "react-phone-input-2": "^2.15.0",
+    "react-phone-number-input": "^3.2.19",
+    "react-router-dom": "^6.2.2",
+    "react-scripts": "5.0.0",
+    "react-transition-group": "^4.4.2",
+    "socket.io-client": "^4.4.1",
+    "stream-browserify": "^3.0.0",
+    "timeago.js": "^4.0.2",
+    "uuid": "^8.3.2",
+    "web-vitals": "^2.1.4",
+    "which": "^3.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "sass": "^1.55.0"
+  }
+}

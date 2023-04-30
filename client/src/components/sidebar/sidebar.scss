@@ -1,0 +1,108 @@
+@import "../../style.scss";
+
+
+.sidebar {
+    @include themify($themes) {
+        display: flex;
+        width: 100%;
+        top: 60px;
+        position: sticky;
+        height: calc(100vh - 50px);
+        overflow-y: scroll;
+        scroll-behavior: smooth;
+        transition: var(--transition);
+        border: 2px solid transparent;
+        padding-top: 1rem;
+        background: transparent;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sidebar:hover {
+            background: rgb(222, 225, 230);
+            transition: var(--transition);
+        }
+
+        .sidebar_container {
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+        }
+
+        .sidebar_up_container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .sidebar_up_container li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sidebar_up_container li svg {
+            display: flex;
+            color: themed("textColor");
+            font-size: 2rem;
+        }
+
+        .sidebar_up_container li span {
+            display: flex;
+            color: themed("textColor");
+        }
+
+        .sidebar_text_messenger {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sidebar_down_container {
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 0.9rem;
+        }
+
+        .sidebar_down_container h1 {
+            display: flex;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            height: 2rem;
+            color: themed("textColor");
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            border-bottom: 1px solid themed("textColor");
+            border-top: 1px solid themed("textColor");
+        }
+
+        .sidebar_friend_list button {
+            display: flex;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            color: #fff;
+            background: rgb(130, 153, 187);
+            border-radius: 5px;
+            height: 2rem;
+            width: 8rem;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            box-shadow: 0 1.5rem 2rem rgba(26, 26, 54, 0.4);
+            border: 2px solid transparent;
+        }
+
+        .sidebar_friend_list button:hover {
+            background: rgb(159, 163, 170);
+            transition: var(--transition);
+            border-color: var(--color-gray-400);
+        }
+
+    }
+}

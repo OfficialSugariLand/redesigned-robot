@@ -1,0 +1,38 @@
+@import "../../../../style.scss";
+
+
+.conversations {
+    @include themify($themes) {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        background: themed(conBackground);
+        padding: 5px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+
+        .conversation_wrapper {
+            display: flex;
+            width: 100%;
+            align-items: center;
+
+            Img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-right: 10px;
+            }
+
+            /* span {
+                font-weight: 400;
+                color: themed(textColor);
+            } */
+        }
+
+        &:hover {
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+    }
+}

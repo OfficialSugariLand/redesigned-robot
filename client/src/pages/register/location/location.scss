@@ -1,0 +1,118 @@
+.location {
+    width: 100vw;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+
+
+    .localtion_container {
+        height: 100%;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+        justify-content: space-between;
+        gap: 6rem;
+
+        .user_location_left {
+            display: flex;
+            flex-direction: column;
+
+            h3 {
+                font-size: 50px;
+                color: plum;
+                margin-bottom: 10px;
+            }
+
+            span {
+                font-size: 24px;
+            }
+        }
+
+        .user_location_right {
+            display: grid;
+            position: relative;
+            background-color: plum;
+            padding: 1rem;
+            box-shadow: -2rem 2rem 5rem rgba(0, 0, 0, 0.5);
+            border-bottom-right-radius: 55px;
+            border-top-left-radius: 55px;
+
+            .user_location_control {
+                display: flex;
+                flex-direction: column;
+                margin-bottom: 2rem;
+
+                select {
+                    height: 50px;
+                    border-radius: 10px;
+                    border: 1px solid gray;
+                    margin-bottom: 10px;
+                    /* font-size: 28px; */
+                    padding-left: 20px;
+
+                    option {
+                        display: flex;
+                        flex-direction: column;
+                    }
+                }
+
+            }
+
+            .reg_btn_con {
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: transparent;
+                gap: 1rem;
+
+                button {
+                    display: flex;
+                    width: 100%;
+                    height: 3rem;
+                    align-items: center;
+                    justify-content: center;
+                    background-color: rgb(80, 100, 129);
+                    color: rgb(255, 255, 255);
+                    border-radius: 10px;
+                    font-size: 1rem;
+                    cursor: pointer;
+                    box-shadow: -2rem 2rem 5rem rgba(0, 0, 0, 0.5);
+                }
+            }
+        }
+    }
+
+    @media screen and (max-width: 1024px) {
+        .localtion_container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+
+            .user_location_left {
+                align-items: center;
+                justify-content: center;
+                margin-top: -11rem;
+
+                h3 {
+                    display: flex;
+                    font-size: 25px;
+                }
+
+                span {
+                    font-size: larger;
+                }
+            }
+
+            .user_location_control {
+                select {
+                    width: 22rem;
+                }
+            }
+
+            .user_location_right {
+                margin-top: -5rem;
+            }
+        }
+    }
+}

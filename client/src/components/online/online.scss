@@ -1,0 +1,64 @@
+@import "../../style.scss";
+
+
+.rightbarFriend {
+    @include themify($themes) {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        gap: 0.5rem;
+
+
+        .rightbarFriend:hover {
+            filter: opacity(.8);
+        }
+
+        .rightbar_userWrapper {
+            display: flex;
+            width: 100%;
+            position: relative;
+            align-items: center;
+            gap: 0.5rem;
+
+            img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .rightbarOnline {
+                display: flex;
+                position: absolute;
+                //right: 0;
+                left: 30px;
+                top: 0;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: rgb(60, 221, 87);
+                border: 2px solid whitesmoke;
+            }
+
+            .rightbarOffline {
+                display: flex;
+                position: absolute;
+                //right: 0;
+                left: 30px;
+                top: 0;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: rgb(131, 134, 132);
+                border: 2px solid whitesmoke;
+            }
+        }
+
+        .rightbar_Username {
+            display: flex;
+            font-weight: 500;
+            color: themed(textColor);
+        }
+    }
+
+}

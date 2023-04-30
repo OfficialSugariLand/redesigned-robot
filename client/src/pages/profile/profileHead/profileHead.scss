@@ -1,0 +1,646 @@
+@import "../../../style.scss";
+
+
+.user_profile_up_container {
+    @include themify($themes) {
+        display: flex;
+        height: auto;
+        position: relative;
+        flex-direction: column;
+        align-items: center;
+        background: themed(bgSoft);
+        border-bottom: 1px solid themed(profileHeadBorder);
+        -webkit-box-shadow: 0px 0px 27px -5px rgba(0, 0, 0, 0.62);
+        box-shadow: 0px 0px 27px -5px themed(profileHeadShadow);
+
+        h4 {
+            color: themed(textColor);
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        span {
+            color: themed(textColor);
+            margin-bottom: 1rem;
+        }
+
+
+        .user_profile_cover {
+            display: flex;
+            width: 70%;
+            position: relative;
+            border-radius: 0 0 10px 10px;
+            -webkit-box-shadow: 0px 0px 62px 0px rgba(0, 0, 0, 0.62);
+            -moz-box-shadow: 0px 0px 62px 0px rgba(0, 0, 0, 0.62);
+            box-shadow: 0px 0px 62px 0px rgba(0, 0, 0, 0.62);
+            filter: saturate(0.25);
+            transition: var(--transition);
+        }
+
+        .user_profile_cover:hover {
+            filter: saturate(1);
+        }
+
+        .usrImage_usrChangeImage {
+            display: flex;
+            position: absolute;
+
+            .user_profile_dp_img {
+                display: flex;
+                width: 10rem;
+                height: 10rem;
+                border-radius: 50%;
+                top: 0rem;
+                filter: saturate(0.25);
+                transition: var(--transition);
+                border: 2px solid transparent;
+            }
+
+            .user_profile_dp_img:hover {
+                filter: saturate(1);
+                /* transform: scale(1.2); */
+                transition: var(--transition);
+                border-color: var(--color-gray-400);
+            }
+
+            .user_dp_change_icon {
+                display: flex;
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                /* margin-top: -14rem; */
+                padding: 0.8rem;
+                border-radius: 50%;
+                align-items: center;
+                justify-content: center;
+                background: rgb(130, 153, 187);
+                border: 1px solid transparent;
+                cursor: pointer;
+                transition: var(--transition);
+                z-index: 9;
+
+                svg {
+                    color: themed(textColor);
+                }
+            }
+        }
+
+
+
+        .change_profile_dp {
+            display: flex;
+            position: fixed;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            place-items: center;
+            justify-content: center;
+            z-index: 9;
+
+            &.hide_chnage_dp {
+                display: none;
+            }
+
+            &.show_chnage_dp {
+                display: flex;
+            }
+
+            .cancel_btn {
+                display: flex;
+                position: absolute;
+                top: 0;
+                right: 0;
+                background: transparent;
+                padding: 0.5rem;
+                transition: var(--transition);
+                cursor: pointer;
+
+                svg {
+                    display: flex;
+                    font-size: 2rem;
+                    color: darkgray;
+                    transition: var(--transition);
+
+                    &:hover {
+                        color: rgb(99, 29, 29);
+                        transition: var(--transition);
+                    }
+                }
+            }
+
+            .change_dp_container {
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                width: 60%;
+                height: 60%;
+                background: themed(bgSoft);
+                padding: 2rem;
+                place-content: center;
+                place-items: center;
+                gap: 1rem;
+                border-radius: 0.3rem;
+
+                img {
+                    display: flex;
+                    width: 10rem;
+                    height: 10rem;
+                    border-radius: 50%;
+                }
+
+                span {
+                    display: flex;
+                    width: 100%;
+                    background: themed(uLPPicLight); //Dark mode
+                    padding: 0.3rem;
+                    justify-content: center;
+                    border-radius: 0.3rem;
+                    -webkit-box-shadow: 1px 3px 5px 5px rgba(0, 0, 0, 0.8);
+                    -moz-box-shadow: 1px 3px 5px 5px rgba(0, 0, 0, 0.8);
+                    box-shadow: 1px 3px 5px 5px rgba(39, 39, 39, 0.8);
+                    cursor: pointer;
+                }
+            }
+
+            .photo_container {
+                display: flex;
+                position: relative;
+                width: 80%;
+                height: 80%;
+                background: themed(bgSoft);
+                padding: 1rem;
+                justify-content: center;
+
+                .photo_container_wrapper {
+                    display: flex;
+                    width: 90%;
+                    height: 70%;
+                    position: relative;
+                    place-content: center;
+                    place-items: center;
+                    border-bottom: 1px solid white;
+
+                    .reactEasyCrop_CropArea {
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        width: 20rem !important;
+                        height: 20rem !important;
+                        transform: translate(-50%, -50%);
+                        border: 1px solid rgba(255, 255, 255, 0.5);
+                        box-sizing: border-box;
+                        box-shadow: 0 0 0 9999em;
+                        color: rgba(0, 0, 0, 0.5);
+                        overflow: hidden;
+                        border-radius: 50%;
+                    }
+
+                    .remove_photo_btn {
+                        display: flex;
+                        position: absolute;
+                        top: 0;
+                        right: 0;
+                        background: transparent;
+                        padding: 0.5rem;
+                        cursor: pointer;
+                        transition: var(--transition);
+                        z-index: 9;
+
+                        svg {
+                            display: flex;
+                            font-size: 2rem;
+                            color: darkgray;
+                            transition: var(--transition);
+
+                            &:hover {
+                                color: rgb(99, 29, 29);
+                                transition: var(--transition);
+                            }
+                        }
+                    }
+                }
+
+                .zoom_slider {
+                    display: flex;
+                    position: absolute;
+                    width: 100%;
+                    bottom: 8rem;
+                    padding: 1rem;
+                }
+
+                .image_crop_zoom {
+                    display: flex;
+                    position: absolute;
+                    width: 100%;
+                    bottom: 6rem;
+                    justify-content: center;
+                    gap: 1rem;
+
+                    .cropImageButton {
+                        display: flex;
+                        padding: 0.2rem 1rem;
+                        border-radius: 0.2rem;
+                        background: lightblue;
+                        cursor: pointer;
+                        //background: themed(bgSoft);
+                        color: themed(textColor);
+
+                        svg {
+                            display: flex;
+                            color: themed(textColor);
+                            font-size: 1rem;
+                        }
+
+                    }
+
+                    .submit_btn {
+                        display: flex;
+                        padding: 0.2rem 1rem;
+                        border-radius: 0.2rem;
+                        background: lightblue;
+                        //position: absolute;
+                        //right: 2rem;
+                        //bottom: 2rem;
+                        cursor: pointer;
+                    }
+
+                }
+            }
+        }
+
+        .user_dp_change_icon:hover {
+            background: var(--color-grid-600);
+            border-color: themed(textColor);
+        }
+
+        .user_profile_up_container h4 {
+            display: flex;
+            margin-top: -2rem;
+        }
+
+        .user_profile_up_container span {
+            display: flex;
+            margin-bottom: 2rem;
+        }
+
+
+        .user_messenger_image_btn {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .text_user {
+            display: flex;
+            position: relative;
+            width: 7rem;
+            height: 2rem;
+            border-radius: 10px;
+            color: themed("textColor");
+            font-size: 1rem;
+            gap: 10px;
+            transition: var(--transition);
+            box-shadow: 0 1.5rem 2rem rgba(26, 26, 54, 0.4);
+            border: 2px solid themed("textColor");
+            padding: 10px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+
+            svg {
+                font-size: 21px;
+                color: themed("textColor");
+            }
+        }
+
+        .text_user:hover {
+            background: rgb(159, 163, 170);
+            transition: var(--transition);
+            border-color: var(--color-gray-400);
+        }
+
+        button.convo_btn {
+            display: flex;
+            position: absolute;
+            width: 7rem;
+            height: 2rem;
+            border-radius: 10px;
+            color: themed("textColor");
+            font-size: 1rem;
+            gap: 10px;
+            transition: var(--transition);
+            box-shadow: 0 1.5rem 2rem rgba(26, 26, 54, 0.4);
+            border: 2px solid themed("textColor");
+            padding: 10px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            z-index: 9;
+        }
+
+        .user_images_view {
+            display: flex;
+            width: 7rem;
+            height: 2rem;
+            border-radius: 10px;
+            color: themed("textColor");
+            font-size: 1rem;
+            gap: 10px;
+            transition: var(--transition);
+            box-shadow: 0 1.5rem 2rem rgba(26, 26, 54, 0.4);
+            border: 2px solid themed("textColor");
+            padding: 10px;
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+
+            svg {
+                font-size: 2rem;
+                color: themed("textColor");
+            }
+        }
+
+
+        .user_images_view:hover {
+            background: rgb(159, 163, 170);
+            transition: var(--transition);
+            border-color: var(--color-gray-400);
+        }
+
+        .profileHead_text_box {
+            position: fixed;
+            background: themed(bgSoft);
+            height: 30rem;
+            width: 18rem;
+            bottom: 0;
+            border-radius: 10px 10px 0 0;
+            z-index: 9;
+            border: 1px solid themed(textColor);
+
+            .profileHead_textBox_control {
+                display: flex;
+                flex-direction: column;
+
+                .profileHead_textBox_up {
+                    display: flex;
+                    position: relative;
+                    width: 100%;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 0.4rem;
+                    border-bottom: 1px solid lightgray;
+
+                    img {
+                        display: flex;
+                        width: 2rem;
+                        height: 2rem;
+                        border-radius: 50%;
+                    }
+
+                    span {
+                        margin-bottom: 0rem;
+                        margin-right: 9rem;
+                    }
+
+                    svg {
+                        display: flex;
+                        position: absolute;
+                        right: 8px;
+                        color: themed(textColor);
+                        width: 25px;
+                        height: 25px;
+                        border-radius: 50%;
+                        font-size: 1rem;
+                        cursor: pointer;
+                        transition: var(--transition);
+                        border: 3px solid #a7a7a7;
+
+                        &:hover {
+                            color: rgb(163, 42, 42);
+                            transition: var(--transition);
+                        }
+                    }
+
+                }
+
+                .profileHead_textBox_down {
+                    padding: 1rem;
+                    height: calc(100% - 117px);
+                    overflow-y: scroll;
+
+                    .profileHead_messages {
+                        display: flex;
+                        width: 100%;
+                        gap: 0.4rem;
+                        margin-bottom: 1.5rem;
+
+                        .profileHead_TextCreatedAt {
+                            display: flex;
+                            flex-direction: column;
+                            color: lightgrey;
+                            font-weight: 300;
+
+                            img {
+                                display: flex;
+                                width: 2rem;
+                                height: 2rem;
+                                border-radius: 50%;
+                            }
+
+                            span {
+                                font-size: 0.6rem;
+                            }
+                        }
+
+                        .profileHead_textArea {
+                            max-width: 80%;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 10px;
+                        }
+
+                        &.pH_message {
+                            display: flex;
+
+                            .profileHead_textArea {
+
+                                p {
+                                    background: rgb(150, 165, 165);
+                                    padding: 10px 20px;
+                                    border-radius: 0px 10px 10px 10px;
+                                    max-width: max-content;
+                                }
+                            }
+                        }
+
+                        &.own_messages {
+                            flex-direction: row-reverse;
+
+                            .profileHead_textArea {
+
+                                p {
+                                    background: rgb(187, 237, 237);
+                                    border-radius: 10px 0px 10px 10px;
+                                    max-width: max-content;
+                                    padding: 10px 20px;
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+        .hide_text_box {
+            display: none;
+        }
+
+        .show_text_box {
+            display: flex;
+        }
+
+
+        .profileHead_input {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: themed(bgSoft);
+            padding: 10px;
+
+            textarea {
+                //https://www.youtube.com/watch?v=Yor9Y73M764
+                width: 100%;
+                max-height: 10rem;
+                background: transparent;
+                color: themed(textColor);
+                outline: none;
+                font-size: 0.7rem;
+                border-radius: 1rem;
+                padding: 1rem;
+                resize: none;
+
+                &::-webkit-scrollbar {
+                    width: 0px;
+                }
+
+                &::placeholder {
+                    color: lightgray;
+                    max-width: 100%;
+                }
+
+            }
+
+            .profileHead_send {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                svg {
+                    color: themed(textColor);
+                    font-size: larger;
+
+                }
+
+                button {
+                    border: none;
+                    padding: 1rem 1.5rem;
+                    color: themed(textColor);
+                    background: linear-gradient(45deg, rgb(149, 87, 149), transparent);
+                    //background: rgb(149 87 149);
+                    border-radius: 0.4rem;
+                    cursor: pointer;
+                }
+            }
+        }
+
+
+        @media screen and (max-width: 1024px) {
+            .user_profile_cover {
+                width: 80%;
+            }
+
+            .usrImage_usrChangeImage {
+                left: 6rem;
+
+                .user_profile_dp_img {
+                    width: 10rem;
+                    height: 10rem;
+                }
+
+                .user_dp_change_icon {
+                    padding: 0.8rem;
+
+                }
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+
+            .user_profile_cover {
+                width: 100%;
+            }
+
+            .change_dp_container,
+            .photo_container {
+                width: 100% !important;
+            }
+
+            .usrImage_usrChangeImage {
+                left: 0;
+
+                .user_profile_dp_img {
+                    width: 6rem;
+                    height: 6rem;
+                    top: -7rem;
+                    right: 8.8rem;
+                }
+
+                .user_dp_change_icon {
+                    padding: 0.2rem;
+
+                }
+            }
+        }
+
+        .info_success {
+            display: flex;
+            position: absolute;
+            width: 100%;
+            height: 100vh;
+            background: themed(bg);
+            border: 1px solid gray;
+            border-radius: 1rem;
+            padding: 7rem 0rem;
+            z-index: 9;
+
+            .info_sub_success {
+                display: flex;
+                position: relative;
+                width: 100%;
+                height: 100%;
+                align-items: center;
+                justify-content: center;
+
+                .close_info_success {
+                    display: flex;
+                    position: absolute;
+                    right: 1rem;
+                    bottom: 1rem;
+                    color: themed(textColor);
+                    cursor: pointer;
+                    background: gray;
+                    border-radius: 0.5rem;
+                    padding: 0.5rem;
+                }
+            }
+        }
+
+        .hide_info_success {
+            display: none;
+        }
+
+    }
+}

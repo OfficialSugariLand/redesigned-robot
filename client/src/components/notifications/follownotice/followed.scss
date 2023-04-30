@@ -1,0 +1,97 @@
+@import "../../../style.scss";
+
+.followed {
+    @include themify($themes) {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        width: 100%;
+        min-width: 17rem;
+        padding: 1rem;
+
+        .user_followed_container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            gap: 0.5rem;
+
+            a {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+            }
+
+            img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .username_contain {
+                display: flex;
+                font-size: 0.9rem;
+                color: themed(textColor);
+            }
+
+            .activities_contain {
+                display: flex;
+                font-size: 0.7rem;
+                color: #7d7c7c;
+                width: 100%;
+            }
+        }
+
+        .followed_date_format {
+            display: flex;
+            font-size: 0.6rem;
+            color: #3f7b94;
+            width: 100%;
+            max-width: 100%;
+            justify-content: flex-end;
+            margin-top: -0.9rem;
+        }
+    }
+
+}
+
+
+/* @media screen and (max-width: 600px) {
+    .followed_container {
+        display: flex !important;
+        flex-direction: column !important;
+        transition: var(--transition);
+        position: fixed !important;
+        width: 100% !important;
+        height: 100vh;
+        background: white;
+        top: 65px;
+        right: -100% !important;
+    }
+
+    .show_followed {
+        right: 0 !important;
+        transition: var(--transition);
+
+    }
+
+    .notifications_container {
+        display: flex !important;
+        flex-direction: column !important;
+        transition: var(--transition);
+        position: fixed !important;
+        width: 100% !important;
+        height: 100vh;
+        background: white;
+        top: 65px;
+        right: -100% !important;
+    }
+
+    .show_notify {
+        right: 0 !important;
+        transition: var(--transition);
+
+    }
+
+} */

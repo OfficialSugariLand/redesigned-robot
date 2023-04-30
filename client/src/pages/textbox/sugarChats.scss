@@ -1,0 +1,418 @@
+@import "../../style.scss";
+
+.sugarChats {
+    @include themify($themes) {
+        display: flex;
+        width: 100%;
+        height: 100vh;
+        background: themed(bg);
+        margin-top: -4.4rem;
+
+        .sugarChats_container {
+            display: grid;
+            width: 100%;
+            grid-template-columns: 20% 55% 25%;
+            //margin-top: 5rem;
+
+            .textBox_left {
+                display: flex;
+                flex-direction: column;
+                margin-top: 4.4rem;
+                border-right: 2px solid themed(textLeftBorderRight);
+                box-shadow: 24px 11px 9px -11px themed(homeLeftRightShadow);
+
+                input {
+                    display: flex;
+                    background: transparent;
+                    padding: 0.6rem;
+                }
+
+                .textBox_chats {
+                    display: flex;
+                    align-items: center;
+                    gap: 0.4rem;
+                    background: themed(conBackground);
+                    padding: 0.4rem;
+                    transition: all 0.3s ease;
+                    cursor: pointer;
+
+                    img {
+                        width: 2rem;
+                        height: 2rem;
+                        border-radius: 50%;
+                    }
+
+                    span {
+                        color: themed(textColor);
+                    }
+
+                    &:hover {
+                        background: transparent;
+                        transition: all 0.3s ease;
+                    }
+                }
+            }
+
+            .textBox_middle {
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                width: 100%;
+                height: 100vh;
+                //padding: 1rem;
+
+                .textBox_middleTop {
+                    display: flex;
+                    position: sticky;
+                    width: 100%;
+                    background: themed(bg);
+                    top: 4.5rem;
+                    padding: 0.5rem;
+                    align-items: center;
+                    gap: 0.3rem;
+                    border-bottom: 1px solid lightgray;
+                    justify-content: space-between;
+
+                    img {
+                        width: 2rem;
+                        height: 2rem;
+                        border-radius: 50%;
+                    }
+
+                    .middleTop_usrName {
+                        color: themed(textColor);
+                    }
+
+                    .middle_top_drop {
+                        display: flex;
+                        position: relative;
+
+
+                        button {
+                            background: transparent;
+
+                            svg {
+                                color: themed(textColor);
+                                cursor: pointer;
+                                font-size: x-large;
+                            }
+                        }
+
+                        .middletop_drop_items {
+                            background: themed(bgSoft);
+                            position: absolute;
+                            width: 10rem;
+                            height: 10rem;
+                            right: 0;
+                            top: 2.4rem;
+                            border: 1px solid white;
+                            border-radius: 0rem 0rem 0.5rem 0.5rem;
+
+                            &.hide_mdrop {
+                                display: none;
+                            }
+
+                            &.show_mdrop {
+                                display: flex;
+                                justify-content: center;
+                                padding-top: 0.5rem;
+
+                                .middletop_usr_items {
+                                    display: flex;
+                                    width: 100%;
+                                    background: themed(conBackground);
+                                    padding: 0.5rem;
+                                    //border-radius: 0.4rem;
+                                    height: 2rem;
+                                    justify-content: center;
+
+                                    a {
+                                        color: themed(textColor);
+                                        transition: all 0.3s ease;
+                                    }
+
+                                    a:hover {
+                                        transform: scale(1.1);
+                                        transition: all 0.3s ease;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+
+                .sugarChats_con {
+                    padding: 1rem;
+                    width: 100%;
+                    margin-top: 4.4rem;
+                    height: calc(100% - 77px);
+                    overflow-y: scroll;
+
+                    .sugarChats_messages {
+                        display: flex;
+                        width: 100%;
+                        gap: 0.4rem;
+                        margin-bottom: 1.5rem;
+
+                        .sugarChats_TextCreatedAt {
+                            display: flex;
+                            flex-direction: column;
+                            color: lightgrey;
+                            font-weight: 300;
+
+                            img {
+                                display: flex;
+                                width: 2rem;
+                                height: 2rem;
+                                border-radius: 50%;
+                            }
+
+                            span {
+                                font-size: 0.6rem;
+                            }
+                        }
+
+                        .sugarChats_textArea {
+                            max-width: 80%;
+                            display: flex;
+                            flex-direction: column;
+                            gap: 10px;
+                        }
+
+                        &.sugarChats_message {
+                            display: flex;
+
+                            .sugarChats_textArea {
+
+                                p {
+                                    background: rgb(150, 165, 165);
+                                    padding: 10px 20px;
+                                    border-radius: 0px 10px 10px 10px;
+                                    max-width: max-content;
+                                }
+                            }
+                        }
+
+                        &.own_messages {
+                            flex-direction: row-reverse;
+
+                            .sugarChats_textArea {
+
+                                p {
+                                    background: rgb(187, 237, 237);
+                                    border-radius: 10px 0px 10px 10px;
+                                    max-width: max-content;
+                                    padding: 10px 20px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            //Chat Sugar Hot Side
+            .sugar_hot_cakes {
+                display: flex;
+                align-items: center;
+                border: 5px solid gray;
+                background: cadetblue;
+
+                .sugar_hot_wrapper {
+                    height: 80%;
+
+                    img {
+                        display: flex;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+            }
+
+            .textBox_right {
+                display: flex;
+                flex-direction: column;
+                padding: 1rem;
+                gap: 1rem;
+                margin-top: 4.4rem;
+                border-left: 2px solid themed(textLeftBorderRight);
+                box-shadow: -24px 13px 7px -15px themed(homeLeftRightShadow);
+
+                .textBox_right_container {
+                    display: flex;
+                    height: 12.5rem;
+
+                    img {
+                        display: flex;
+                        width: 100%;
+                        height: 100%;
+                        border-radius: 0.4rem;
+                        //object-fit: cover;
+                    }
+                }
+            }
+
+        }
+
+        .mobile_container_wrapper {
+            display: none !important;
+        }
+
+        @media screen and (max-width: 1024px) {
+            .textBox_right {
+                display: none !important;
+            }
+
+            .sugarChats_container {
+                grid-template-columns: 30% 70% !important;
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+
+            &.sugarChats {
+                margin-top: -8.4rem !important;
+            }
+
+            .sugarChats_container {
+                display: none !important;
+            }
+
+            .mobile_container_wrapper {
+                display: flex !important;
+                width: 100%;
+                height: 100vh;
+
+                .textBox_middle {
+                    display: flex;
+                    flex-direction: column;
+                    position: relative;
+                    width: 100%;
+                    min-width: 100%;
+                    height: 100%;
+                    //padding: 1rem;
+
+                    .textBox_middleTop {
+                        display: flex;
+                        position: sticky;
+                        width: 100%;
+                        background: themed(bg);
+                        top: 4.4rem;
+                        //top: 8.4rem;
+                        padding: 0.5rem;
+                        align-items: center;
+                        gap: 0.3rem;
+                        border-bottom: 1px solid lightgray;
+                        justify-content: space-between;
+
+                        .back_to_conBtn {
+                            display: flex;
+
+                            svg {
+                                color: themed(textColor);
+                                font-size: 1.5rem;
+                            }
+                        }
+
+                        .middle_userDetails {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+
+                            img {
+                                width: 2rem;
+                                height: 2rem;
+                                border-radius: 50%;
+                            }
+
+                            span {
+                                color: themed(textColor);
+                            }
+                        }
+
+                        .dropUser_profile {
+                            display: flex;
+
+                            svg {
+                                color: themed(textColor);
+                            }
+                        }
+                    }
+
+                    .sugarChats_con {
+                        padding: 1rem;
+                        width: 100%;
+                        //margin-top: 6.8rem;
+                        margin-top: 7.8rem;
+                        height: calc(100% - 77px);
+                        overflow-y: scroll;
+
+                        .sugarChats_messages {
+                            display: flex;
+                            width: 100%;
+                            gap: 0.4rem;
+                            margin-bottom: 1.5rem;
+
+                            .sugarChats_TextCreatedAt {
+                                display: flex;
+                                flex-direction: column;
+                                color: lightgrey;
+                                font-weight: 300;
+
+                                img {
+                                    display: flex;
+                                    width: 2rem;
+                                    height: 2rem;
+                                    border-radius: 50%;
+                                }
+
+                                span {
+                                    font-size: 0.6rem;
+                                }
+                            }
+
+                            .sugarChats_textArea {
+                                max-width: 80%;
+                                display: flex;
+                                flex-direction: column;
+                                gap: 10px;
+                            }
+
+                            &.sugarChats_message {
+                                display: flex;
+
+                                .sugarChats_textArea {
+
+                                    p {
+                                        background: rgb(150, 165, 165);
+                                        padding: 10px 20px;
+                                        border-radius: 0px 10px 10px 10px;
+                                        max-width: max-content;
+                                    }
+                                }
+                            }
+
+                            &.own_messages {
+                                flex-direction: row-reverse;
+
+                                .sugarChats_textArea {
+
+                                    p {
+                                        background: rgb(187, 237, 237);
+                                        border-radius: 10px 0px 10px 10px;
+                                        max-width: max-content;
+                                        padding: 10px 20px;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            /*             .sugarChats_container {
+                grid-template-columns: 100% !important;
+            } */
+        }
+    }
+}

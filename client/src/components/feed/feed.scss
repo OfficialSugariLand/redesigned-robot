@@ -1,0 +1,26 @@
+@import "../../style.scss";
+
+
+.feed {
+    @include themify($themes) {
+        display: flex;
+        width: 100%;
+        padding: 1rem;
+        justify-content: center;
+        background: themed(bgSoft);
+
+        .feedWrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            gap: 1rem;
+        }
+    }
+
+    @media screen and (max-width: 600px) {
+        .share {
+            width: 100% !important;
+        }
+    }
+}

@@ -1,0 +1,48 @@
+@import "../../style.scss";
+
+.conversation {
+    @include themify($themes) {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: themed(conBackground);
+        padding: 0.4rem;
+        transition: all 0.3s ease;
+        cursor: pointer;
+
+        img {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+        }
+
+        .username_text {
+            display: flex;
+            flex-direction: column;
+
+            span {
+                color: themed(textColor);
+            }
+
+            .text_preview {
+                display: flex;
+
+                p {
+                    color: themed(textPreview);
+                    font-size: 0.7rem;
+                }
+
+                span {
+                    display: flex;
+                    color: themed(textPreview);
+                    margin-top: -0.2rem;
+                }
+            }
+        }
+
+        &:hover {
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+    }
+}

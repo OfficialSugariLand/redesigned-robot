@@ -1,0 +1,74 @@
+@import "../../../../style.scss";
+
+
+.input {
+    @include themify($themes) {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        //height: 50px;
+        background: themed(bgSoft);
+        padding: 10px;
+
+        textarea {
+            width: 100%;
+            max-height: 10rem;
+            background: transparent;
+            color: themed(textColor);
+            outline: none;
+            font-size: 0.7rem;
+            border-radius: 1rem;
+            padding: 1rem;
+            resize: none;
+
+            &::-webkit-scrollbar {
+                width: 0px;
+            }
+
+            &::placeholder {
+                color: lightgray;
+                max-width: 100%;
+            }
+
+        }
+
+        span {
+            display: flex;
+            width: 100%;
+            height: 3rem;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+            -webkit-box-shadow: 0px 0px 27px -5px rgba(0, 0, 0, 0.62);
+            box-shadow: 0px 0px 27px -5px rgba(0, 0, 0, 0.62);
+            border: 1px solid transparent;
+
+            &:hover {
+                border-color: themed(textColor);
+            }
+        }
+
+        .send {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            svg {
+                color: themed(textColor);
+                font-size: larger;
+                cursor: pointer;
+            }
+
+            button {
+                border: none;
+                padding: 1rem 1.5rem;
+                color: themed(textColor);
+                background: linear-gradient(45deg, rgb(149, 87, 149), transparent);
+                //background: rgb(149 87 149);
+                border-radius: 0.4rem;
+                cursor: pointer;
+            }
+        }
+    }
+}

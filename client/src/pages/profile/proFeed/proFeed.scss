@@ -1,0 +1,9 @@
+@import "../../../style.scss";
+
+.proFeed{
+    @include themify($themes){
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+}

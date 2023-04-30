@@ -1,0 +1,147 @@
+@import "../../style.scss";
+
+.about {
+    @include themify($themes) {
+        background: themed(bg);
+
+        .about_main_header {
+            width: 100vw;
+            display: grid;
+            place-items: center;
+        }
+
+        .about_sugar {
+            padding-top: 2rem;
+        }
+
+        .sugar_mission {
+            padding-bottom: 2rem;
+        }
+
+        .sugar_about_container,
+        .sugar_mission_container {
+            display: grid;
+            grid-template-columns: 40% 50%;
+            gap: 10%
+        }
+
+        .sugar_vision_container {
+            display: grid;
+            grid-template-columns: 50% 40%;
+            gap: 10%
+        }
+
+        .about_section_img {
+            border-radius: 50%;
+            overflow: hidden;
+            transform: skew(15deg);
+            transition: var(--transition);
+
+        }
+
+        .about_section_img:nth-child(1) {
+            transform: skew(-15deg);
+        }
+
+        .about_section_img:hover {
+            transform: skew(0);
+        }
+
+        .about_sugar_section {
+            h1 {
+                margin-bottom: 2rem;
+                color: themed("textColor");
+            }
+
+            p {
+                margin-bottom: 1rem;
+                color: themed("textColor");
+            }
+        }
+
+        /* Media Queries for Tablets */
+        @media screen and (max-width: 1024px) {
+            .about_section_img {
+                width: 60%;
+            }
+
+            .sugar_about_container,
+            .sugar_mission_container,
+            .sugar_vision_container {
+                grid-template-columns: 1fr;
+                gap: 3rem
+            }
+
+            .sugar_vision .about_section_img {
+                grid-row: 1;
+            }
+        }
+
+        /* Media Queries for small screens */
+        @media screen and (max-width: 600px) {
+            .about_section_img {
+                width: 80%;
+                margin-inline: auto;
+            }
+
+            .sugar_about_container,
+            .sugar_mission_container,
+            .sugar_vision_container {
+                gap: 2rem
+            }
+
+        }
+    }
+}
+
+/* .about_header_container {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6rem;
+}
+
+
+.about_main_left {
+    margin-top: -3rem;
+}
+
+.about_main_left h4 {
+    margin-bottom: 1rem;
+    color: plum;
+    font-weight: 400;
+}
+
+.about_main_left p {
+    margin: 1rem 0 3.5rem;
+    font-size: 1.1rem;
+}
+
+
+
+.about_main_right {
+    display: grid;
+    place-items: center;
+    position: relative;
+}
+
+.about_main_circle {
+    width: 25rem;
+    height: 25rem;
+    background: linear-gradient(75deg, var(--color-secondary), transparent);
+    border-radius: 50%;
+    position: absolute;
+    right: 21rem;
+    transition: var(--transition);
+}
+
+.about_main_image {
+    position: relative;
+    background: transparent;
+}
+
+.about_main_right:hover .about_main_circle {
+    filter: blur(15px);
+} */
