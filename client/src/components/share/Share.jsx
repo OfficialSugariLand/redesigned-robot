@@ -1,34 +1,53 @@
 import "./share.scss";
-import { PermMedia, EmojiEmotions, Cancel } from "@material-ui/icons"
-import { useContext, useEffect, useReducer } from "react";
+import axios from "axios";
+import { PermMedia, EmojiEmotions, Cancel } from "@material-ui/icons";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useRef } from "react";
 import { useState } from "react";
-import axios from "axios";
 import IosShareIcon from '@mui/icons-material/IosShare';
 
-export default function Share() {
+export default function Share({ forceUpdate }) {
     const { user } = useContext(AuthContext);
+    let isRendered = useRef(false);
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const desc = useRef();
+    const ref = useRef();
     const [file, setFile] = useState(null);
     const [userFriends, setUserFriends] = useState([]);
     const axiosInstance = axios.create({
         baseURL: process.env.REACT_APP_API_URL,
     });
 
-    //Get all following
-    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+    //Reset img
+    const reset = () => {
+        ref.current.value = "";
+    };
+
     useEffect(() => {
-        const getFriends = async () => {
-            try {
-                const friendList = await axiosInstance.get("/followers/");
-                setUserFriends(friendList.data);
-            } catch (err) {
-                console.log(err);
-            }
+        document.getElementById('submitfile').onclick = function () {
+            setTimeout(() => {
+                setFile(null)
+                reset()
+            }, 1500)
+        }
+    }, []);
+
+    //Get all following
+    useEffect(() => {
+        isRendered = true;
+        axiosInstance
+            .get(`/followers`)
+            .then(res => {
+                if (isRendered) {
+                    setUserFriends(res.data);
+                }
+                return null;
+            })
+            .catch(err => console.log(err));
+        return () => {
+            isRendered = false;
         };
-        getFriends();
     }, []);
 
     //Check if my user is following user
@@ -66,7 +85,6 @@ export default function Share() {
 
                 try {
                     await axiosInstance.post("/posts", newPost);
-                    window.location.reload()
                 } catch (err) { }
             }
         } else {
@@ -90,11 +108,10 @@ export default function Share() {
 
                 try {
                     await axiosInstance.post("/posts", newPost);
-                    window.location.reload()
+                    //window.location.reload()
                 } catch (err) { }
             }
         }
-
         forceUpdate();
     };
 
@@ -142,7 +159,7 @@ export default function Share() {
                         <span>Feelings {/* When user click and select current feeling
                         it fetches people feeling same at the moment */}</span>
                     </div>
-                    <button type="submit">
+                    <button type="submit" id="submitfile" /* onClick={() => { reset() }} */>
                         <IosShareIcon />
                         <span> Share</span>
                     </button>

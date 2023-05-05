@@ -10,10 +10,12 @@ import { io } from "socket.io-client";
 
 export default function ProfileRightbar() {
     const { user } = useContext(AuthContext);
+    let isRendered = useRef(false);
     const user_id = useParams().user_id;
     const [userId, setUserId] = useState([]);
     const [friends, setFriends] = useState([]);
     const [userFriends, setUserFriends] = useState([]);
+    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     const socket = useRef();
     const axiosInstance = axios.create({
         baseURL: process.env.REACT_APP_API_URL,
@@ -25,41 +27,54 @@ export default function ProfileRightbar() {
 
     //Get Visited Page Users
     useEffect(() => {
-        const fetchUser = async () => {
-            const res = await axiosInstance.get("/users/" + user_id);
-            setUserId(res.data);
+        isRendered = true;
+        axiosInstance
+            .get(`/users/${user_id}`)
+            .then(res => {
+                if (isRendered) {
+                    setUserId(res.data);
+                }
+                return null;
+            })
+            .catch(err => console.log(err));
+        return () => {
+            isRendered = false;
         };
-        fetchUser();
     }, [user_id]);
 
     //Get all param users following
-    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     useEffect(() => {
-        const getFriends = async () => {
-            try {
-                const friendList = await axiosInstance.get("/followers/" + user_id);
-                setFriends(friendList.data);
-            } catch (err) {
-                console.log(err);
-            }
+        isRendered = true;
+        axiosInstance
+            .get(`/followers/${user_id}`)
+            .then(res => {
+                if (isRendered) {
+                    setFriends(res.data);
+                }
+                return null;
+            })
+            .catch(err => console.log(err));
+        return () => {
+            isRendered = false;
         };
-        getFriends();
     }, [user_id, ignored]);
 
     //Get all following
     useEffect(() => {
-        const getFriends = async () => {
-            try {
-                const friendList = await axiosInstance.get("/followers/");
-                //setLoading(true);
-                setUserFriends(friendList.data);
-            } catch (err) {
-                console.log(err);
-            }
+        isRendered = true;
+        axiosInstance
+            .get(`/followers`)
+            .then(res => {
+                if (isRendered) {
+                    setUserFriends(res.data);
+                }
+                return null;
+            })
+            .catch(err => console.log(err));
+        return () => {
+            isRendered = false;
         };
-        getFriends();
     }, [ignored]);
-
 
     const curProfileUser = userId?.find((m) => m);   //visited page user
     //Check if my user is following current profile user
@@ -156,8 +171,8 @@ export default function ProfileRightbar() {
             <div className="rightbarInfo">
                 {
                     userId?.map((userInfo, id) =>
-                        <>
-                            <div className="ProfileRightbarInfo" key={id}>
+                        <div key={id}>
+                            <div className="ProfileRightbarInfo">
                                 <span className="ProfileRightbarInfoKey">Country:</span>
                                 <span className="rightbarInfoValue">{userInfo?.country}</span>
                             </div>
@@ -192,7 +207,7 @@ export default function ProfileRightbar() {
                                     <span className="rightbarInfoValue">{userCurAge}</span>
                                 }
                             </div>
-                        </>
+                        </div>
                     )
                 }
             </div>

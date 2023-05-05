@@ -1,13 +1,12 @@
 import { useContext, useEffect, useState } from "react";
 import axios from 'axios';
-import { AuthContext } from "../../../../context/AuthContext";
+import { AuthContext } from "../../../context/AuthContext";
 import "./chatUsers.scss";
 import { Link, useParams } from 'react-router-dom';
-import { io } from "socket.io-client";
 
 export default function ChatUsers({ chatUsr, conversation, forceUpdate, ignored, setConversations }) {
     const user_id = useParams().user_id;
-    const [readText, setReadText] = useState(false);
+    //const [readText, setReadText] = useState(false);
     const axiosInstance = axios.create({
         baseURL: process.env.REACT_APP_API_URL,
     });
@@ -24,21 +23,6 @@ export default function ChatUsers({ chatUsr, conversation, forceUpdate, ignored,
         fetchUser();
     }, [user, chatUsr, ignored]);
 
-    /* const handleDeleteUnread = async () => {
-        try {
-            await axiosInstance.delete("/unreadtexts/" + unreadText?.id, {
-                data: {
-                    id: unreadText?.id,
-                },
-            });
-        } catch (err) {
-            console.log(err);
-        }
-        forceUpdate()
-    } */
-
-    console.log(user_id)
-
     useEffect(() => {
         if (user_id) {
             //setReadText(true)
@@ -54,7 +38,6 @@ export default function ChatUsers({ chatUsr, conversation, forceUpdate, ignored,
                 }
             }
             autoRead();
-            //forceUpdate();
         }
     })
 
@@ -62,7 +45,7 @@ export default function ChatUsers({ chatUsr, conversation, forceUpdate, ignored,
         <div className='chat_user'>
             {
                 unreadText ?
-                    <Link to={`/protext/${chatUsr?.user_id}`} onClick={() => { forceUpdate(); /* handleDeleteUnread() */ }}>
+                    <Link to={`/textbox/sugarchat/${chatUsr?.user_id}`} onClick={() => { forceUpdate() }}>
                         <div className="chatUsr_wrapper_up">
                             <img src={PF + chatUsr.profilePicture ? PF + chatUsr.profilePicture
                                 : PF + "person/1658876240053sugarisland.jpeg"} alt="" />
@@ -79,7 +62,7 @@ export default function ChatUsers({ chatUsr, conversation, forceUpdate, ignored,
                         </div>
                     </Link>
                     :
-                    <Link to={`/protext/${chatUsr?.user_id}`} onClick={forceUpdate}>
+                    <Link to={`/textbox/sugarchat/${chatUsr?.user_id}`} onClick={forceUpdate}>
                         <div className="chatUsr_wrapper_down">
                             <img src={PF + chatUsr.profilePicture ? PF + chatUsr.profilePicture
                                 : PF + "person/1658876240053sugarisland.jpeg"} alt="" />

@@ -1,11 +1,12 @@
 import "./rightbar.scss"
 import Online from "../online/Online";
 import axios from "axios";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useEffect, useRef } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
 export default function Rightbar() {
   const { user } = useContext(AuthContext);
+  let isRendered = useRef(false);
   const [onlineFriends, setOnlineFriends] = useState([]);
   const [visible, setVisible] = useState(6);
   const axiosInstance = axios.create({
@@ -13,16 +14,39 @@ export default function Rightbar() {
   });
 
   useEffect(() => {
-    const getOnlineFriends = async () => {
-      try {
-        const friendList = await axiosInstance.get("/followers/" + user.user_id);
-        setOnlineFriends(friendList.data);
-      } catch (err) {
-        console.log(err);
-      }
+    isRendered = true;
+    axiosInstance
+      .get("/followers/" + user.user_id)
+      .then(res => {
+        if (isRendered) {
+          setOnlineFriends(res.data);
+        }
+        return null;
+      })
+      .catch(err => console.log(err));
+    return () => {
+      isRendered = false;
     };
-    getOnlineFriends();
   }, [user]);
+
+  /* useEffect(() => {
+    if (isMounted.current) {
+      const getOnlineFriends = async () => {
+        try {
+          const friendList = await axiosInstance.get("/followers/" + user.user_id);
+          setOnlineFriends(friendList.data);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      getOnlineFriends();
+      return () => {
+        isMounted.current = false;
+      };
+    }
+  }, [user]); */
+
+  //console.log(onlineFriends)
 
   //Remove my user from followed list
   const newFriends = onlineFriends?.filter((f) => f.followed !== user.user_id);
@@ -33,7 +57,7 @@ export default function Rightbar() {
     setVisible((prevValue) => prevValue + 6);
   };
 
-  //console.log(socketData)
+  //console.log(newFriends)
 
   return (
     <div className="rightbar">
@@ -45,8 +69,8 @@ export default function Rightbar() {
         <div className="rightbar_friends_container">
           <h4>Online Friends</h4>
           <ul >
-            {newFriends.slice(0, visible).map((u, id) => (
-              <Online key={id} /* user={u} */ user={user} />
+            {newFriends?.slice(0, visible).map((u, id) => (
+              <Online key={id} onlineFriend={u} />
             ))}
             <button onClick={showMorePeople}>View more</button>
           </ul>

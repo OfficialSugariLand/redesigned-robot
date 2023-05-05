@@ -15,10 +15,9 @@ import Images from "./pages/profile/images/Images";
 import NotFound from "./pages/notFound/NotFound";
 import { DarkModeContext } from "./context/darkModeContext";
 import Signup from "./pages/register/signup/Signup";
-import Topbar from "./components/topbar/Topbar";
 import { io } from "socket.io-client";
-import TextBox from "./pages/textbox/TextBox";
-import SugarChats from "./pages/textbox/SugarChats";
+import TextBox from "./pages/textbox/userTextBox/TextBox";
+import SugarChats from "./pages/textbox/sugarChats/SugarChats";
 import UserGeneral from "./pages/settings/UserGeneral";
 import UserPersonal from "./pages/settings/userpersonal/UserPersonal";
 import UserLocation from "./pages/settings/userlocation/UserLocation";
@@ -34,7 +33,7 @@ function App() {
   const [socket, setSocket] = useState(null);
 
   useEffect(() => {
-    setSocket(io("http://localhost:4000"));
+    setSocket(io("http://localhost:4000/"));
   }, []);
 
   useEffect(() => {
@@ -59,7 +58,6 @@ function App() {
           <Route path="/register-steps" element={user ? <Navigate to="/" /> : <Signup />} />
           <Route exact path="/textbox" element={!user ? <Navigate to="/" /> : <TextBox />} />
           <Route exact path="/protext/:user_id" element={!user ? <Navigate to="/" /> : <ProText />} />
-          <Route path="/textbox/sugarchat/:user_id" element={!user ? <Navigate to="/" /> : <SugarChats />} />
           <Route path="/textbox/sugarchat/:user_id" element={!user ? <Navigate to="/" /> : <SugarChats />} />
           <Route path="/posts/:user_id/:img" element={!user ? <Navigate to="/" /> : <Viewposts />} />
           <Route exact path="/profile/:user_id" element={!user ? <Navigate to="/" /> : <Profile />} />

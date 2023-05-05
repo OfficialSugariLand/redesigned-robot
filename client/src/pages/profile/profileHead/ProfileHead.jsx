@@ -1,5 +1,5 @@
 import "./profileHead.scss";
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { MdOutlineCancel, MdPhotoLibrary } from "react-icons/md";
@@ -15,8 +15,9 @@ import Backdrop from '@mui/material/Backdrop';
 
 export default function ProfileHead({ user }) {
     const [loading, setLoading] = useState(false);
-    const [infoSubmitSuccess, setInfoSubmitSuccess] = useState(false);
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+    let isRendered = useRef(false);
+    const [infoSubmitSuccess, setInfoSubmitSuccess] = useState(false);
     const user_id = useParams().user_id;
     const [currentUser, setCurrentUser] = useState([]);
     const [changeDp, setChangeDp] = useState(false);
@@ -32,11 +33,19 @@ export default function ProfileHead({ user }) {
 
     //Get visited profile userId
     useEffect(() => {
-        const fetchUser = async () => {
-            const res = await axiosInstance.get("/users/" + user_id);
-            setCurrentUser(res.data);
+        isRendered = true;
+        axiosInstance
+            .get(`/users/${user_id}`)
+            .then(res => {
+                if (isRendered) {
+                    setCurrentUser(res.data);
+                }
+                return null;
+            })
+            .catch(err => console.log(err));
+        return () => {
+            isRendered = false;
         };
-        fetchUser();
     }, [user_id]);
 
     const curUser = currentUser?.find((m) => m);

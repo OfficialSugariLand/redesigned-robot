@@ -209,7 +209,7 @@ export default function Viewpostsmobile() {
     useEffect(() => {
         const getFriends = async () => {
             try {
-                const friendList = await axiosInstance.get("/followers/");
+                const friendList = await axiosInstance.get("/followers");
                 //setLoading(true);
                 setUserFriends(friendList.data);
             } catch (err) {

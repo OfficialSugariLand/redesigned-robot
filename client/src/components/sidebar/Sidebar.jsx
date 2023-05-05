@@ -5,12 +5,13 @@ import {
 } from "@material-ui/icons";
 import CloseFriend from "../closeFriend/CloseFriend";
 import { Link } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 
 export default function Sidebar() {
     const { user } = useContext(AuthContext);
+    let isRendered = useRef(false);
     const [allUsers, setAllUsers] = useState([]);
     const [visible, setVisible] = useState(6);
     const axiosInstance = axios.create({
@@ -22,18 +23,34 @@ export default function Sidebar() {
         setVisible((prevValue) => prevValue + 6);
     };
 
-
     useEffect(() => {
-        const getUsers = async () => {
-            try {
-                const usersList = await axiosInstance.get(`/users/${user.country}/${user.state}`);
-                setAllUsers(usersList.data);
-            } catch (err) {
-                console.log(err);
-            }
+        isRendered = true;
+        axiosInstance
+            .get(`/users/${user.country}/${user.state}`)
+            .then(res => {
+                if (isRendered) {
+                    setAllUsers(res.data);
+                }
+                return null;
+            })
+            .catch(err => console.log(err));
+        return () => {
+            isRendered = false;
         };
-        getUsers();
     }, [user]);
+
+
+    /*     useEffect(() => {
+            const getUsers = async () => {
+                try {
+                    const usersList = await axiosInstance.get(`/users/${user.country}/${user.state}`);
+                    setAllUsers(usersList.data);
+                } catch (err) {
+                    console.log(err);
+                }
+            };
+            getUsers();
+        }, [user]); */
 
     const pAroundME = allUsers?.filter((p) => p.user_id !== user.user_id)
 

@@ -10,6 +10,19 @@
         background: themed(bg);
         gap: 1rem;
 
+        .sugar_loader_content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+
+            img.sugariLand_logo_loader {
+                display: flex;
+                width: 15rem;
+                border-radius: 1rem;
+            }
+        }
+
         .sugars_container {
             margin: 0;
             width: 100%;

@@ -1,18 +1,20 @@
-import "./proText.scss";
-import Topbar from "../../../../components/topbar/Topbar";
-import axios from "axios";
-import { AuthContext } from "../../../../context/AuthContext";
+import "./sugarChats.scss";
 import { useContext, useEffect, useReducer, useState } from 'react';
+import { AuthContext } from '../../../context/AuthContext';
 import { Link, useParams } from "react-router-dom";
-import CutieBeach from "../../../../pages/about/images/cutie_on_beach.jpg";
+import CutieBeach from "../../../pages/about/images/cutie_on_beach.jpg";
+import axios from "axios";
+import { format } from "timeago.js";
+import Input from "../input/Input";
+import Conversations from "../conversations/Conversations";
+import { BiLeftArrowCircle } from "react-icons/bi";
 import { FiArrowDownCircle } from "react-icons/fi";
 import { MdOutlineClose } from "react-icons/md";
-import Input from "../input/Input";
-import Texts from "./Texts";
-import Conversations from "../conversations/Conversations";
 import { io } from "socket.io-client";
+import Topbar from "../../../components/topbar/Topbar";
+import Texts from "../userTextBox/Texts";
 
-export default function ProText() {
+function SugarChats() {
     const { user } = useContext(AuthContext);
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const user_id = useParams().user_id;
@@ -94,7 +96,7 @@ export default function ProText() {
     }, [user, user_id, ignored]);
 
     return (
-        <div className="proText">
+        <div className="sugarChats">
             <Topbar />
             <div className="sugarChats_container">
                 <div className="textBox_left">
@@ -156,3 +158,5 @@ export default function ProText() {
         </div>
     )
 }
+
+export default SugarChats

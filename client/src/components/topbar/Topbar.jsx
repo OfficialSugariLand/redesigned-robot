@@ -247,9 +247,9 @@ export default function Topbar() {
                 {allUsersFilters &&
                     <div className="search_users_filter">
                         {
-                            suggestions && suggestions?.map(({ username, usersId, _id, profilePicture }) =>
-                                <Link to={"/profile/" + usersId} key={_id}>
-                                    <div className="auto_complete" key={_id} onClick={() => onSuggestHandler(username)}>
+                            suggestions && suggestions?.map(({ username, user_id, id, profilePicture }) =>
+                                <Link to={"/profile/" + user_id} key={id}>
+                                    <div className="auto_complete" key={id} onClick={() => onSuggestHandler(username)}>
                                         <img src={profilePicture ? PF + profilePicture : PF +
                                             "person/1658876240053sugarisland.jpeg"} alt="" />
                                         {username}
@@ -266,9 +266,9 @@ export default function Topbar() {
                         <input placeholder="Search for friends" onChange={(e) => onChangeHandler(e.target.value)} value={text} />
                         <div className="search_users_filter">
                             {
-                                suggestions && suggestions.map(({ username, usersId, _id, profilePicture }) =>
-                                    <Link to={"/profile/" + usersId} key={usersId}>
-                                        <div className="auto_complete" key={_id} onClick={() => onSuggestHandler(username)}>
+                                suggestions && suggestions.map(({ username, user_id, id, profilePicture }) =>
+                                    <Link to={"/profile/" + user_id} key={id}>
+                                        <div className="auto_complete" key={id} onClick={() => onSuggestHandler(username)}>
                                             <img src={profilePicture ? PF + profilePicture : PF +
                                                 "person/1658876240053sugarisland.jpeg"} alt="" />
                                             {username}

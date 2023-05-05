@@ -1,0 +1,59 @@
+@import "../../../style.scss";
+
+.chat_user {
+    @include themify($themes) {
+        display: flex;
+        width: 100%;
+
+        a {
+            width: 100%;
+            color: themed(textColor);
+        }
+
+        .chatUsr_wrapper_up {
+            display: flex;
+            gap: 0.3rem;
+            width: 100%;
+            background: gray;
+            padding: 0.2rem;
+
+            .text_preview {
+                display: flex;
+                flex-direction: column;
+
+                .chat_user_name {
+                    display: flex;
+                    font-size: small;
+                }
+
+                p {
+                    width: 100%;
+                    font-size: 10px;
+                    font-weight: 800;
+                }
+            }
+        }
+
+        .chatUsr_wrapper_down {
+            display: flex;
+            gap: 0.3rem;
+            width: 100%;
+
+            .text_preview {
+                display: flex;
+                flex-direction: column;
+
+                .chat_user_name {
+                    display: flex;
+                    font-size: small;
+                }
+
+                p {
+                    width: 100%;
+                    font-size: 10px;
+                    font-weight: 800;
+                }
+            }
+        }
+    }
+}

@@ -1,4 +1,5 @@
 import "./viewPosts.scss";
+import Topbar from "../../topbar/Topbar";
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer, useState } from 'react'
 import { Link, useParams } from 'react-router-dom';
@@ -21,6 +22,7 @@ export default function Viewposts() {
     const liked = postLike?.length;
     const postLikeUser = postLike?.find((p) => p.liker === user.user_id); //Posts liked by me
     const [btnDisable, setBtnDisable] = useState(false);
+    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     const axiosInstance = axios.create({
         baseURL: process.env.REACT_APP_API_URL,
     });
@@ -32,7 +34,7 @@ export default function Viewposts() {
             setPostUser(res.data[0]);
         };
         fetchUser();
-    }, [post]);
+    }, [img]);
 
     //Get param users posts
     useEffect(() => {
@@ -56,7 +58,6 @@ export default function Viewposts() {
     const getCurFotoNext = posts[isLastSlide ? 0 : curFotoNumber + 1]?.img;
 
     //Get param user's single post
-    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     useEffect(() => {
         const getUsersPost = async () => {
             try {
@@ -80,21 +81,7 @@ export default function Viewposts() {
             }
         };
         getLikes();
-    }, [post]);
-    /* useEffect(() => {
-        const interval = setInterval(() => {
-            const getLikes = async () => {
-                try {
-                    const like = await axiosInstance.get("/likes/" + post?.id);
-                    setPostLike(like.data);
-                } catch (err) {
-                    console.log(err);
-                }
-            };
-            getLikes();
-        }, 1000);
-        return () => clearInterval(interval);
-    }, [ignored, post?.id]); */
+    }, [post, ignored]);
 
     //Like a post
     const LikePosts = async () => {
@@ -138,8 +125,6 @@ export default function Viewposts() {
         forceUpdate();
     }
 
-    //console.log(post)
-
     useEffect(() => {
         if (btnDisable === true) {
             setTimeout(() => setBtnDisable({ btnDisable: false }), 2000);
@@ -168,6 +153,7 @@ export default function Viewposts() {
 
     return (
         <div className='view_posts'>
+            <Topbar />
             <div className="view_posts_container">
                 <div className="view_posts_foto">
                     <div className="foto_container">

@@ -1,8 +1,8 @@
 import React from 'react';
-import moment from 'moment';
 import axios from 'axios';
+import moment from 'moment';
 
-export default function UserStories({ story, id, user }) {
+export default function UserStories({ story, id, user, forceUpdate }) {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
 
     //Story time calculator
@@ -24,14 +24,14 @@ export default function UserStories({ story, id, user }) {
                             id: story?.id,
                         },
                     });
-                    //window.location.reload()
                 } catch (err) {
                     console.log(err);
                 }
             }
             deleteSory();
+            forceUpdate()
         }
-    }, [story, axiosInstance]);
+    }, [story]);
 
     return (
         <div className="User_storiesImg" key={id}>

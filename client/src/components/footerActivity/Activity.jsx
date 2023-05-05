@@ -11,6 +11,7 @@ import TextUsers from "../topbar/textUsers/TextUsers";
 
 export default function Activity() {
     const { user } = useContext(AuthContext);
+    let isRendered = useRef(false);
     const [textOpen, setTextOpen] = useState(false);
     const [userFollowed, setUserFollowed] = useState([]);
     const [followedDrop, setFollowedDrop] = useState(false);
@@ -29,21 +30,26 @@ export default function Activity() {
         baseURL: process.env.REACT_APP_API_URL,
     });
 
-    /* useEffect(() => {
-        const interval = setInterval(() => {
-            const fetchFollowed = async () => {
-                const res = await axiosInstance.get(`/follownotice/${user.user_id}`);
-                setUserFollowed(res.data.sort((p1, p2) => {
-                    return new Date(p2.date_time) - new Date(p1.date_time);
-                })
-                );
-            };
-            fetchFollowed();
-        }, 1000);
-        return () => clearInterval(interval);
-    }, [user]); */
-
     useEffect(() => {
+        isRendered = true;
+        axiosInstance
+            .get(`/follownotice/${user.user_id}`)
+            .then(res => {
+                if (isRendered) {
+                    setUserFollowed(res.data.sort((p1, p2) => {
+                        return new Date(p2.date_time) - new Date(p1.date_time);
+                    })
+                    );
+                }
+                return null;
+            })
+            .catch(err => console.log(err));
+        return () => {
+            isRendered = false;
+        };
+    }, [user]);
+
+    /* useEffect(() => {
         const fetchFollowed = async () => {
             const res = await axiosInstance.get(`/follownotice/${user.user_id}`);
             setUserFollowed(res.data.sort((p1, p2) => {
@@ -52,44 +58,56 @@ export default function Activity() {
             );
         };
         fetchFollowed();
-    }, [user]);
-
-    // Get followed count
-    /* useEffect(() => {
-        const interval = setInterval(() => {
-            const fetchFollowedCount = async () => {
-                const res = await axiosInstance.get(`/follownotice/count/${user.user_id}`);
-                setUserFollowedTwo(res.data);
-            };
-            fetchFollowedCount();
-        }, 1000);
-        return () => clearInterval(interval);
     }, [user]); */
 
+    // Get followed count
     useEffect(() => {
+        isRendered = true;
+        axiosInstance
+            .get(`/follownotice/count/${user.user_id}`)
+            .then(res => {
+                if (isRendered) {
+                    setUserFollowedTwo(res.data.sort((p1, p2) => {
+                        return new Date(p2.date_time) - new Date(p1.date_time);
+                    })
+                    );
+                }
+                return null;
+            })
+            .catch(err => console.log(err));
+        return () => {
+            isRendered = false;
+        };
+    }, [user]);
+    /* useEffect(() => {
         const fetchFollowedCount = async () => {
             const res = await axiosInstance.get(`/follownotice/count/${user.user_id}`);
             setUserFollowedTwo(res.data);
         };
         fetchFollowedCount();
-    }, [user]);
+    }, [user]); */
 
     // Get likes notifications
-    /* useEffect(() => {
-        const interval = setInterval(() => {
-            const fetchLikesNotice = async () => {
-                const res = await axiosInstance.get(`/likenotice/${user.user_id}`);
-                setlikesNoticeOne(res.data.sort((p1, p2) => {
-                    return new Date(p2.date_time) - new Date(p1.date_time);
-                })
-                );
-            };
-            fetchLikesNotice();
-        }, 1000);
-        return () => clearInterval(interval);
-    }, [user.user_id]); */
-
     useEffect(() => {
+        isRendered = true;
+        axiosInstance
+            .get(`/likenotice/${user.user_id}`)
+            .then(res => {
+                if (isRendered) {
+                    setlikesNoticeOne(res.data.sort((p1, p2) => {
+                        return new Date(p2.date_time) - new Date(p1.date_time);
+                    })
+                    );
+                }
+                return null;
+            })
+            .catch(err => console.log(err));
+        return () => {
+            isRendered = false;
+        };
+    }, [user]);
+
+    /* useEffect(() => {
         const fetchLikesNotice = async () => {
             const res = await axiosInstance.get(`/likenotice/${user.user_id}`);
             setlikesNoticeOne(res.data.sort((p1, p2) => {
@@ -98,11 +116,29 @@ export default function Activity() {
             );
         };
         fetchLikesNotice();
-    }, [user]);
+    }, [user]); */
 
     // Get likes count
-
     useEffect(() => {
+        isRendered = true;
+        axiosInstance
+            .get(`/likenotice/count/${user.user_id}`)
+            .then(res => {
+                if (isRendered) {
+                    setlikesNoticeTwo(res.data.sort((p1, p2) => {
+                        return new Date(p2.date_time) - new Date(p1.date_time);
+                    })
+                    );
+                }
+                return null;
+            })
+            .catch(err => console.log(err));
+        return () => {
+            isRendered = false;
+        };
+    }, [user]);
+
+    /* useEffect(() => {
         const fetchLikesNotice = async () => {
             const res = await axiosInstance.get(`/likenotice/${user.user_id}`);
             setlikesNoticeOne(res.data.sort((p1, p2) => {
@@ -111,17 +147,7 @@ export default function Activity() {
             );
         };
         fetchLikesNotice();
-    }, [user]);
-    /* useEffect(() => {
-        const interval = setInterval(() => {
-            const fetchLikesCount = async () => {
-                const res = await axiosInstance.get(`/likenotice/count/${user.user_id}`);
-                setlikesNoticeTwo(res.data);
-            };
-            fetchLikesCount();
-        }, 1000);
-        return () => clearInterval(interval);
-    }, [user.user_id]); */
+    }, [user]); */
 
     //Filter followed users to only friends
     useEffect(() => {
@@ -146,6 +172,25 @@ export default function Activity() {
 
     //Text notification
     useEffect(() => {
+        isRendered = true;
+        axiosInstance
+            .get(`/messenger/textnotification/${user.user_id}`)
+            .then(res => {
+                if (isRendered) {
+                    setTextNotifications(res.data.sort((p1, p2) => {
+                        return new Date(p2.date_time) - new Date(p1.date_time);
+                    })
+                    );
+                }
+                return null;
+            })
+            .catch(err => console.log(err));
+        return () => {
+            isRendered = false;
+        };
+    }, [user]);
+
+    /* useEffect(() => {
         const getTextNotification = async () => {
             try {
                 const res = await axiosInstance.get("/messenger/textnotification/" + user.user_id);
@@ -155,7 +200,7 @@ export default function Activity() {
             }
         };
         getTextNotification();
-    }, [user]);
+    }, [user]); */
 
     //Set body scroll to hidden when modal is open
     useEffect(() => {
@@ -231,7 +276,7 @@ export default function Activity() {
                         <span className="topbar_icon_badge ">{textNotifications?.length}</span>
                     }
                 </div>
-                <div className={`${textOpen ? "show_textOpen" : "hide_textOpen"} `}>
+                <div className={`footer_text_notify ${textOpen ? "show_textOpen" : "hide_textOpen"} `}>
                     <div className="textOpen_container">
                         <div className="textOpen_up">
                             {

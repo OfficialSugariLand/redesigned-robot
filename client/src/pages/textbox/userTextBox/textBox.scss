@@ -1,22 +1,24 @@
-@import "../../style.scss";
+@import "../../../style.scss";
 
 .textBox {
     @include themify($themes) {
         display: flex;
+        flex-direction: column;
         width: 100%;
-        height: 100vh;
         background: themed(bg);
-        margin-top: -5rem;
+        margin-top: -4.4rem;
 
-        .textBox_container {
+        .sugarChats_container {
             display: grid;
             width: 100%;
             grid-template-columns: 20% 55% 25%;
-            margin-top: 5rem;
+            //margin-top: 5rem;
 
             .textBox_left {
                 display: flex;
                 flex-direction: column;
+                margin-top: 4.4rem;
+                border-right: 2px solid themed(textLeftBorderRight);
                 box-shadow: 24px 11px 9px -11px themed(homeLeftRightShadow);
 
                 input {
@@ -53,23 +55,34 @@
 
             .textBox_middle {
                 display: flex;
+                gap: 0.3rem;
+                position: relative;
                 width: 100%;
-                padding: 1rem;
+                height: 100vh;
+                place-items: center;
+                justify-content: center;
 
-                .textBox_empty_container {
-                    display: flex;
-                    width: 100%;
-                    justify-content: center;
-                    align-items: center;
-                    gap: 1rem;
+                svg,
+                span {
+                    color: themed(textColor);
+                }
+            }
 
-                    svg {
-                        color: themed(textColor);
-                        font-size: 3rem;
-                    }
+            //Chat Sugar Hot Side
+            .sugar_hot_cakes {
+                display: flex;
+                align-items: center;
+                border: 5px solid gray;
+                background: cadetblue;
 
-                    span {
-                        color: themed(textColor);
+                .sugar_hot_wrapper {
+                    height: 80%;
+
+                    img {
+                        display: flex;
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
                     }
                 }
             }
@@ -77,9 +90,11 @@
             .textBox_right {
                 display: flex;
                 flex-direction: column;
-                box-shadow: -24px 13px 7px -15px themed(homeLeftRightShadow);
                 padding: 1rem;
                 gap: 1rem;
+                margin-top: 4.4rem;
+                border-left: 2px solid themed(textLeftBorderRight);
+                box-shadow: -24px 13px 7px -15px themed(homeLeftRightShadow);
 
                 .textBox_right_container {
                     display: flex;
@@ -90,33 +105,52 @@
                         width: 100%;
                         height: 100%;
                         border-radius: 0.4rem;
-                        //object-fit: cover;
+                    }
+                }
+            }
+
+        }
+
+        @media screen and (max-width: 1024px) {
+            &.textBox {
+
+                .sugar_hot_cakes {
+                    display: none;
+                }
+
+                .sugarChats_container {
+                    grid-template-columns: 30% 70% !important;
+                }
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            &.textBox {
+
+                .sugarChats_container {
+                    display: flex;
+                    width: 100%;
+                    height: 100vh;
+
+                    .textBox_left {
+                        width: 100%;
+                    }
+
+                    .textBox_middle {
+                        display: none;
+                    }
+
+                    .sugarChats_messages {
+                        .sugarChats_TextCreatedAt {
+                            span {
+                                display: none;
+                            }
+                        }
+
                     }
                 }
             }
         }
 
-        @media screen and (max-width: 1024px) {
-
-            .textBox_right {
-                display: none !important;
-            }
-
-            .textBox_container {
-                grid-template-columns: 30% 70% !important;
-            }
-        }
-
-        @media screen and (max-width: 600px) {
-
-            .textBox_middle {
-                display: none !important;
-            }
-
-            .textBox_container {
-                grid-template-columns: 100% !important;
-
-            }
-        }
     }
 }

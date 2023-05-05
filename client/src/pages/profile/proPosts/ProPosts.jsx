@@ -25,6 +25,7 @@ export default function ProPosts({ post, user_id }) {
     const liked = postLike?.length;
     const postLikeUser = postLike?.find((p) => p.liker === user.user_id); //Posts liked by me
     const [btnDisable, setBtnDisable] = useState(false);
+    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     const axiosInstance = axios.create({
         baseURL: process.env.REACT_APP_API_URL,
     });
@@ -76,7 +77,6 @@ export default function ProPosts({ post, user_id }) {
     };
 
     //Get post likes
-    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     useEffect(() => {
         const getLikes = async () => {
             try {
@@ -87,21 +87,7 @@ export default function ProPosts({ post, user_id }) {
             }
         };
         getLikes();
-    }, [post]);
-    /* useEffect(() => {
-        const interval = setInterval(() => {
-            const getLikes = async () => {
-                try {
-                    const like = await axiosInstance.get("/likes/" + post?.id);
-                    setPostLike(like.data);
-                } catch (err) {
-                    console.log(err);
-                }
-            };
-            getLikes();
-        }, 1000);
-        return () => clearInterval(interval);
-    }, [ignored, post?.id, axiosInstance]); */
+    }, [post, ignored]);
 
     //Like a post
     const LikePosts = async () => {
@@ -198,13 +184,12 @@ export default function ProPosts({ post, user_id }) {
                 <div className="proPosts_img_container">
                     {
                         postUser?.map((p, id) =>
-                            <>
+                            <div key={id}>
                                 <img
                                     src={p.profilePicture ? PF + p.profilePicture :
-                                        PF + "person/1658876240053sugarisland.jpeg"} alt="" key={id}
-                                />
+                                        PF + "person/1658876240053sugarisland.jpeg"} alt="" />
                                 <span className="postUsername">{p.username}</span>
-                            </>
+                            </div>
                         )
                     }
 

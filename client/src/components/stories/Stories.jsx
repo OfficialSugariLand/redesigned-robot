@@ -10,30 +10,46 @@ import UserStories from "./userStories/UserStories";
 
 export default function Stories() {
   const { user } = useContext(AuthContext);
+  let isRendered = useRef(false);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const [storyOpen, setStoryOpen] = useState(false);
   const [userFriends, setUserFriends] = useState([]);
   const [file, setFile] = useState(null);
   const ref = useRef();
   const [stories, setStories] = useState([]);
+  const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
   });
 
   //Get all following
-  const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+  /*   useEffect(() => {
+      const getFriends = async () => {
+        try {
+          const friendList = await axiosInstance.get("/followers/");
+          setUserFriends(friendList.data);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      getFriends();
+    }, [ignored]); */
+
   useEffect(() => {
-    const getFriends = async () => {
-      try {
-        const friendList = await axiosInstance.get("/followers/");
-        //setLoading(true);
-        setUserFriends(friendList.data);
-      } catch (err) {
-        console.log(err);
-      }
+    isRendered = true;
+    axiosInstance
+      .get("/followers/")
+      .then(res => {
+        if (isRendered) {
+          setUserFriends(res.data);
+        }
+        return null;
+      })
+      .catch(err => console.log(err));
+    return () => {
+      isRendered = false;
     };
-    getFriends();
-  }, []);
+  }, [ignored]);
 
   //Check if my user is following user
   const followedUser = userFriends?.find((m) => m.followed === user.user_id && m.follower === user.user_id);
@@ -69,7 +85,6 @@ export default function Stories() {
       }
       try {
         await axiosInstance.post("/followers", followUser);
-        //window.location.reload()
       } catch (err) {
         console.log(err);
       }
@@ -92,7 +107,6 @@ export default function Stories() {
 
         try {
           await axiosInstance.post("/stories", newStory);
-          window.location.reload()
         } catch (err) { }
       }
     } else {
@@ -115,7 +129,6 @@ export default function Stories() {
 
         try {
           await axiosInstance.post("/stories", newStory);
-          window.location.reload()
         } catch (err) { }
       }
     }
@@ -124,9 +137,27 @@ export default function Stories() {
   };
 
 
-  //Fetch friends timeline posts
-
+  //Fetch friends stories
   useEffect(() => {
+    isRendered = true;
+    axiosInstance
+      .get(`/stories/${user.user_id}`)
+      .then(res => {
+        if (isRendered) {
+          setStories(res.data.sort((p1, p2) => {
+            return new Date(p2.date_time) - new Date(p1.date_time);
+          })
+          );
+        }
+        return null;
+      })
+      .catch(err => console.log(err));
+    return () => {
+      isRendered = false;
+    };
+  }, [user, ignored]);
+
+  /* useEffect(() => {
     const fetchPosts = async () => {
       const res = await axiosInstance.get("/stories/" + user.user_id);
       setStories(res.data.sort((p1, p2) => {
@@ -135,20 +166,7 @@ export default function Stories() {
       );
     };
     fetchPosts();
-  }, [user]);
-  /* useEffect(() => {
-    const interval = setInterval(() => {
-      const fetchPosts = async () => {
-        const res = await axiosInstance.get("/stories/" + user.user_id);
-        setStories(res.data.sort((p1, p2) => {
-          return new Date(p2.date_time) - new Date(p1.date_time);
-        })
-        );
-      };
-      fetchPosts();
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [user, axiosInstance]); */
+  }, [user, ignored]); */
 
   return (
     <div className="stories">
@@ -165,7 +183,7 @@ export default function Stories() {
           </div>
           {
             stories?.map((s, id) =>
-              <UserStories key={id} story={s} id={id} user={user} />
+              <UserStories key={id} story={s} id={id} user={user} forceUpdate={forceUpdate} />
             )
           }
         </div>

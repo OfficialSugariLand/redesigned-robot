@@ -2,7 +2,7 @@ import "./post.scss";
 import axios from "axios";
 import { format } from "timeago.js"
 import { AuthContext } from "../../context/AuthContext";
-import { useState, useContext, useEffect, useReducer } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Delete, MoreVert } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
 import { BsSuitHeart } from "react-icons/bs";
@@ -13,7 +13,7 @@ import ProfileImage from "../../pages/about/images/profileCovers.png"
 import { Add, Remove } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
-export default function Post({ post }) {
+export default function Post({ post, ignored, forceUpdate }) {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const { user } = useContext(AuthContext);
     const [postUser, setPostUser] = useState();
@@ -34,38 +34,30 @@ export default function Post({ post }) {
     });
 
     //Disable buttn after like clicked
+    const setBtnDisabled = () => {
+        setBtnDisable(true)
+        setTimeout(() => {
+            setBtnDisable(false)
+        }, 3000)
+    }
     useEffect(() => {
-        return () => setBtnDisable(false)
-    }, []);
+        if (btnDisable === true) {
+            document.getElementById("disabled").style.display = "none";
+        } else {
+            document.getElementById("disabled").style.display = "flex";
+        }
+    });
 
     //Get Post Users
     useEffect(() => {
         const fetchUser = async () => {
-            const res = await axiosInstance.get("/users/" + post?.user_id);
+            const res = await axiosInstance.get(`/users/${post?.user_id}`);
             setPostUser(res.data);
         };
         fetchUser();
-    }, [post?.user_id]);
-
-    //Delete function starts here
-    const handleDelete = async () => {
-        if (post?.user_id !== user.user_id) {
-            console.log("Not your post")
-        } else {
-            try {
-                await axiosInstance.delete("/posts/" + post.id, {
-                    data: {
-                        userId: user._id,
-                    },
-                });
-            } catch (err) {
-                console.log(err);
-            }
-        }
-    };
+    }, [post]);
 
     //Get post likes
-    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     useEffect(() => {
         const getLikes = async () => {
             try {
@@ -76,28 +68,11 @@ export default function Post({ post }) {
             }
         };
         getLikes();
-    }, [post]);
-    /* useEffect(() => {
-        const interval = setInterval(() => {
-            const getLikes = async () => {
-                try {
-                    const like = await axiosInstance.get("/likes/" + post?.id);
-                    //setLoading(true);
-                    setPostLike(like.data);
-                } catch (err) {
-                    console.log(err);
-                }
-            };
-            getLikes();
-        }, 1000);
-        return () => clearInterval(interval);
-    }, [ignored, post?.id]); */
-
-    //console.log(post)
+    }, [post, ignored]);
 
     //Like a post
     const LikePosts = async () => {
-        setBtnDisable(true);
+        //setBtnDisable(true);
         const values = {
             liker: user.user_id,
             post_id: post?.id,
@@ -137,14 +112,6 @@ export default function Post({ post }) {
         forceUpdate();
     }
 
-    //console.log(post)
-
-    useEffect(() => {
-        if (btnDisable === true) {
-            setTimeout(() => setBtnDisable({ btnDisable: false }), 2000);
-        }
-    }, [btnDisable]);
-
     //Unlike a post
     const UnlikePost = async () => {
         try {
@@ -172,7 +139,7 @@ export default function Post({ post }) {
     useEffect(() => {
         const getFriends = async () => {
             try {
-                const friendList = await axiosInstance.get("/followers/");
+                const friendList = await axiosInstance.get("/followers");
                 setUserFriends(friendList.data);
             } catch (err) {
                 console.log(err);
@@ -189,7 +156,6 @@ export default function Post({ post }) {
         }
         try {
             await axiosInstance.post("/followers", followUser);
-            //window.location.reload()
         } catch (err) {
             console.log(err);
         }
@@ -201,7 +167,6 @@ export default function Post({ post }) {
         }
         try {
             await axiosInstance.post("/follownotice", followUserNotice);
-            //window.location.reload()
         } catch (err) {
             console.log(err);
         }
@@ -228,7 +193,6 @@ export default function Post({ post }) {
                 }
 
             });
-            //window.location.reload()
         } catch (err) {
             console.log(err);
         }
@@ -280,6 +244,24 @@ export default function Post({ post }) {
     function loadImages(image) {
         image.src = image.dataset.src;
     }
+
+    //Delete a post
+    const handleDelete = async () => {
+        if (post?.user_id !== user.user_id) {
+            console.log("Not your post")
+        } else {
+            try {
+                await axiosInstance.delete("/posts/" + post.id, {
+                    data: {
+                        userId: user._id,
+                    },
+                });
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        forceUpdate()
+    };
 
     return (
         <div className={`post ${loaded ? "loaded" : "loading"}`} src={""} data-src={PF + post.img} onLoad={() => setLoaded(true)}>
@@ -387,7 +369,7 @@ export default function Post({ post }) {
                                                     <img src={HeartFilled} alt="" />
                                                 </button>
                                                 :
-                                                <button disabled={btnDisable} onClick={() => { LikePosts(); }}>
+                                                <button id="disabled" onClick={() => { LikePosts(); setBtnDisabled() }}>
                                                     <BsSuitHeart />
                                                 </button>
                                         }
@@ -405,7 +387,7 @@ export default function Post({ post }) {
                                     </>
                                     :
                                     <>
-                                        <button disabled={btnDisable} onClick={() => { LikePosts(); }}>
+                                        <button id="disabled" onClick={() => { LikePosts(); setBtnDisabled() }}>
                                             <BsSuitHeart />
                                         </button>
                                         {
