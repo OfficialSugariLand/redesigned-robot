@@ -4,7 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { format } from "timeago.js";
 
-export default function Follownotice({ followCount, followedDrop }) {
+export default function Follownotice({ followCount, followedDrop, forceUpdate }) {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const [followerUsers, setFollowerUsers] = useState([]);
     const axiosInstance = axios.create({
@@ -21,22 +21,25 @@ export default function Follownotice({ followCount, followedDrop }) {
     }, [followCount]);
 
     // delete followed count
-    setTimeout(() => {
-        if (followedDrop === true) {
-            const deleteNotification = async () => {
-                try {
-                    await axiosInstance.delete("/follownotice/" + followCount?.id, {
-                        data: {
-                            id: followCount?.id,
-                        },
-                    });
-                } catch (err) {
-                    console.log(err);
+    useEffect(() => {
+        setTimeout(() => {
+            if (followedDrop === true) {
+                const deleteNotification = async () => {
+                    try {
+                        await axiosInstance.delete("/follownotice/" + followCount?.id, {
+                            data: {
+                                id: followCount?.id,
+                            },
+                        });
+                    } catch (err) {
+                        console.log(err);
+                    }
                 }
+                deleteNotification();
             }
-            deleteNotification();
-        }
-    }, 500);
+        }, 500);
+        //forceUpdate();
+    })
 
     return (
         <div className="followed">

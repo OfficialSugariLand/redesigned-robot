@@ -25,7 +25,6 @@ export default function ChatUsers({ chatUsr, conversation, forceUpdate, ignored,
 
     useEffect(() => {
         if (user_id) {
-            //setReadText(true)
             const autoRead = async () => {
                 try {
                     await axiosInstance.delete("/unreadtexts/" + unreadText?.id, {

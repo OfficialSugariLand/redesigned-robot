@@ -29,29 +29,8 @@ export default function Rightbar() {
     };
   }, [user]);
 
-  /* useEffect(() => {
-    if (isMounted.current) {
-      const getOnlineFriends = async () => {
-        try {
-          const friendList = await axiosInstance.get("/followers/" + user.user_id);
-          setOnlineFriends(friendList.data);
-        } catch (err) {
-          console.log(err);
-        }
-      };
-      getOnlineFriends();
-      return () => {
-        isMounted.current = false;
-      };
-    }
-  }, [user]); */
-
-  //console.log(onlineFriends)
-
-  //Remove my user from followed list
+    //Remove my user from followed list
   const newFriends = onlineFriends?.filter((f) => f.followed !== user.user_id);
-
-  //console.log(onlineFriends)
 
   const showMorePeople = () => {
     setVisible((prevValue) => prevValue + 6);

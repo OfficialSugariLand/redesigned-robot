@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import ChatUsers from "../chatUsers/ChatUsers";
 
 function Conversations({ conversation, forceUpdate, ignored, setConversations }) {
-    const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const [chatUser, setChatUser] = useState([]);
     const axiosInstance = axios.create({
         baseURL: process.env.REACT_APP_API_URL,

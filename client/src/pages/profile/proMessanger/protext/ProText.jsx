@@ -1,18 +1,19 @@
 import "./proText.scss";
 import Topbar from "../../../../components/topbar/Topbar";
 import axios from "axios";
-import { AuthContext } from "../../../../context/AuthContext";
 import { useContext, useEffect, useReducer, useState } from 'react';
+import { AuthContext } from '../../../../context/AuthContext';
 import { Link, useParams } from "react-router-dom";
 import CutieBeach from "../../../../pages/about/images/cutie_on_beach.jpg";
+import noImage from "../../../../components/topbar/noimageavater/noimage.png";
 import { FiArrowDownCircle } from "react-icons/fi";
 import { MdOutlineClose } from "react-icons/md";
-import Input from "../input/Input";
-import Texts from "./Texts";
-import Conversations from "../conversations/Conversations";
 import { io } from "socket.io-client";
+import Conversations from "../conversations/Conversations";
+import Texts from "../texts/Texts";
+import Input from "../input/Input";
 
-export default function ProText() {
+function SugarChats() {
     const { user } = useContext(AuthContext);
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const user_id = useParams().user_id;
@@ -38,6 +39,7 @@ export default function ProText() {
                 sender_id: data.senderId,
                 receiver_id: data.receiverId,
                 text: data.text,
+                img: data.img,
                 conversation_id: data.conversationId,
                 date_time: Date.now(),
             });
@@ -49,9 +51,6 @@ export default function ProText() {
             user_id === arrivalMessage?.sender_id &&
             setMessages((prev) => [...prev, arrivalMessage]);
     }, [arrivalMessage, user_id])
-
-    console.log(arrivalMessage)
-
 
     //Get paramater user
     useEffect(() => {
@@ -94,7 +93,7 @@ export default function ProText() {
     }, [user, user_id, ignored]);
 
     return (
-        <div className="proText">
+        <div className="sugarChats">
             <Topbar />
             <div className="sugarChats_container">
                 <div className="textBox_left">
@@ -114,7 +113,7 @@ export default function ProText() {
                                 (
                                     <>
                                         <img src={PF + curProfileUser.profilePicture ? PF + curProfileUser.profilePicture
-                                            : PF + "person/1658876240053sugarisland.jpeg"} alt="" />
+                                            : noImage} alt="" />
                                         <span className="middleTop_usrName">{curProfileUser.username}</span>
                                     </>
                                 )
@@ -156,3 +155,5 @@ export default function ProText() {
         </div>
     )
 }
+
+export default SugarChats

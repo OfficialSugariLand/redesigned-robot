@@ -44,7 +44,6 @@ export default function Profile() {
                                     <ProfileRightbar />
                                 </div>
                                 <div className="user_profile_down_left">
-                                    {(!user_id || user_id === user?.user_id) && <ProShare />}
                                     <ProFeed />
                                 </div>
                                 <div className="user_profile_down_right">
@@ -54,7 +53,9 @@ export default function Profile() {
                                 </div>
                             </div>
                         </div>
-                        <Activity />
+                        <div className="footer_profile">
+                            <Activity />
+                        </div>
                     </>
             }
         </div >

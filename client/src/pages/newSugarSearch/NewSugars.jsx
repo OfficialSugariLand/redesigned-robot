@@ -1,11 +1,11 @@
 import "./newSugars.scss";
+import Topbar from "../../components/topbar/Topbar";
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react'
 import { AuthContext } from '../../context/AuthContext';
 import { Link } from 'react-router-dom';
 import Backdrop from '@mui/material/Backdrop';
 import sugarilandlogo from "../../components/topbar/sugarilandlogo/sugarilandlogo.png";
-import Topbar from "../../components/topbar/Topbar";
 
 export default function NewSugars() {
     const { user } = useContext(AuthContext);
@@ -57,7 +57,7 @@ export default function NewSugars() {
                         {
                             allUsers.slice(0, visible).map(({ user_id, username, profilePicture, id }) =>
                                 <div className="sugar_vContainer">
-                                    <Link to={"/profile/" + user_id} style={{ textDecoration: "none" }} key={id}>
+                                    <Link to={"/profile/" + user_id} key={id}>
                                         <img src={profilePicture ? PF + profilePicture : PF + "person/1658876240053sugarisland.jpeg"} alt="" />
                                         <h4>{username}</h4>
                                     </Link>

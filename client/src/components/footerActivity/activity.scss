@@ -3,8 +3,7 @@
 
 .footer_activities {
     @include themify($themes) {
-        display: none;
-        position: sticky;
+        display: flex;
         padding: 10px 20px;
         bottom: 0;
         left: 0;
@@ -14,11 +13,11 @@
         border-top: 1px solid rgb(189, 185, 185);
         justify-content: flex-end;
         align-items: center;
-        gap: 1rem;
         z-index: 99;
 
-        .footer_right {
+        .footer_container {
             display: flex;
+            gap: 1.5rem;
 
             .topbar_right_icons {
                 display: flex;
@@ -69,59 +68,40 @@
                 border-color: themed(textColor);
             }
 
-            .footer_follow_notify {
+            .footer_follow_notify,
+            .footer_like_notify,
+            .footer_text_notify {
                 height: calc(100vh - 8.3rem);
+                width: 100%;
                 flex-direction: column;
-                position: absolute;
                 overflow-y: scroll;
                 scroll-behavior: smooth;
                 transition: var(--transition);
-                top: 4.4rem;
+                top: 73px;
                 background: themed(bgSoft);
                 font-weight: 300;
-                right: 4rem;
+                position: fixed;
 
                 &::-webkit-scrollbar {
                     display: none;
                 }
             }
 
-            .hide_follow_notify {
-                display: none;
+            .hide_follow_notify,
+            .hide_like_notify,
+            .hide_text_notify {
+                right: -100%;
             }
 
-            .show_follow_notify {
+            .show_follow_notify,
+            .show_like_notify,
+            .show_text_notify {
                 display: flex;
+                right: 0;
                 transition: var(--transition);
             }
 
-            .footer_notify {
-                height: calc(100vh - 8.3rem);
-                flex-direction: column;
-                position: absolute;
-                overflow-y: scroll;
-                scroll-behavior: smooth;
-                transition: var(--transition);
-                top: 4.4rem;
-                background: themed(bgSoft);
-                font-weight: 300;
-                right: 4rem;
-
-                &::-webkit-scrollbar {
-                    display: none;
-                }
-            }
-
-            .show_notify {
-                display: flex;
-                transition: var(--transition);
-            }
-
-            .hide_notify {
-                display: none;
-            }
-
-            //Text notify dropdown
+            /* //Text notify dropdown
             .footer_text_notify {
                 height: calc(100vh - 8.3rem);
                 flex-direction: column;
@@ -178,68 +158,8 @@
 
             .hide_textOpen {
                 display: none;
-            }
+            } */
 
-        }
-
-        @media screen and (max-width: 600px) {
-            &.footer_activities {
-                display: flex !important;
-            }
-
-            .footer_follow_notify {
-                display: flex !important;
-                flex-direction: column !important;
-                transition: var(--transition) !important;
-                position: fixed !important;
-                width: 100% !important;
-                height: 100vh;
-                background: white;
-                top: 65px;
-                right: -100% !important;
-            }
-
-            .show_follow_notify {
-                right: 0 !important;
-                transition: var(--transition) !important;
-
-            }
-
-            .footer_like_notify {
-                display: flex !important;
-                flex-direction: column !important;
-                transition: var(--transition) !important;
-                position: fixed !important;
-                width: 100% !important;
-                height: 100vh;
-                background: white;
-                top: 65px;
-                right: -100% !important;
-            }
-
-            .show_notify {
-                right: 0 !important;
-                transition: var(--transition) !important;
-
-            }
-
-            .footer_text_notify {
-                display: flex !important;
-                flex-direction: column !important;
-                transition: var(--transition) !important;
-                position: fixed !important;
-                width: 100% !important;
-                height: 100vh;
-                background: white;
-                top: 65px;
-                right: -100% !important;
-            }
-
-            .show_textOpen {
-                right: 0 !important;
-                transition: var(--transition) !important;
-
-            }
         }
     }
 }

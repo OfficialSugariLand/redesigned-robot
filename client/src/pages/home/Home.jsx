@@ -47,7 +47,9 @@ export default function Home() {
                                 <Rightbar />
                             </div>
                         </div>
-                        <Activity />
+                        <div className="footer_home">
+                            <Activity />
+                        </div>
                     </>
             }
         </div>

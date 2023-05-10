@@ -1,0 +1,94 @@
+@import "../../../style.scss";
+
+.sugarChats_messages {
+    @include themify($themes) {
+        display: flex;
+        width: 100%;
+        gap: 0.4rem;
+        margin-bottom: 1.5rem;
+
+        .sugarChats_user {
+            display: flex;
+            flex-direction: column;
+            color: lightgrey;
+            font-weight: 300;
+
+            img {
+                display: flex;
+                width: 2rem;
+                height: 2rem;
+                border-radius: 50%;
+            }
+        }
+
+        .sugarChats_text_container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+
+            .sugarChats_textArea {
+                max-width: 20rem;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                &.own_texts {
+                    display: flex;
+                    display: flex;
+                    width: 100%;
+                    flex-direction: row-reverse;
+                }
+            }
+
+            .sugarChats_img {
+                display: flex;
+                width: 20rem;
+                top: 3rem;
+
+                img {
+                    display: flex;
+                    width: 100%;
+                    border-radius: 0.5rem;
+                }
+            }
+
+            span {
+                font-size: 0.6rem;
+                color: themed(textColor);
+
+                &.own_time {
+                    display: flex;
+                    flex-direction: row-reverse;
+                }
+            }
+        }
+
+        &.sugarChats_message {
+            display: flex;
+
+            .sugarChats_textArea {
+
+                p {
+                    background: rgb(150, 165, 165);
+                    padding: 10px 20px;
+                    border-radius: 0px 10px 10px 10px;
+                    max-width: max-content;
+                }
+            }
+        }
+
+        &.own_messages {
+            flex-direction: row-reverse;
+
+            .sugarChats_textArea {
+
+                p {
+                    background: rgb(187, 237, 237);
+                    border-radius: 10px 0px 10px 10px;
+                    max-width: max-content;
+                    padding: 10px 20px;
+                }
+            }
+        }
+    }
+}

@@ -18,7 +18,7 @@ export default function Post({ post, ignored, forceUpdate }) {
     const { user } = useContext(AuthContext);
     const [postUser, setPostUser] = useState();
     const [postEditModal, setPostEditModal] = useState(false);
-    const [editDropdown, setEditDropdown] = useState(false);
+    const [postEditDropdown, setPostEditDropdown] = useState(false);
     const [readMore, setReadMore] = useState(false);
     const menuRef = useRef();
     const desc = useRef();
@@ -33,20 +33,6 @@ export default function Post({ post, ignored, forceUpdate }) {
         baseURL: process.env.REACT_APP_API_URL,
     });
 
-    //Disable buttn after like clicked
-    const setBtnDisabled = () => {
-        setBtnDisable(true)
-        setTimeout(() => {
-            setBtnDisable(false)
-        }, 3000)
-    }
-    useEffect(() => {
-        if (btnDisable === true) {
-            document.getElementById("disabled").style.display = "none";
-        } else {
-            document.getElementById("disabled").style.display = "flex";
-        }
-    });
 
     //Get Post Users
     useEffect(() => {
@@ -72,7 +58,6 @@ export default function Post({ post, ignored, forceUpdate }) {
 
     //Like a post
     const LikePosts = async () => {
-        //setBtnDisable(true);
         const values = {
             liker: user.user_id,
             post_id: post?.id,
@@ -245,6 +230,21 @@ export default function Post({ post, ignored, forceUpdate }) {
         image.src = image.dataset.src;
     }
 
+
+    //Click outside to close post edit
+    useEffect(() => {
+        //https://www.youtube.com/watch?v=HfZ7pdhS43s
+        let handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+                setPostEditDropdown(false);
+            }
+        };
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        }
+    });
+
     //Delete a post
     const handleDelete = async () => {
         if (post?.user_id !== user.user_id) {
@@ -260,7 +260,10 @@ export default function Post({ post, ignored, forceUpdate }) {
                 console.log(err);
             }
         }
-        forceUpdate()
+        setTimeout(() => {
+            setPostEditDropdown(false)
+            forceUpdate()
+        }, 1000)
     };
 
     return (
@@ -312,11 +315,11 @@ export default function Post({ post, ignored, forceUpdate }) {
                         </div>
                         {
                             (!user.user_id || user.user_id === user.user_id) &&
-                            <>
-                                <div className="post_upper_right" onClick={() => setEditDropdown(prev => !prev)} ref={menuRef}>
+                            <div className="post_edit_delete" ref={menuRef}>
+                                <div className="post_upper_right" onClick={() => setPostEditDropdown(prev => !prev)} >
                                     <MoreVert />
                                 </div>
-                                <div className={`post_edit_dropdown ${editDropdown ? 'show_edit_dropdown' : 'hide_edit_dropdown'}`} ref={menuRef}>
+                                <div className={`post_edit_dropdown ${postEditDropdown ? 'show_edit_dropdown' : 'hide_edit_dropdown'}`}>
                                     <li title="Edit post" onClick={() => { setPostEditModal(prev => !prev) }}>
                                         <EditIcon />
                                     </li>
@@ -335,7 +338,7 @@ export default function Post({ post, ignored, forceUpdate }) {
                                         </form>
                                     </div>
                                 </div>
-                            </>
+                            </div>
                         }
                     </div>
                     {/* Post texts */}
@@ -369,7 +372,7 @@ export default function Post({ post, ignored, forceUpdate }) {
                                                     <img src={HeartFilled} alt="" />
                                                 </button>
                                                 :
-                                                <button id="disabled" onClick={() => { LikePosts(); setBtnDisabled() }}>
+                                                <button disabled={btnDisable === true} id="disableHeart" onClick={() => { LikePosts() }}>
                                                     <BsSuitHeart />
                                                 </button>
                                         }
@@ -387,7 +390,7 @@ export default function Post({ post, ignored, forceUpdate }) {
                                     </>
                                     :
                                     <>
-                                        <button id="disabled" onClick={() => { LikePosts(); setBtnDisabled() }}>
+                                        <button disabled={btnDisable === true} onClick={() => { LikePosts() }}>
                                             <BsSuitHeart />
                                         </button>
                                         {

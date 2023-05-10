@@ -15,11 +15,12 @@ const db = mysql.createConnection({
 
 //Chat a user
 router.post("/", async (req, res) => {
-    const q = "INSERT INTO messenger (`sender_id`,`receiver_id`,`text`,`conversation_id`) VALUES (?)";
+    const q = "INSERT INTO messenger (`sender_id`,`receiver_id`,`text`,`img`,`conversation_id`) VALUES (?)";
     const values = [
         req.body.sender_id,
         req.body.receiver_id,
         req.body.text,
+        req.body.img,
         req.body.conversation_id
     ];
 

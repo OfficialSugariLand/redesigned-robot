@@ -54,13 +54,19 @@
                 gap: 0.5rem;
                 color: themed(textColor);
 
-                img {
+                .pro_post_img_usrname {
                     display: flex;
-                    width: 32px;
-                    height: 32px;
-                    border-radius: 50%;
-                    object-fit: cover;
-                    cursor: pointer;
+                    gap: 0.4rem;
+                    align-items: center;
+
+                    img {
+                        display: flex;
+                        width: 32px;
+                        height: 32px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                        cursor: pointer;
+                    }
                 }
 
                 .post_Date {
@@ -68,7 +74,6 @@
                     font-size: 0.6rem;
                     color: #b4adad;
                 }
-
             }
 
             .post_upper_right {

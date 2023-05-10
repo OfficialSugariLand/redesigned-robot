@@ -16,7 +16,7 @@ export default function UserStories({ story, id, user, forceUpdate }) {
 
     //Delete story after 24 hours
     setTimeout(() => {
-        if (storyHours > 22) {
+        if (storyHours > 17) {
             const deleteSory = async () => {
                 try {
                     await axiosInstance.delete("/stories/" + story?.id, {

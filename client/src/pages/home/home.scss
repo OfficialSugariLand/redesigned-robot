@@ -85,6 +85,12 @@
             }
         }
 
+        .footer_home {
+            display: none;
+            position: sticky;
+            bottom: -3px;
+        }
+
         @media screen and (max-width: 1024px) {
             .home_container {
                 grid-template-columns: 30% 70% !important;
@@ -108,6 +114,10 @@
                         padding-top: 0.3rem;
                     }
                 }
+            }
+
+            .footer_home {
+                display: flex;
             }
         }
 

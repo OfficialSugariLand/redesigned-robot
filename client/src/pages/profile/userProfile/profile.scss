@@ -115,6 +115,11 @@
             border-color: var(--color-gray-400);
         }
 
+        .footer_profile {
+            display: none;
+            position: sticky;
+            bottom: -3px;
+        }
 
         @media screen and (max-width: 1024px) {
             .profile_container {
@@ -159,6 +164,10 @@
                 .user_friend_list_mobile {
                     display: flex;
                     min-width: 24rem;
+                }
+
+                .footer_profile {
+                    display: flex;
                 }
             }
         }

@@ -40,6 +40,18 @@ router.delete("/", (req, res) => {
     });
 });
 
+//check if my user is following me
+router.get("/ownfollowing/:follower/:followed", (req, res) => {
+    const follower = req.params.follower;
+    const followed = req.params.followed;
+    db.query(`SELECT * FROM followers WHERE follower = ${follower} AND followed = ${followed}`,
+        (err, result) => {
+            if (err) {
+                console.log("Not following")
+            }
+            res.send(result)
+        });
+});
 
 //get following of a param user
 router.get("/:follower", (req, res) => {

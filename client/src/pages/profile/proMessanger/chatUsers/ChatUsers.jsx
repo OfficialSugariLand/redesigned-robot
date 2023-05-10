@@ -24,24 +24,8 @@ export default function ChatUsers({ chatUsr, conversation, forceUpdate, ignored,
         fetchUser();
     }, [user, chatUsr, ignored]);
 
-    /* const handleDeleteUnread = async () => {
-        try {
-            await axiosInstance.delete("/unreadtexts/" + unreadText?.id, {
-                data: {
-                    id: unreadText?.id,
-                },
-            });
-        } catch (err) {
-            console.log(err);
-        }
-        forceUpdate()
-    } */
-
-    console.log(user_id)
-
     useEffect(() => {
         if (user_id) {
-            //setReadText(true)
             const autoRead = async () => {
                 try {
                     await axiosInstance.delete("/unreadtexts/" + unreadText?.id, {

@@ -1,18 +1,17 @@
 import "./sugarChats.scss";
+import Topbar from "../../../components/topbar/Topbar";
 import { useContext, useEffect, useReducer, useState } from 'react';
 import { AuthContext } from '../../../context/AuthContext';
 import { Link, useParams } from "react-router-dom";
 import CutieBeach from "../../../pages/about/images/cutie_on_beach.jpg";
 import axios from "axios";
-import { format } from "timeago.js";
-import Input from "../input/Input";
-import Conversations from "../conversations/Conversations";
-import { BiLeftArrowCircle } from "react-icons/bi";
+import noImage from "../../../components/topbar/noimageavater/noimage.png";
 import { FiArrowDownCircle } from "react-icons/fi";
 import { MdOutlineClose } from "react-icons/md";
 import { io } from "socket.io-client";
-import Topbar from "../../../components/topbar/Topbar";
-import Texts from "../userTextBox/Texts";
+import Conversations from "../conversations/Conversations";
+import Texts from "../texts/Texts";
+import Input from "../input/Input";
 
 function SugarChats() {
     const { user } = useContext(AuthContext);
@@ -40,6 +39,7 @@ function SugarChats() {
                 sender_id: data.senderId,
                 receiver_id: data.receiverId,
                 text: data.text,
+                img: data.img,
                 conversation_id: data.conversationId,
                 date_time: Date.now(),
             });
@@ -51,9 +51,6 @@ function SugarChats() {
             user_id === arrivalMessage?.sender_id &&
             setMessages((prev) => [...prev, arrivalMessage]);
     }, [arrivalMessage, user_id])
-
-    console.log(arrivalMessage)
-
 
     //Get paramater user
     useEffect(() => {
@@ -116,7 +113,7 @@ function SugarChats() {
                                 (
                                     <>
                                         <img src={PF + curProfileUser.profilePicture ? PF + curProfileUser.profilePicture
-                                            : PF + "person/1658876240053sugarisland.jpeg"} alt="" />
+                                            : noImage} alt="" />
                                         <span className="middleTop_usrName">{curProfileUser.username}</span>
                                     </>
                                 )

@@ -2,7 +2,7 @@ import "./topbar.scss";
 import axios from "axios";
 import { BsSearch } from "react-icons/bs";
 import { Link, useParams } from "react-router-dom";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useReducer, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import sugarilandlogo from "./sugarilandlogo/sugarilandlogo.png";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
@@ -20,7 +20,8 @@ import { io } from "socket.io-client";
 
 export default function Topbar() {
     const { user } = useContext(AuthContext);
-    const user_id = useParams().user_id;
+    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+    //const user_id = useParams().user_id;
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const { toggle, darkMode } = useContext(DarkModeContext);
     const [allUsersFilters, setAllUsersFilters] = useState(false);
@@ -121,7 +122,9 @@ export default function Topbar() {
             );
         };
         fetchFollowed();
-    }, [user]);
+    }, [user, ignored]);
+
+    //console.log(userFollowed)
 
     // Get followed count
     useEffect(() => {
@@ -130,7 +133,7 @@ export default function Topbar() {
             setUserFollowedTwo(res.data);
         };
         fetchFollowedCount();
-    }, [user]);
+    }, [user, ignored]);
 
     // Get likes notifications
     useEffect(() => {
@@ -142,7 +145,7 @@ export default function Topbar() {
             );
         };
         fetchLikesNotice();
-    }, [user]);
+    }, [user, ignored]);
 
     // Get likes count
     useEffect(() => {
@@ -151,7 +154,7 @@ export default function Topbar() {
             setlikesNoticeTwo(res.data);
         };
         fetchLikesCount();
-    }, [user]);
+    }, [user, ignored]);
 
     //Filter followed users to only friends
     useEffect(() => {
@@ -286,7 +289,7 @@ export default function Topbar() {
             </div>
             <div className="topbar_Right">
                 {/* Follow notifications */}
-                <div className="topbar_right_icons" onClick={() => { setFollowedDrop(prev => !prev) }}
+                <div className="topbar_right_icons" onClick={() => { setFollowedDrop(prev => !prev); forceUpdate() }}
                     ref={menuRefOne}
                 >
                     <BsFillPeopleFill />
@@ -299,7 +302,9 @@ export default function Topbar() {
                     {
                         newFollowedOne.length > 0 ?
                             newFollowedOne?.map((data, index) =>
-                                <Follownotice followCount={data} key={index} followedDrop={followedDrop} user={user} />
+                                <Follownotice followCount={data} key={index} followedDrop={followedDrop} user={user}
+                                    forceUpdate={forceUpdate}
+                                />
                             )
                             :
                             newFollowedTwo?.map((data, index) =>

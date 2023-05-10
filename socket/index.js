@@ -33,15 +33,16 @@ io.on("connection", (socket) => {
 
 
     //Send and get message
-    socket.on("sendMessage", ({ senderId, receiverId, text, conversationId }) => {
+    socket.on("sendMessage", ({ senderId, receiverId, text, img, conversationId }) => {
         const user = getUser(receiverId);
         io.emit("getMessage", {
             senderId,
             receiverId,
             text,
+            img,
             conversationId
         });
-        //console.log("New text.", senderId, receiverId, text)
+        console.log("New text.", senderId, receiverId, text, img)
     });
 
     //Send and update conversation

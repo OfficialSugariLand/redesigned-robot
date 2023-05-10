@@ -56,7 +56,7 @@ export default function Feed({ username }) {
   return (
     <div className="feed">
       <div className="feedWrapper">
-        {(!user_id || user_id === user?.user_id) && <Share username={username} ignored={ignored} forceUpdate={forceUpdate} />}
+        {(!user_id || user_id === user?.user_id) && <Share username={username} forceUpdate={forceUpdate} />}
         {newPosts.map((p, id) => (
           <Post post={p} currentUser={user} key={id} ignored={ignored} forceUpdate={forceUpdate} />
         ))}

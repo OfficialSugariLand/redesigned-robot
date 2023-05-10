@@ -4,7 +4,6 @@ import { BsMessenger, BsFillBellFill, BsFillPeopleFill } from "react-icons/bs";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
-//import Followed from "../notifications/follownotice/Follownotice";
 import Likenotice from "../notifications/likesnotice/Likenotice";
 import Follownotice from "../notifications/follownotice/Follownotice";
 import TextUsers from "../topbar/textUsers/TextUsers";
@@ -12,10 +11,10 @@ import TextUsers from "../topbar/textUsers/TextUsers";
 export default function Activity() {
     const { user } = useContext(AuthContext);
     let isRendered = useRef(false);
-    const [textOpen, setTextOpen] = useState(false);
     const [userFollowed, setUserFollowed] = useState([]);
     const [followedDrop, setFollowedDrop] = useState(false);
     const [likeDrop, setLikeDrop] = useState(false);
+    const [textOpen, setTextOpen] = useState(false);
     const [userFollowedTwo, setUserFollowedTwo] = useState([]);
     const [newFollowedOne, setNewFollowedOne] = useState([]);
     const [newFollowedTwo, setNewFollowedTwo] = useState([]);
@@ -30,6 +29,7 @@ export default function Activity() {
         baseURL: process.env.REACT_APP_API_URL,
     });
 
+    // Get followed notifications
     useEffect(() => {
         isRendered = true;
         axiosInstance
@@ -49,16 +49,8 @@ export default function Activity() {
         };
     }, [user]);
 
-    /* useEffect(() => {
-        const fetchFollowed = async () => {
-            const res = await axiosInstance.get(`/follownotice/${user.user_id}`);
-            setUserFollowed(res.data.sort((p1, p2) => {
-                return new Date(p2.date_time) - new Date(p1.date_time);
-            })
-            );
-        };
-        fetchFollowed();
-    }, [user]); */
+
+    //console.log(userFollowed)
 
     // Get followed count
     useEffect(() => {
@@ -79,13 +71,6 @@ export default function Activity() {
             isRendered = false;
         };
     }, [user]);
-    /* useEffect(() => {
-        const fetchFollowedCount = async () => {
-            const res = await axiosInstance.get(`/follownotice/count/${user.user_id}`);
-            setUserFollowedTwo(res.data);
-        };
-        fetchFollowedCount();
-    }, [user]); */
 
     // Get likes notifications
     useEffect(() => {
@@ -107,17 +92,6 @@ export default function Activity() {
         };
     }, [user]);
 
-    /* useEffect(() => {
-        const fetchLikesNotice = async () => {
-            const res = await axiosInstance.get(`/likenotice/${user.user_id}`);
-            setlikesNoticeOne(res.data.sort((p1, p2) => {
-                return new Date(p2.date_time) - new Date(p1.date_time);
-            })
-            );
-        };
-        fetchLikesNotice();
-    }, [user]); */
-
     // Get likes count
     useEffect(() => {
         isRendered = true;
@@ -137,17 +111,6 @@ export default function Activity() {
             isRendered = false;
         };
     }, [user]);
-
-    /* useEffect(() => {
-        const fetchLikesNotice = async () => {
-            const res = await axiosInstance.get(`/likenotice/${user.user_id}`);
-            setlikesNoticeOne(res.data.sort((p1, p2) => {
-                return new Date(p2.date_time) - new Date(p1.date_time);
-            })
-            );
-        };
-        fetchLikesNotice();
-    }, [user]); */
 
     //Filter followed users to only friends
     useEffect(() => {
@@ -190,25 +153,13 @@ export default function Activity() {
         };
     }, [user]);
 
-    /* useEffect(() => {
-        const getTextNotification = async () => {
-            try {
-                const res = await axiosInstance.get("/messenger/textnotification/" + user.user_id);
-                setTextNotifications(res.data);
-            } catch (err) {
-                console.log(err);
-            }
-        };
-        getTextNotification();
-    }, [user]); */
-
     //Set body scroll to hidden when modal is open
     useEffect(() => {
         const fixedBody = () => {
             if (followedDrop === true) {
-                document.body.style = "position: fixed !important";
+                document.body.style = "overflow: hidden !important";
             } else {
-                document.body.style = "position: initial !important";
+                document.body.style = "overflow: scroll !important";
             }
         };
         fixedBody();
@@ -217,18 +168,28 @@ export default function Activity() {
     useEffect(() => {
         const fixedBodyTwo = () => {
             if (likeDrop === true) {
-                document.body.style = "position: fixed !important";
+                document.body.style = "overflow: hidden !important";
             } else {
-                document.body.style = "position: initial !important";
+                document.body.style = "overflow: scroll !important";
             }
         };
         fixedBodyTwo();
     }, [likeDrop])
 
+    useEffect(() => {
+        const fixedBodyThree = () => {
+            if (textOpen === true) {
+                document.body.style = "overflow: hidden !important";
+            } else {
+                document.body.style = "overflow: scroll !important";
+            }
+        };
+        fixedBodyThree();
+    }, [textOpen])
 
     return (
         <div className="footer_activities">
-            <div className="footer_right">
+            <div className="footer_container">
                 {/* Follow notifications */}
                 <div className="topbar_right_icons" onClick={() => { setFollowedDrop(prev => !prev) }} ref={menuRefOne}>
                     <BsFillPeopleFill />
@@ -257,7 +218,7 @@ export default function Activity() {
                         <span className="topbar_icon_badge ">{likesNoticeOne.length}</span>
                     }
                 </div>
-                <div className={`footer_like_notify ${likeDrop ? "show_notify" : "hide_notify"}`}>
+                <div className={`footer_like_notify ${likeDrop ? "show_like_notify" : "hide_like_notify"}`}>
                     {newLikesOne.length > 0 ?
                         newLikesOne?.map((data, index) =>
                             <Likenotice likeCount={data} key={index} likeDrop={likeDrop} />
@@ -276,7 +237,7 @@ export default function Activity() {
                         <span className="topbar_icon_badge ">{textNotifications?.length}</span>
                     }
                 </div>
-                <div className={`footer_text_notify ${textOpen ? "show_textOpen" : "hide_textOpen"} `}>
+                <div className={`footer_text_notify ${textOpen ? "show_text_notify" : "hide_text_notify"} `}>
                     <div className="textOpen_container">
                         <div className="textOpen_up">
                             {

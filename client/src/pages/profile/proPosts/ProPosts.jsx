@@ -10,12 +10,12 @@ import { BiArrowBack } from "react-icons/bi";
 import { useRef } from "react";
 import axios from "axios";
 
-export default function ProPosts({ post, user_id }) {
+export default function ProPosts({ post, user_id, ignored, forceUpdate }) {
     const { user } = useContext(AuthContext);
     const [postUser, setPostUser] = useState();
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const [postEditModal, setPostEditModal] = useState(false);
-    const [editDropdown, setEditDropdown] = useState(false);
+    const [postEditDropdown, setPostEditDropdown] = useState(false);
     const [readMore, setReadMore] = useState(false);
     const menuRef = useRef();
     const desc = useRef();
@@ -24,57 +24,18 @@ export default function ProPosts({ post, user_id }) {
     const [postLike, setPostLike] = useState();
     const liked = postLike?.length;
     const postLikeUser = postLike?.find((p) => p.liker === user.user_id); //Posts liked by me
-    const [btnDisable, setBtnDisable] = useState(false);
-    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     const axiosInstance = axios.create({
         baseURL: process.env.REACT_APP_API_URL,
     });
 
-    //Disable buttn after like clicked
-    useEffect(() => {
-        return () => setBtnDisable(false)
-    }, []);
-
-
     //Get Post Users
     useEffect(() => {
         const fetchUser = async () => {
-            const res = await axiosInstance.get("/users/" + post?.user_id);
+            const res = await axiosInstance.get(`/users/${post?.user_id}`);
             setPostUser(res.data);
         };
         fetchUser();
     }, [post]);
-
-    //Click outside to close
-    useEffect(() => {
-        const checkIfClickedOutside = (e) => {
-            if (editDropdown && menuRef.current && !menuRef.current.contains(e.target)) {
-                setEditDropdown(false);
-            }
-        };
-        document.addEventListener("mousedown", checkIfClickedOutside);
-        return () => {
-            document.removeEventListener("mousedown", checkIfClickedOutside);
-        }
-    }, [editDropdown]);
-
-    //Delete function starts here
-    const handleDelete = async () => {
-        if (post?.user_id !== user.user_id) {
-            console.log("Not your post")
-        } else {
-            try {
-                await axiosInstance.delete("/posts/" + post.id, {
-                    data: {
-                        userId: user._id,
-                    },
-                });
-                //window.location.reload()
-            } catch (err) {
-                console.log(err);
-            }
-        }
-    };
 
     //Get post likes
     useEffect(() => {
@@ -91,7 +52,6 @@ export default function ProPosts({ post, user_id }) {
 
     //Like a post
     const LikePosts = async () => {
-        setBtnDisable(true);
         const values = {
             liker: user.user_id,
             post_id: post?.id,
@@ -102,18 +62,37 @@ export default function ProPosts({ post, user_id }) {
         catch (err) {
             console.log(err);
         }
-        forceUpdate();
-    };
-
-    useEffect(() => {
-        if (btnDisable === true) {
-            setTimeout(() => setBtnDisable({ btnDisable: false }), 2000);
+        //Send like notifications
+        const notificationsOne = {
+            sender_id: user.user_id,
+            receiver_id: post?.user_id,
+            post_id: post.id,
+            activities: "likes your post"
         }
-    }, [btnDisable]);
+        try {
+            await axiosInstance.post("/likenotice", notificationsOne);
+        }
+        catch (err) {
+            console.log(err);
+        }
+        //Send like notifications counts
+        const notificationsTwo = {
+            sender_id: user.user_id,
+            receiver_id: post?.user_id,
+            post_id: post.id,
+            activities: "likes your post"
+        }
+        try {
+            await axiosInstance.post("/likenotice/count", notificationsTwo);
+        }
+        catch (err) {
+            console.log(err);
+        }
+        forceUpdate();
+    }
 
     //Unlike a post
     const UnlikePost = async () => {
-        setBtnDisable(false);
         try {
             await axiosInstance.delete("/likes/" + postLikeUser?.post_id, {
                 data: {
@@ -178,16 +157,49 @@ export default function ProPosts({ post, user_id }) {
         image.src = image.dataset.src;
     }
 
+    //Click outside to close post edit
+    useEffect(() => {
+        let handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+                setPostEditDropdown(false);
+            }
+        };
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        }
+    });
+
+    //Delete a post
+    const handleDelete = async () => {
+        if (post?.user_id !== user.user_id) {
+            console.log("Not your post")
+        } else {
+            try {
+                await axiosInstance.delete("/posts/" + post.id, {
+                    data: {
+                        userId: user._id,
+                    },
+                });
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        setTimeout(() => {
+            setPostEditDropdown(false)
+            forceUpdate()
+        }, 1000)
+    };
+
     return (
         <div className={`proPosts ${loaded ? "loaded" : "loading"}`} src={""} data-src={PF + post.img} onLoad={() => setLoaded(true)}>
             <div className="proPosts_upper_container">
                 <div className="proPosts_img_container">
                     {
                         postUser?.map((p, id) =>
-                            <div key={id}>
-                                <img
-                                    src={p.profilePicture ? PF + p.profilePicture :
-                                        PF + "person/1658876240053sugarisland.jpeg"} alt="" />
+                            <div className="pro_post_img_usrname" key={id}>
+                                <img src={p.profilePicture ? PF + p.profilePicture :
+                                    PF + "person/1658876240053sugarisland.jpeg"} alt="" />
                                 <span className="postUsername">{p.username}</span>
                             </div>
                         )
@@ -198,10 +210,10 @@ export default function ProPosts({ post, user_id }) {
                 {
                     (!user_id || user_id === user.user_id) &&
                     <>
-                        <div className="post_upper_right" onClick={() => setEditDropdown(prev => !prev)} ref={menuRef}>
+                        <div className="post_upper_right" onClick={() => setPostEditDropdown(prev => !prev)} ref={menuRef}>
                             <MoreVert />
                         </div>
-                        <div className={`post_edit_dropdown ${editDropdown ? 'show_edit_dropdown' : 'hide_edit_dropdown'}`} ref={menuRef}>
+                        <div className={`post_edit_dropdown ${postEditDropdown ? 'show_edit_dropdown' : 'hide_edit_dropdown'}`} ref={menuRef}>
                             <li title="Edit post" onClick={() => { setPostEditModal(prev => !prev) }}>
                                 <EditIcon />
                             </li>
@@ -250,7 +262,7 @@ export default function ProPosts({ post, user_id }) {
                                             <img src={HeartFilled} alt="" />
                                         </button>
                                         :
-                                        <button disabled={btnDisable} onClick={() => { LikePosts(); }}>
+                                        <button onClick={() => { LikePosts(); }}>
                                             <BsSuitHeart />
                                         </button>
                                 }
@@ -268,7 +280,7 @@ export default function ProPosts({ post, user_id }) {
                             </>
                             :
                             <>
-                                <button disabled={btnDisable} onClick={() => { LikePosts(); }}>
+                                <button onClick={() => { LikePosts(); }}>
                                     <BsSuitHeart />
                                 </button>
                                 {

@@ -58,7 +58,6 @@ export default function Settings() {
           </Link>
         </div>
       </div>
-      <Activity />
     </div>
   )
 }

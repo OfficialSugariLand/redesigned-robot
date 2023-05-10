@@ -24,23 +24,14 @@ export default function Share({ forceUpdate }) {
         ref.current.value = "";
     };
 
-    useEffect(() => {
-        document.getElementById('submitfile').onclick = function () {
-            setTimeout(() => {
-                setFile(null)
-                reset()
-            }, 1500)
-        }
-    }, []);
-
     //Get all following
     useEffect(() => {
         isRendered = true;
         axiosInstance
-            .get(`/followers`)
+            .get(`/followers/ownfollowing/${user.user_id}/${user.user_id}`)
             .then(res => {
                 if (isRendered) {
-                    setUserFriends(res.data);
+                    setUserFriends(res.data[0]);
                 }
                 return null;
             })
@@ -50,12 +41,21 @@ export default function Share({ forceUpdate }) {
         };
     }, []);
 
-    //Check if my user is following user
-    const followedUser = userFriends?.find((m) => m.followed === user.user_id && m.follower === user.user_id);
+    console.log(userFriends)
+    
+    //Auto resize textArea
+    useEffect(() => {
+        const textarea = document.querySelector("textarea");
+        textarea?.addEventListener("keydown", e => {
+            textarea.style.height = "auto";
+            let scHeight = e.target.scrollHeight;
+            textarea.style.height = `${scHeight}px`;
+        });
+    });
 
     const submitHandler = async (e) => {
         e.preventDefault()
-        if (!followedUser) {
+        if (!userFriends) {
             const followUser = {
                 follower: user.user_id,
                 followed: user.user_id
@@ -108,22 +108,15 @@ export default function Share({ forceUpdate }) {
 
                 try {
                     await axiosInstance.post("/posts", newPost);
-                    //window.location.reload()
                 } catch (err) { }
             }
         }
-        forceUpdate();
+        setTimeout(() => {
+            setFile(null)
+            reset()
+            forceUpdate();
+        }, 1500)
     };
-
-    //Auto resize textArea
-    useEffect(() => {
-        const textarea = document.querySelector("textarea");
-        textarea?.addEventListener("keydown", e => {
-            textarea.style.height = "auto";
-            let scHeight = e.target.scrollHeight;
-            textarea.style.height = `${scHeight}px`;
-        });
-    });
 
     return (
         <div className="share">
@@ -151,7 +144,7 @@ export default function Share({ forceUpdate }) {
                         <span>Media</span>
                         <input style={{ display: "none" }} type={"file"} id="file"
                             accept=".png,.jpeg,.jpg,.mp4,.mp3,.mkv"
-                            onChange={(e) => setFile(e.target.files[0])}
+                            onChange={(e) => setFile(e.target.files[0])} ref={ref}
                         />
                     </label>
                     <div className="shareOptionFeelings">
@@ -159,7 +152,7 @@ export default function Share({ forceUpdate }) {
                         <span>Feelings {/* When user click and select current feeling
                         it fetches people feeling same at the moment */}</span>
                     </div>
-                    <button type="submit" id="submitfile" /* onClick={() => { reset() }} */>
+                    <button type="submit">
                         <IosShareIcon />
                         <span> Share</span>
                     </button>

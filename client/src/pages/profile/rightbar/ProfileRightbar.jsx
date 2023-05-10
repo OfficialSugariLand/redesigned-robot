@@ -16,6 +16,7 @@ export default function ProfileRightbar() {
     const [friends, setFriends] = useState([]);
     const [userFriends, setUserFriends] = useState([]);
     const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+    const [btnDisable, setBtnDisable] = useState(false);
     const socket = useRef();
     const axiosInstance = axios.create({
         baseURL: process.env.REACT_APP_API_URL,
@@ -118,11 +119,14 @@ export default function ProfileRightbar() {
         }
         try {
             await axiosInstance.post("/follownotice/count", followCount);
-            //window.location.reload()
         } catch (err) {
             console.log(err);
         }
-        forceUpdate();
+        setBtnDisable(true);
+        setTimeout(() => {
+            setBtnDisable(false);
+            forceUpdate();
+        }, 2000)
     };
 
     //Unfollow a user
@@ -160,7 +164,7 @@ export default function ProfileRightbar() {
                                 <Remove />
                             </button>
                             :
-                            <button className="rightbarFollowButton" onClick={handleFollow}>
+                            <button disabled={btnDisable === true} className="rightbarFollowButton" onClick={() => { handleFollow() }}>
                                 Follow
                                 <Add />
                             </button>

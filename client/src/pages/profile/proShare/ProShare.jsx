@@ -7,25 +7,45 @@ import { useState } from "react";
 import axios from "axios";
 import IosShareIcon from '@mui/icons-material/IosShare';
 
-export default function ProShare() {
+export default function ProShare({ forceUpdate }) {
   const { user } = useContext(AuthContext);
+  let isRendered = useRef(false);
   const PF = process.env.REACT_APP_PUBLIC_FOLDER;
   const desc = useRef();
-  const [file, setFile] = useState(null);
   const ref = useRef();
+  const [file, setFile] = useState(null);
+  const [userFriends, setUserFriends] = useState([]);
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
   });
 
+  //Reset img
   const reset = () => {
     ref.current.value = "";
   };
 
+  //Get all following
+  useEffect(() => {
+    isRendered = true;
+    axiosInstance
+      .get(`/followers/ownfollowing/${user.user_id}/${user.user_id}`)
+      .then(res => {
+        if (isRendered) {
+          setUserFriends(res.data[0]);
+        }
+        return null;
+      })
+      .catch(err => console.log(err));
+    return () => {
+      isRendered = false;
+    };
+  }, []);
+
   //Auto resize textArea
   useEffect(() => {
     const textarea = document.querySelector("textarea");
-    textarea.addEventListener("keyup", e => {
-      textarea.style.height = "63px";
+    textarea?.addEventListener("keydown", e => {
+      textarea.style.height = "auto";
       let scHeight = e.target.scrollHeight;
       textarea.style.height = `${scHeight}px`;
     });
@@ -33,30 +53,68 @@ export default function ProShare() {
 
   const submitHandler = async (e) => {
     e.preventDefault()
-    const newPost = {
-      user_id: user.user_id,
-      desc: desc.current.value
-    }
-    if (file === null) {
-      console.log("File is empty")
-    } else {
-      const data = new FormData();
-      const fileName = Date.now() + "_sugariland_" + file.name;
-      data.append("name", fileName);
-      data.append("file", file);
-      newPost.img = fileName;
+    if (!userFriends) {
+      const followUser = {
+        follower: user.user_id,
+        followed: user.user_id
+      }
       try {
-        await axiosInstance.post("/upload", data);
+        await axiosInstance.post("/followers", followUser);
       } catch (err) {
         console.log(err);
       }
+      const newPost = {
+        user_id: user.user_id,
+        desc: desc.current.value
+      }
+      if (file === null) {
+        console.log("File is empty")
+      } else {
+        const data = new FormData();
+        const fileName = Date.now() + "_" + user.username + "_sugarilandconnect.jpg";
+        data.append("name", fileName);
+        data.append("file", file);
+        newPost.img = fileName;
+        try {
+          await axiosInstance.post("/upload", data);
+        } catch (err) {
+          console.log(err);
+        }
 
-      try {
-        await axiosInstance.post("/posts", newPost);
-      } catch (err) { }
+        try {
+          await axiosInstance.post("/posts", newPost);
+        } catch (err) { }
+      }
+    } else {
+      const newPost = {
+        user_id: user.user_id,
+        desc: desc.current.value
+      }
+      if (file === null) {
+        console.log("File is empty")
+      } else {
+        const data = new FormData();
+        const fileName = Date.now() + "_" + user.username + "_shared_" + "_sugarilandconnect.jpg";
+        data.append("name", fileName);
+        data.append("file", file);
+        newPost.img = fileName;
+        try {
+          await axiosInstance.post("/upload", data);
+        } catch (err) {
+          console.log(err);
+        }
+
+        try {
+          await axiosInstance.post("/posts", newPost);
+        } catch (err) { }
+      }
     }
+    setTimeout(() => {
+      setFile(null)
+      reset()
+      forceUpdate();
+    }, 1500)
   };
-
 
   return (
     <div className="proShare">

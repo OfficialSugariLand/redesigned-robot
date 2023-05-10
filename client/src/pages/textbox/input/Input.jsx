@@ -1,27 +1,28 @@
 import "./input.scss";
 import axios from "axios";
-import { IoMdAttach } from "react-icons/io";
+//import { IoMdAttach } from "react-icons/io";
 import { BiImageAdd } from "react-icons/bi";
 import { useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
 
 function Input({ ownUser, friendUser, conversation, ignored, forceUpdate }) {
-    const axiosInstance = axios.create({
-        baseURL: process.env.REACT_APP_API_URL,
-    });
     const [file, setFile] = useState(null);
+    const ref = useRef();
+    const socket = useRef();
     const [textM, setTextM] = useState("");
     const youAndMe = friendUser + ownUser.user_id;
     const meAndYou = ownUser.user_id + friendUser;
     const conIdExist = conversation?.find((c) => c?.conversation_id === youAndMe);
     const [unreadText, setUnreadtText] = useState();
-    const socket = useRef();
+    const axiosInstance = axios.create({
+        baseURL: process.env.REACT_APP_API_URL,
+    });
 
     useEffect(() => {
         socket.current = io("http://localhost:4000");
     }, []);
 
-
+    //console.log(file)
     //Get unread texts
     useEffect(() => {
         const fetchUser = async () => {
@@ -31,9 +32,20 @@ function Input({ ownUser, friendUser, conversation, ignored, forceUpdate }) {
         fetchUser();
     }, [ownUser, friendUser, ignored]);
 
+    //Reset img
+    const reset = () => {
+        ref.current.value = "";
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (!conIdExist) {
+            const data = new FormData();
+            const fileName = Date.now() + "_" + ownUser.username + "_sugarilandconnect.jpg";
+            data.append("name", fileName);
+            data.append("file", file);
+
+            //Create conversation id
             const conIdCreateOne = {
                 conversation_id: youAndMe,
                 user_id: ownUser.user_id,
@@ -61,6 +73,7 @@ function Input({ ownUser, friendUser, conversation, ignored, forceUpdate }) {
                 senderId: ownUser.user_id,
                 receiverId: friendUser,
                 text: textM,
+                img: fileName,
                 conversationId: ownUser.user_id + friendUser
             });
             //Send conversaion to socket.io
@@ -73,6 +86,7 @@ function Input({ ownUser, friendUser, conversation, ignored, forceUpdate }) {
                 sender_id: ownUser.user_id,
                 receiver_id: friendUser,
                 text: textM,
+                img: fileName,
                 conversation_id: ownUser.user_id + friendUser
             }
             try {
@@ -85,6 +99,7 @@ function Input({ ownUser, friendUser, conversation, ignored, forceUpdate }) {
                 sender_id: ownUser.user_id,
                 receiver_id: friendUser,
                 text: textM,
+                img: fileName,
                 conversation_id: friendUser + ownUser.user_id
             }
             try {
@@ -103,12 +118,24 @@ function Input({ ownUser, friendUser, conversation, ignored, forceUpdate }) {
             } catch (err) {
                 console.log(err);
             }
+            try {
+                await axiosInstance.post("/upload", data);
+            } catch (err) {
+                console.log(err);
+            }
         } else {
+            //File
+            const data = new FormData();
+            const fileName = Date.now() + "_" + ownUser.username + "_sugarilandconnect.jpg";
+            data.append("name", fileName);
+            data.append("file", file);
+
             //Send message to socket.io
             socket.current.emit("sendMessage", {
                 senderId: ownUser.user_id,
                 receiverId: friendUser,
                 text: textM,
+                img: fileName,
                 conversationId: ownUser.user_id + friendUser
             });
             //Send conversaion to socket.io
@@ -121,6 +148,7 @@ function Input({ ownUser, friendUser, conversation, ignored, forceUpdate }) {
                 sender_id: ownUser.user_id,
                 receiver_id: friendUser,
                 text: textM,
+                img: fileName,
                 conversation_id: ownUser.user_id + friendUser
             }
             try {
@@ -133,12 +161,19 @@ function Input({ ownUser, friendUser, conversation, ignored, forceUpdate }) {
                 sender_id: ownUser.user_id,
                 receiver_id: friendUser,
                 text: textM,
+                img: fileName,
                 conversation_id: friendUser + ownUser.user_id
             }
 
             try {
                 await axiosInstance.post("/messenger", valuesTwo);
                 setTextM("")
+            } catch (err) {
+                console.log(err);
+            }
+
+            try {
+                await axiosInstance.post("/upload", data);
             } catch (err) {
                 console.log(err);
             }
@@ -170,7 +205,11 @@ function Input({ ownUser, friendUser, conversation, ignored, forceUpdate }) {
                 }
             }
         };
-        forceUpdate();
+        setTimeout(() => {
+            setFile(null)
+            reset()
+            forceUpdate();
+        }, 1000)
     };
 
     //Auto resize textArea
@@ -192,15 +231,25 @@ function Input({ ownUser, friendUser, conversation, ignored, forceUpdate }) {
                 {file && (
                     <img style={{ width: "3rem" }} src={URL.createObjectURL(file)} alt="" />
                 )}
-                <IoMdAttach />
+                {/* <IoMdAttach /> */}
                 <input style={{ display: "none" }} id="file" type={"file"}
-                    accept=".png,.jpeg,.jpg" onChange={(e) => setFile(e.target.files[0])} />
+                    accept=".png,.jpeg,.jpg" onChange={(e) => setFile(e.target.files[0])} ref={ref} />
                 <label htmlFor="file">
                     <BiImageAdd />
                 </label>
+
                 {
-                    textM.length > 0 &&
-                    <button onClick={handleSubmit} disabled={textM === null}>Send</button>
+                    textM?.length > 0 ?
+                        <button type="submit" onClick={handleSubmit}>
+                            Send
+                        </button>
+                        :
+                        file !== null ?
+                            <button type="submit" onClick={handleSubmit}>
+                                Send
+                            </button>
+                            :
+                            ""
                 }
             </div>
         </div>
