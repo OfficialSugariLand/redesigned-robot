@@ -40,16 +40,6 @@ router.get("/:receiver_id", (req, res) => {
         });
 });
 
-//delete a notification
-router.delete("/:id", (req, res) => {
-    const id = req.params.id;
-    const q = "DELETE FROM likesnotice WHERE id = ?";
-    db.query(q, [id], (err, data) => {
-        if (err) return res.send(err);
-        return res.json(data);
-    });
-});
-
 //notification count
 router.post("/count", async (req, res) => {
     const q = "INSERT INTO likecount (`sender_id`,`receiver_id`,`post_id`,`activities`) VALUES (?)";
@@ -75,6 +65,16 @@ router.get("/count/:receiver_id", (req, res) => {
             }
             res.send(result)
         });
+});
+
+//delete a notification
+router.delete("/count/:receiver_id", (req, res) => {
+    const receiver_id = req.params.receiver_id;
+    const q = "DELETE FROM likecount WHERE receiver_id = ?";
+    db.query(q, [receiver_id], (err, data) => {
+        if (err) return res.send(err);
+        return res.json(data);
+    });
 });
 
 export default router;

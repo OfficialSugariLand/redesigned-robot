@@ -23,18 +23,6 @@ export default function Stories() {
   });
 
   //Get all following
-  /*   useEffect(() => {
-      const getFriends = async () => {
-        try {
-          const friendList = await axiosInstance.get("/followers/");
-          setUserFriends(friendList.data);
-        } catch (err) {
-          console.log(err);
-        }
-      };
-      getFriends();
-    }, [ignored]); */
-
   useEffect(() => {
     isRendered = true;
     axiosInstance
@@ -132,8 +120,13 @@ export default function Stories() {
         } catch (err) { }
       }
     }
-    setFile(null);
+
     forceUpdate();
+    setTimeout(() => {
+      setFile(null);
+
+      setStoryOpen(false);
+    }, 2000);
   };
 
 

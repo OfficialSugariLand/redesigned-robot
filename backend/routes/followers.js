@@ -28,13 +28,10 @@ router.post("/", async (req, res) => {
 
 
 //unfollow a user
-router.delete("/", (req, res) => {
-    const values = [
-        req.body.id
-    ];
-    const q = " DELETE FROM followers WHERE id = ?";
-
-    db.query(q, [values], (err, data) => {
+router.delete("/:followed", (req, res) => {
+    const followed = req.params.followed;
+    const q = "DELETE FROM followers WHERE followed = ?";
+    db.query(q, [followed], (err, data) => {
         if (err) return res.send(err);
         return res.json(data);
     });
@@ -59,7 +56,20 @@ router.get("/:follower", (req, res) => {
     db.query("SELECT * FROM followers WHERE follower = ?", user_id,
         (err, result) => {
             if (err) {
-                console.log("Not found")
+                console.log("None found")
+            }
+            res.send(result)
+        });
+});
+
+//Get followed friends
+router.get("/:follower/:followed", (req, res) => {
+    const follower = req.params.follower;
+    const followed = req.params.followed;
+    db.query(`SELECT * FROM followers WHERE follower = ${follower} AND followed = ${followed}`,
+        (err, result) => {
+            if (err) {
+                console.log("None found")
             }
             res.send(result)
         });
@@ -71,7 +81,7 @@ router.get("/", (req, res) => {
     db.query(q, (err, data) => {
         if (err) return res.json(err)
         return res.json(data)
-    })
-})
+    });
+});
 
 export default router

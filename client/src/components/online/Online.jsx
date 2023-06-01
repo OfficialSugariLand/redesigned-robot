@@ -1,14 +1,28 @@
 import "./online.scss";
 import { useState, useEffect, useRef } from "react";
-import OnlineUser from "./onlineUser/OnlineUser";
 import axios from "axios";
+import { Link } from "react-router-dom";
+import noimage from "./noimageavater/noimage.png";
+import socketIOClient from "socket.io-client";
 
 export default function Online({ onlineFriend }) {
+  const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+  const [socketUsers, setSocketUsers] = useState();
   const [userFriend, setUserFriend] = useState([]);
   let isRendered = useRef(false);
   const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_API_URL,
   })
+
+  //Use socket
+  useEffect(() => {
+    const socket = socketIOClient("http://localhost:4000/");
+    socket?.on("getUsers", (data) => {
+      setSocketUsers({
+        user_id: data.user_id
+      });
+    });
+  }, []);
 
   useEffect(() => {
     isRendered = true;
@@ -31,13 +45,22 @@ export default function Online({ onlineFriend }) {
 
   return (
     <div className="rightbarFriend">
-      <div className="rightbar_userWrapper">
-        {
-          userFriend?.map((conUser, id) =>
-            <OnlineUser onlineUsers={conUser} key={id} />
-          )
-        }
-      </div>
+      {
+        userFriend?.map((onlineUsers, id) =>
+          <div className="online_friends" key={id}>
+            {
+              onlineUsers?.user_id === socketUsers?.user_id &&
+              <Link to={"/profile/" + onlineUsers?.user_id} style={{ textDecoration: "none" }}>
+                <div className="img_online">
+                  <img src={onlineUsers.profilePicture ? PF + onlineUsers.profilePicture : noimage} alt="" />
+                  <span className="rightbarOnline"></span>
+                </div>
+                <span className="rightbar_Username">{onlineUsers.username}</span>
+              </Link>
+            }
+          </div>
+        )
+      }
     </div>
   );
 };

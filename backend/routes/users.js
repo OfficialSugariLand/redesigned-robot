@@ -46,6 +46,19 @@ router.post("/", async (req, res) => {
     });
 });
 
+//Update user's isVerified
+router.put("/isverified/:user_id", async (req, res) => {
+    const user_id = req.params.user_id;
+    const q = "UPDATE users SET `isVerified` = ? WHERE user_id = ?";
+    const values = [
+        req.body.isVerified
+    ];
+    db.query(q, [...values, user_id], (err, data) => {
+        if (err) return res.send(err);
+        return res.json("Updated successfully");
+    });
+});
+
 //Update user
 router.put("/ownuser/:user_id", async (req, res) => {
     const salt = await bcrypt.genSalt(10);
@@ -159,17 +172,18 @@ router.get("/email/values", (req, res) => {
 })
 
 
-//Forgot password
-router.get("/forgot-password/:email", async (req, res) => {
-    const email = req.params.email;
-    const q = "SELECT email, password, user_id FROM users WHERE email = ?";
-    db.query(q, [email], (err, data) => {
-        if (err) {
-            return res.json({ err: "User does not exist" })
-        } else {
-            return res.json(data[0])
-        }
-    })
+////Forgot password
+router.get("/passwordchange/forgot/:phone_num", (req, res) => {
+    const phone_num = req.params.phone_num
+    db.query(`SELECT phone_num, password, user_id FROM users WHERE phone_num = ${phone_num}`,
+        (err, result) => {
+            if (err) {
+                return res.status(500).json({
+                    msg: "No record found"
+                })
+            }
+            res.send(result[0])
+        });
 });
 
 //Update user's password

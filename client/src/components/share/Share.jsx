@@ -41,8 +41,6 @@ export default function Share({ forceUpdate }) {
         };
     }, []);
 
-    console.log(userFriends)
-    
     //Auto resize textArea
     useEffect(() => {
         const textarea = document.querySelector("textarea");

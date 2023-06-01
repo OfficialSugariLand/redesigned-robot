@@ -16,8 +16,8 @@ const db = mysql.createConnection({
 
 //LOGIN
 router.post("/login", async (req, res) => {
-    const email = req.body.email;
-    db.query("SELECT * FROM users WHERE email = ? ", [email], function (error, results, fields) {
+    const phone_num = req.body.phone_num;
+    db.query("SELECT * FROM users WHERE phone_num = ? ", [phone_num], function (error, results, fields) {
         if (error) throw error;
         else {
             if (results.length > 0) {
@@ -30,7 +30,7 @@ router.post("/login", async (req, res) => {
                     }
                 });
             } else {
-                return res.status(400).send({ message: "Invalid Email" });
+                return res.status(400).send({ message: "Invalid phone number" });
             }
         }
     });

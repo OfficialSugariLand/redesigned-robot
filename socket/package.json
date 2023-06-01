@@ -2,6 +2,7 @@
   "name": "socket",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "nodemon index.js",
     "build": "react-scripts build",
@@ -12,9 +13,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.18.2",
+    "http": "^0.0.1-security",
     "nodemon": "^2.0.15",
     "socket.io": "^4.4.1"
   },
-  "devDependencies": {},
   "description": ""
 }

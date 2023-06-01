@@ -12,8 +12,9 @@ import { useRef } from "react";
 import ProfileImage from "../../pages/about/images/profileCovers.png"
 import { Add, Remove } from "@material-ui/icons";
 import { Link } from "react-router-dom";
+import socketIOClient from "socket.io-client";
 
-export default function Post({ post, ignored, forceUpdate }) {
+export default function Post({ post, forceUpdate }) {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const { user } = useContext(AuthContext);
     const [postUser, setPostUser] = useState();
@@ -25,14 +26,45 @@ export default function Post({ post, ignored, forceUpdate }) {
     const [currentDesc, setCurrentDesc] = useState(post.desc);
     const [loaded, setLoaded] = useState(false);
     const [postLike, setPostLike] = useState();
+    const [postLikeUsers, setPostLikeUsers] = useState();
     const liked = postLike?.length;
-    const postLikeUser = postLike?.find((p) => p.liker === user.user_id); //Posts liked by me
-    const [btnDisable, setBtnDisable] = useState(false);
     const [userFriends, setUserFriends] = useState([]);
+    const socket = useRef();
+    const [arrivalLikes, setArrivalLikes] = useState();
     const axiosInstance = axios.create({
         baseURL: process.env.REACT_APP_API_URL,
     });
 
+    useEffect(() => {
+        const postLikeUser = postLike?.find((p) => p.liker === user.user_id); //Posts liked by me
+        setPostLikeUsers(postLikeUser);
+    }, [postLike, user])
+
+    //Send to socket
+    useEffect(() => {
+        socket.current = socketIOClient("http://localhost:4000/");
+    }, []);
+
+    //Take from socket
+    useEffect(() => {
+        const socket = socketIOClient("http://localhost:4000/");
+
+        socket?.on("getLiker", (data) => {
+            setArrivalLikes({
+                liker: data.senderId,
+                post_id: data.postId,
+            });
+        });
+    }, []);
+
+    //Rerender likes when changes are made
+    useEffect(() => {
+        arrivalLikes &&
+            post?.id === arrivalLikes?.post_id && arrivalLikes?.liker === user.user_id &&
+            setPostLike((prev) => [...prev, arrivalLikes]);
+    }, [arrivalLikes, post.id, user]);
+
+    //console.log(arrivalLikes)
 
     //Get Post Users
     useEffect(() => {
@@ -54,10 +86,20 @@ export default function Post({ post, ignored, forceUpdate }) {
             }
         };
         getLikes();
-    }, [post, ignored]);
+    }, [post]);
 
     //Like a post
     const LikePosts = async () => {
+        socket.current.emit("sendLikes", {
+            senderId: user.user_id,
+            receiverId: post?.user_id,
+            postId: post?.id,
+            activity: "likes your post"
+        });
+        socket.current.emit("sendLiker", {
+            senderId: user.user_id,
+            postId: post?.id,
+        });
         const values = {
             liker: user.user_id,
             post_id: post?.id,
@@ -94,15 +136,15 @@ export default function Post({ post, ignored, forceUpdate }) {
         catch (err) {
             console.log(err);
         }
-        forceUpdate();
     }
 
     //Unlike a post
     const UnlikePost = async () => {
         try {
-            await axiosInstance.delete("/likes/" + postLikeUser?.post_id, {
+            await axiosInstance.delete(`/likes/${user.user_id}/${postLikeUsers?.post_id}`, {
                 data: {
-                    id: postLikeUser?.id
+                    liker: user.user_id,
+                    post_id: postLikeUsers?.post_id
                 }
             });
         }
@@ -230,6 +272,26 @@ export default function Post({ post, ignored, forceUpdate }) {
         image.src = image.dataset.src;
     }
 
+    //Delete a post
+    const handleDelete = async () => {
+        if (post?.user_id !== user.user_id) {
+            console.log("Not your post")
+        } else {
+            try {
+                await axiosInstance.delete(`/posts/${post.id}/${user.user_id}`, {
+                    data: {
+                        userId: user._id,
+                    },
+                });
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        setTimeout(() => {
+            setPostEditDropdown(false)
+            forceUpdate()
+        }, 1000)
+    };
 
     //Click outside to close post edit
     useEffect(() => {
@@ -244,27 +306,6 @@ export default function Post({ post, ignored, forceUpdate }) {
             document.removeEventListener("mousedown", handler);
         }
     });
-
-    //Delete a post
-    const handleDelete = async () => {
-        if (post?.user_id !== user.user_id) {
-            console.log("Not your post")
-        } else {
-            try {
-                await axiosInstance.delete("/posts/" + post.id, {
-                    data: {
-                        userId: user._id,
-                    },
-                });
-            } catch (err) {
-                console.log(err);
-            }
-        }
-        setTimeout(() => {
-            setPostEditDropdown(false)
-            forceUpdate()
-        }, 1000)
-    };
 
     return (
         <div className={`post ${loaded ? "loaded" : "loading"}`} src={""} data-src={PF + post.img} onLoad={() => setLoaded(true)}>
@@ -362,51 +403,32 @@ export default function Post({ post, ignored, forceUpdate }) {
                         </Link>
                     </div>
                     <div className="post_bottom">
-                        <div className="post_bottom_left">
+                        <>
                             {
-                                postLike?.length > 0 ?
-                                    <>
-                                        {
-                                            postLikeUser ?
-                                                <button onClick={UnlikePost}>
-                                                    <img src={HeartFilled} alt="" />
-                                                </button>
-                                                :
-                                                <button disabled={btnDisable === true} id="disableHeart" onClick={() => { LikePosts() }}>
-                                                    <BsSuitHeart />
-                                                </button>
-                                        }
-                                        {
-                                            liked
-                                                ?
-                                                (
-                                                    <div>
-                                                        {liked > 1 ? (<span>{liked} likes</span>) : (<span>{liked} like</span>)}
-                                                    </div>
-                                                )
-                                                :
-                                                ("")
-                                        }
-                                    </>
+                                postLikeUsers ?
+                                    <button onClick={UnlikePost}>
+                                        <img src={HeartFilled} alt="" />
+                                    </button>
                                     :
-                                    <>
-                                        <button disabled={btnDisable === true} onClick={() => { LikePosts() }}>
-                                            <BsSuitHeart />
-                                        </button>
-                                        {
-                                            liked
-                                                ?
-                                                (
-                                                    <div>
-                                                        {liked > 1 ? (<span>{liked} likes</span>) : (<span>{liked} like</span>)}
-                                                    </div>
-                                                )
-                                                :
-                                                ("")
-                                        }
-                                    </>
+                                    <button onClick={() => { LikePosts() }}>
+                                        <BsSuitHeart />
+                                    </button>
                             }
-                        </div>
+                        </>
+
+                        <>
+                            {
+                                liked
+                                    ?
+                                    (
+                                        <div className="like_count">
+                                            {liked > 1 ? (<span>{liked} likes</span>) : (<span>{liked} like</span>)}
+                                        </div>
+                                    )
+                                    :
+                                    ("")
+                            }
+                        </>
                     </div>
                 </>
             }

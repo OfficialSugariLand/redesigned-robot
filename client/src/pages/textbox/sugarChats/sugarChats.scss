@@ -66,21 +66,27 @@
                     position: sticky;
                     width: 100%;
                     background: themed(bg);
-                    top: 4.5rem;
+                    top: 4.2rem;
                     padding: 0.5rem;
                     align-items: center;
                     gap: 0.3rem;
                     border-bottom: 1px solid lightgray;
                     justify-content: space-between;
 
-                    img {
-                        width: 2rem;
-                        height: 2rem;
-                        border-radius: 50%;
-                    }
+                    .user_details {
+                        display: flex;
+                        gap: 0.5rem;
+                        align-items: center;
 
-                    .middleTop_usrName {
-                        color: themed(textColor);
+                        img {
+                            width: 2rem;
+                            height: 2rem;
+                            border-radius: 50%;
+                        }
+
+                        .middleTop_usrName {
+                            color: themed(textColor);
+                        }
                     }
 
                     .middle_top_drop {

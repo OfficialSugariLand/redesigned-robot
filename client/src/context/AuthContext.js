@@ -21,6 +21,17 @@ export const AuthContextProvider = ({ children }) => {
     });
 
     //https://www.youtube.com/watch?v=RKtIr4PYLro {Update user info in local storage}
+    const updateUserIsVerified = (isVerified, next) => {
+        if (typeof window !== 'undefined') {
+            if (localStorage.getItem('user')) {
+                let auth = JSON.parse(localStorage.getItem('user'));
+                auth.isVerified = isVerified;
+                localStorage.setItem('user', JSON.stringify(auth));
+                next();
+            }
+        }
+    };
+
     const updateUserPic = (profilePicture, next) => {
         if (typeof window !== 'undefined') {
             if (localStorage.getItem('user')) {
@@ -150,6 +161,7 @@ export const AuthContextProvider = ({ children }) => {
             loading,
             setLoading,
             dispatch,
+            updateUserIsVerified,
             updateUserPic,
             updateUser,
             updateUserDesc,

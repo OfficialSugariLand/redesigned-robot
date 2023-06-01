@@ -54,7 +54,7 @@ export default function Password() {
             setPassCheck(true)
             console.log("Pass didn't meet")
         } else if (newPassRep === "" || String(newPassRep) !== String(currentPass)) {
-            console.log("Password did not matched")
+            console.log("Password did not match")
             setRePassCheck(true);
         } else {
             updateUserPassword(hashedPassword, () => {

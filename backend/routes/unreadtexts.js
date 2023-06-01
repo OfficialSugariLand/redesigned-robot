@@ -40,14 +40,16 @@ router.get("/:receiver_id/:sender_id", (req, res) => {
 
 
 //delete unread
-router.delete("/:id", (req, res) => {
-    const id = req.params.id;
-    const q = "DELETE FROM unreadtexts WHERE id = ?";
-    db.query(q, [id], (err, data) => {
-        if (err) return res.send(err);
-        return res.json(data);
-    });
+router.delete("/:receiver_id/:sender_id", (req, res) => {
+    const receiver_id = req.params.receiver_id;
+    const sender_id = req.params.sender_id;
+    db.query(`DELETE FROM unreadtexts WHERE receiver_id = ${receiver_id} AND sender_id = ${sender_id}`,
+        (err, result) => {
+            if (err) {
+                console.log("Not found")
+            }
+            res.send(result)
+        });
 });
-
 
 export default router;

@@ -14,9 +14,12 @@ import likeNoticeRoute from "./routes/likenotice.js";
 import passwordResetRoute from "./routes/passwordreset.js";
 import mailerRoute from "./routes/mailer.js";
 import sentmailRoute from "./routes/sentmail.js";
+import smsuserRoute from "./routes/smsuser.js";
+import textnoticeRoute from "./routes/textnotice.js";
 import unreadtextsRoute from "./routes/unreadtexts.js";
 import path from "path";
 import multer from "multer";
+import cookieParser from 'cookie-parser';
 
 const app = express()
 
@@ -27,8 +30,9 @@ const app = express()
     database: "sugariland"
 }) */
 
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
+app.use(cookieParser());
 const __dirname = path.resolve();
 app.use("/images", express.static(path.join(__dirname, "public/images")));
 
@@ -68,6 +72,8 @@ app.use("/backend/likenotice", likeNoticeRoute);
 app.use("/backend/passwordreset", passwordResetRoute);
 app.use("/backend/mailer", mailerRoute);
 app.use("/backend/sentmail", sentmailRoute);
+app.use("/backend/smsuser", smsuserRoute);
+app.use("/backend/textnotice", textnoticeRoute);
 app.use("/backend/unreadtexts", unreadtextsRoute);
 
 app.listen(8800, () => {

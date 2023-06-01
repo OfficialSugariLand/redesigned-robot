@@ -13,7 +13,7 @@
         border-top: 1px solid rgb(189, 185, 185);
         justify-content: flex-end;
         align-items: center;
-        z-index: 99;
+        z-index: 9999;
 
         .footer_container {
             display: flex;
@@ -21,6 +21,8 @@
 
             .topbar_right_icons {
                 display: flex;
+                width: 3rem;
+                height: 3rem;
                 position: relative;
                 justify-content: center;
                 align-items: center;
@@ -30,7 +32,6 @@
                 background: themed(bgSoft);
                 border: 2px solid transparent;
                 transition: var(--transition);
-                z-index: 9;
 
                 svg {
                     color: themed("textColor");
@@ -71,16 +72,17 @@
             .footer_follow_notify,
             .footer_like_notify,
             .footer_text_notify {
-                height: calc(100vh - 8.3rem);
+                height: calc(100vh - 7.8rem);
                 width: 100%;
                 flex-direction: column;
                 overflow-y: scroll;
                 scroll-behavior: smooth;
                 transition: var(--transition);
-                top: 73px;
+                top: 63px;
                 background: themed(bgSoft);
                 font-weight: 300;
                 position: fixed;
+                padding: 1rem;
 
                 &::-webkit-scrollbar {
                     display: none;
@@ -91,6 +93,7 @@
             .hide_like_notify,
             .hide_text_notify {
                 right: -100%;
+                transition: var(--transition);
             }
 
             .show_follow_notify,
@@ -101,64 +104,38 @@
                 transition: var(--transition);
             }
 
-            /* //Text notify dropdown
-            .footer_text_notify {
-                height: calc(100vh - 8.3rem);
-                flex-direction: column;
-                position: absolute;
-                overflow-y: scroll;
-                scroll-behavior: smooth;
-                transition: var(--transition);
-                top: 4.4rem;
-                background: themed(bgSoft);
-                font-weight: 300;
-                right: 4rem;
-
-                &::-webkit-scrollbar {
-                    display: none;
-                }
-            }
-
-            .show_textOpen {
+            .textOpen_container {
                 display: flex;
-                transition: var(--transition);
+                height: 100%;
+                flex-direction: column;
 
-                .textOpen_container {
+                .textOpen_up {
                     display: flex;
-                    flex-direction: column;
-                    width: 100%;
                     height: 100%;
+                    width: 100%;
+                }
 
-                    .textOpen_up {
+                .textOpen_down {
+                    display: flex;
+                    width: 100%;
+
+                    a {
                         display: flex;
-                        flex-direction: column;
                         width: 100%;
-                        height: 100%;
-                        gap: 1rem;
-                    }
+                        justify-content: flex-end;
 
-                    .textOpen_down {
-                        display: flex;
-
-                        a {
+                        span {
                             display: flex;
-                            width: 100%;
-
-                            span {
-                                display: flex;
-                                color: themed(textColor);
-                                width: 100%;
-                                justify-content: flex-end;
-                            }
+                            background: lightcoral;
+                            padding: 0.3rem;
+                            border-radius: 0.2rem;
+                            color: themed(textColor);
+                            font-weight: 600;
                         }
                     }
                 }
 
             }
-
-            .hide_textOpen {
-                display: none;
-            } */
 
         }
     }

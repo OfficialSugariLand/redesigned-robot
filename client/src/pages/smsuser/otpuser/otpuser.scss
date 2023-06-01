@@ -1,0 +1,115 @@
+@import "../../../style.scss";
+
+
+.otp_user {
+    @include themify($themes) {
+        display: flex;
+        width: 100wv;
+        height: 100vh;
+        justify-content: center;
+        align-items: center;
+
+        .sugar_loader_content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+
+            span {
+                color: black;
+                font-size: 2rem;
+                //font-style: oblique;
+                font-family: 'Courier New', Courier, monospace;
+            }
+
+            img.sugariLand_logo_loader {
+                display: flex;
+                width: 15rem;
+                border-radius: 1rem;
+            }
+        }
+
+        .otp_user_container {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            gap: 1rem;
+
+            input {
+                display: flex;
+                width: 12rem;
+                height: 2rem;
+                border: 1px solid black;
+                border-radius: 0.3rem;
+            }
+
+            .otp_logout {
+                display: flex;
+                align-items: center;
+                gap: 0.4rem;
+
+                button {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background-color: rgb(137 206 237);
+                    padding: 0.6rem;
+                    border-radius: 0.3rem;
+                    font-weight: 700;
+                    transition: var(--transition);
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: rgb(151, 189, 207);
+                        transition: var(--transition);
+                    }
+                }
+
+                .sms_logout {
+                    display: flex;
+                    background: #b95050;
+
+                    &:hover {
+                        background-color: rgb(209, 108, 108);
+                        transition: var(--transition);
+                    }
+                }
+            }
+
+        }
+
+        .hideSuccess {
+            display: none;
+        }
+
+        .showSuccess {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background: #e2e0e0;
+            gap: 0.3rem;
+
+            p {
+                display: flex;
+            }
+
+            .proceed_btn {
+                display: flex;
+
+                button {
+                    display: flex;
+                    padding: 0.3rem;
+                    background: #689968;
+                    font-weight: 800;
+                    border-radius: 0.2rem;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+}

@@ -82,13 +82,16 @@ router.put("/:id", (req, res) => {
 
 
 //delete a post
-router.delete("/:id", (req, res) => {
+router.delete("/:id/:user_id", (req, res) => {
     const id = req.params.id;
-    const q = "DELETE FROM posts WHERE id = ?";
-    db.query(q, [id], (err, data) => {
-        if (err) return res.send(err);
-        return res.json(data);
-    });
+    const user_id = req.params.user_id;
+    db.query(`DELETE FROM posts WHERE id = ${id} AND user_id = ${user_id}`,
+        (err, result) => {
+            if (err) {
+                console.log("Not found")
+            }
+            res.send(result)
+        });
 });
 
 export default router; 

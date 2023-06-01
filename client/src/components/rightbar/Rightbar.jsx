@@ -1,8 +1,8 @@
-import "./rightbar.scss"
+import "./rightbar.scss";
+import { AuthContext } from "../../context/AuthContext";
 import Online from "../online/Online";
 import axios from "axios";
 import { useContext, useState, useEffect, useRef } from "react";
-import { AuthContext } from "../../context/AuthContext";
 
 export default function Rightbar() {
   const { user } = useContext(AuthContext);
@@ -29,8 +29,12 @@ export default function Rightbar() {
     };
   }, [user]);
 
-    //Remove my user from followed list
-  const newFriends = onlineFriends?.filter((f) => f.followed !== user.user_id);
+  //Remove my user from followed list
+  const [newOnlineFriends, setNewOnlineFriends] = useState([]);
+  useEffect(() => {
+    const newFriends = onlineFriends?.filter((f) => f.followed !== user.user_id);
+    setNewOnlineFriends(newFriends);
+  }, [onlineFriends]);
 
   const showMorePeople = () => {
     setVisible((prevValue) => prevValue + 6);
@@ -48,7 +52,7 @@ export default function Rightbar() {
         <div className="rightbar_friends_container">
           <h4>Online Friends</h4>
           <ul >
-            {newFriends?.slice(0, visible).map((u, id) => (
+            {newOnlineFriends?.slice(0, visible).map((u, id) => (
               <Online key={id} onlineFriend={u} />
             ))}
             <button onClick={showMorePeople}>View more</button>

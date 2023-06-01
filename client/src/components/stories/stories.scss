@@ -3,7 +3,6 @@
 .stories {
     @include themify($themes) {
         display: flex;
-        //width: 100%;
         height: 100%;
         transition: var(--transition);
 
@@ -37,23 +36,17 @@
                     width: 100%;
                     height: 5rem;
                     bottom: 0;
-                    //border: 1px solid themed(textColor);
                     align-items: center;
                     gap: 0.5rem;
 
                     span {
-                        //position: absolute;
-                        //bottom: 10px;
-                        //left: 10px;
+
                         color: themed(textColor);
                         font-weight: 500;
                     }
 
                     .story_input_svg {
                         display: flex;
-                        //position: absolute;
-                        //bottom: 40px;
-                        //left: 10px;
                         width: 2rem;
                         height: 2rem;
                         background: #6372b3;
@@ -126,7 +119,6 @@
                     }
 
                     .story_Img {
-                        //width: 80%;
                         height: 87%;
                         position: relative;
                         padding: 0.3rem;

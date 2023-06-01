@@ -6,12 +6,15 @@ export default function Location({ formData, setFormData }) {
     const [getCountries, setGetCountries] = useState([]);
     const [getStates, setGetStates] = useState([]);
     const [getCities, setGetCities] = useState([]);
+    const axiosInstance = axios.create({
+        baseURL: process.env.REACT_APP_COUNTRY_URL,
+    });
 
 
     useEffect(() => {
         const getAllCountries = async () => {
             try {
-                const res = await axios.get("http://localhost:5000/api/countries");
+                const res = await axiosInstance.get("/countries");
                 setGetCountries(res.data)
             } catch (err) {
                 console.log(err)

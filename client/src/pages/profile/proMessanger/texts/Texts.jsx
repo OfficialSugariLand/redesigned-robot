@@ -2,7 +2,7 @@ import "./texts.scss";
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
 import { format } from "timeago.js";
-import noImage from "../../../../components/topbar/noimageavater/noimage.png";
+import noImage from "./noimageavater/noimage.png";
 import { useParams } from 'react-router-dom';
 
 
@@ -37,12 +37,11 @@ export default function Texts({ message, ownUser }) {
                 <div className="sugarChats_user">
                     {
                         message.sender_id === ownUser.user_id ?
-                            <img src={ownUser.profilePicture ? PF + ownUser.profilePicture : noImage}
+                            <img src={ownUser ? PF + ownUser.profilePicture : noImage}
                                 alt=""
                             />
                             :
-                            <img src={ownTextUser?.profilePicture ? PF + ownTextUser?.profilePicture : noImage
-                            }
+                            <img src={ownTextUser ? PF + ownTextUser?.profilePicture : noImage}
                                 alt=""
                             />
                     }
@@ -50,13 +49,16 @@ export default function Texts({ message, ownUser }) {
                 <div className="sugarChats_text_container">
                     <div className={`sugarChats_textArea ${message.sender_id === ownUser.user_id ? "own_texts" : "friend_texts"}`}>
                         {
-                            message.text !== "" &&
+                            message.text !== null &&
                             <p>{message.text}</p>
                         }
                     </div>
-                    <div className="sugarChats_img">
-                        <img src={PF + message.img} alt="" />
-                    </div>
+                    {
+                        message.img &&
+                        <div className="sugarChats_img">
+                            <img src={PF + message.img} alt="" />
+                        </div>
+                    }
                     <span className={`${message.sender_id === ownUser.user_id ? "own_time" : "friend_time"}`}>{format(message.date_time)}</span>
                 </div>
             </div>

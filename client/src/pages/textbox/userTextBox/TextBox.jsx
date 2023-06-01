@@ -2,35 +2,71 @@ import "./textBox.scss";
 import Topbar from "../../../components/topbar/Topbar";
 import axios from "axios";
 import { AuthContext } from "../../../context/AuthContext";
-import { useContext, useEffect, useReducer, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Conversations from "../conversations/Conversations";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 import CutieBeach from "../../../pages/about/images/cutie_on_beach.jpg";
-import Activity from "../../../components/footerActivity/Activity";
+import socketIOClient from "socket.io-client";
 
 function TextBox() {
     const { user } = useContext(AuthContext);
     const [conversations, setConversations] = useState([]);
-    const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
+    const [arrivalConversation, setArrivalConversation] = useState();
     const axiosInstance = axios.create({
         baseURL: process.env.REACT_APP_API_URL,
     });
 
-    //Get coversations members
+    //Use socket oi to send and get texts instant
     useEffect(() => {
-        const getConvs = async () => {
-            try {
-                const res = await axiosInstance.get("/conversations/" + user.user_id);
-                setConversations(res.data.sort((p1, p2) => {
-                    return new Date(p2.date_time) - new Date(p1.date_time);
-                })
-                );
-            } catch (err) {
-                console.log(err);
-            }
+        const socket = socketIOClient("http://localhost:4000/");
+        socket?.on("getConversation", (data) => {
+            setArrivalConversation({
+                user_id: data.receiverId,
+                user_two: data.senderId,
+                last_text: data.lastText,
+                img: data.img,
+                conversation_id: data.conversationId,
+                date_time: Date.now(),
+            });
+        });
+    }, []);
+
+    //Real time conversation rerender
+    useEffect(() => {
+        arrivalConversation &&
+            user.user_id === arrivalConversation?.user_id &&
+            setConversations((prev) => [arrivalConversation, ...prev]);
+    }, [arrivalConversation, user.user_id]);
+
+    //Get coversations members
+    let isRendered = useRef(false);
+    useEffect(() => {
+        isRendered = true;
+        axiosInstance
+            .get(`/conversations/${user.user_id}`)
+            .then(res => {
+                if (isRendered) {
+                    setConversations(res.data.sort((p1, p2) => {
+                        return new Date(p2.date_time) - new Date(p1.date_time);
+                    })
+                    );
+                }
+                return null;
+            })
+            .catch(err => console.log(err));
+        return () => {
+            isRendered = false;
         };
-        getConvs();
-    }, [user, ignored]);
+    }, [user]);
+
+    //Remove duplicates
+    const [newConId, setNewConId] = useState();
+    useEffect(() => {
+        const Newconversations = conversations?.filter((ele, ind) =>
+            ind === conversations?.findIndex(elem => elem.user_two === ele.user_two &&
+                elem.user_id === ele.user_id && elem.conversaion_id === ele.conversaion_id));
+        setNewConId(Newconversations);
+    }, [conversations])
 
     return (
         <div className="textBox">
@@ -39,10 +75,8 @@ function TextBox() {
                 <div className="textBox_left">
                     <input placeholder="Find user" />
                     {
-                        conversations?.map((c, id) =>
-                            <Conversations forceUpdate={forceUpdate} ignored={ignored} conversation={c} key={id}
-                                setConversations={setConversations}
-                            />
+                        newConId?.map((c, id) =>
+                            <Conversations conversation={c} key={id} />
                         )
                     }
                 </div>
@@ -56,7 +90,6 @@ function TextBox() {
                     </div>
                 </div>
             </div>
-            <Activity />
         </div>
     )
 }

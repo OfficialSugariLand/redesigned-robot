@@ -5,7 +5,6 @@ import { useContext, useEffect, useReducer, useState } from 'react';
 import { AuthContext } from '../../../../context/AuthContext';
 import { Link, useParams } from "react-router-dom";
 import CutieBeach from "../../../../pages/about/images/cutie_on_beach.jpg";
-import noImage from "../../../../components/topbar/noimageavater/noimage.png";
 import { FiArrowDownCircle } from "react-icons/fi";
 import { MdOutlineClose } from "react-icons/md";
 import { io } from "socket.io-client";
@@ -22,6 +21,7 @@ function SugarChats() {
     const [messages, setMessages] = useState([]);
     const [mdrop, setMdrop] = useState(false);
     const [socket, setSocket] = useState(null);
+    const mysocket = process.env.REACT_APP_SOCKET_URL;
     const [arrivalMessage, setArrivalMessage] = useState();
     const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
     const axiosInstance = axios.create({
@@ -30,7 +30,7 @@ function SugarChats() {
 
     //Use socket oi to send and get texts instant
     useEffect(() => {
-        setSocket(io("http://localhost:4000"));
+        setSocket(io(mysocket));
     }, []);
 
     useEffect(() => {
@@ -108,20 +108,11 @@ function SugarChats() {
                 </div>
                 <div className="textBox_middle">
                     <div className="textBox_middleTop">
-                        {
-                            curProfileUser ?
-                                (
-                                    <>
-                                        <img src={PF + curProfileUser.profilePicture ? PF + curProfileUser.profilePicture
-                                            : noImage} alt="" />
-                                        <span className="middleTop_usrName">{curProfileUser.username}</span>
-                                    </>
-                                )
-                                :
-                                (
-                                    ""
-                                )
-                        }
+                        <>
+                            <img src={curProfileUser ? PF + curProfileUser.profilePicture
+                                : PF + "person/noimage.png"} alt="" />
+                            <span className="middleTop_usrName">{curProfileUser?.username}</span>
+                        </>
                         <div className="middle_top_drop">
                             <button onClick={() => setMdrop(prev => !prev)}>
                                 {

@@ -226,7 +226,7 @@ export default function ProfileHead({ user }) {
                                 Images
                             </Link>
                             {(!user?.user_id || user?.user_id !== curUser?.user_id) &&
-                                <Link to={`/protext/${curUser?.user_id}`}>
+                                <Link to={`/textbox/sugarchat/${curUser?.user_id}`}>
                                     <button className="text_user">
                                         <ChatIcon />
                                         Message

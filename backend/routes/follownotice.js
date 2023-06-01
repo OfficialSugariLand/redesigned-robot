@@ -39,17 +39,6 @@ router.get("/:followed_id", (req, res) => {
         });
 });
 
-//delete a notification
-router.delete("/:id", (req, res) => {
-    const id = req.params.id;
-    const q = "DELETE FROM followednotice WHERE id = ?";
-    db.query(q, [id], (err, data) => {
-        if (err) return res.send(err);
-        return res.json(data);
-    });
-});
-
-
 //notification count
 router.post("/count", async (req, res) => {
     const q = "INSERT INTO followcount (`follower_id`,`followed_id`,`activities`) VALUES (?)";
@@ -75,6 +64,16 @@ router.get("/count/:followed_id", (req, res) => {
             }
             res.send(result)
         });
+});
+
+//delete a notification
+router.delete("/count/:followed_id", (req, res) => {
+    const followed_id = req.params.followed_id;
+    const q = "DELETE FROM followcount WHERE followed_id = ?";
+    db.query(q, [followed_id], (err, data) => {
+        if (err) return res.send(err);
+        return res.json(data);
+    });
 });
 
 export default router;

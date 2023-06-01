@@ -1,9 +1,0 @@
-@import "../../../style.scss";
-
-
-.textUsers {
-    @include themify($themes) {
-        display: flex;
-
-    }
-}

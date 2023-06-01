@@ -6,7 +6,7 @@ import { AuthContext } from "../../../context/AuthContext";
 import { Add, Remove } from "@material-ui/icons";
 import moment from 'moment';
 import Followings from "./Followings";
-import { io } from "socket.io-client";
+import socketIOClient from "socket.io-client";
 
 export default function ProfileRightbar() {
     const { user } = useContext(AuthContext);
@@ -16,15 +16,35 @@ export default function ProfileRightbar() {
     const [friends, setFriends] = useState([]);
     const [userFriends, setUserFriends] = useState([]);
     const [ignored, forceUpdate] = useReducer(x => x + 1, 0);
-    const [btnDisable, setBtnDisable] = useState(false);
+    const [arrivalFollower, setArrivalFollower] = useState();
     const socket = useRef();
     const axiosInstance = axios.create({
         baseURL: process.env.REACT_APP_API_URL,
     });
 
+    //Use socket oi to send and get texts instant
     useEffect(() => {
-        socket.current = io("ws://localhost:4000");
+        socket.current = socketIOClient("http://localhost:4000/");
     }, []);
+
+    //Take from socket
+    useEffect(() => {
+        const socket = socketIOClient("http://localhost:4000/");
+
+        socket?.on("getFollowing", (data) => {
+            setArrivalFollower({
+                follower: data.followerId,
+                followed: data.followedId,
+            });
+        });
+    }, []);
+
+    //Rerender likes when changes are made
+    useEffect(() => {
+        arrivalFollower &&
+            user.user_id === arrivalFollower?.follower &&
+            setUserFriends((prev) => [...prev, arrivalFollower]);
+    }, [arrivalFollower, user]);
 
     //Get Visited Page Users
     useEffect(() => {
@@ -33,7 +53,7 @@ export default function ProfileRightbar() {
             .get(`/users/${user_id}`)
             .then(res => {
                 if (isRendered) {
-                    setUserId(res.data);
+                    setUserId(res.data[0]);
                 }
                 return null;
             })
@@ -43,11 +63,12 @@ export default function ProfileRightbar() {
         };
     }, [user_id]);
 
-    //Get all param users following
+
+    //Get my user followings
     useEffect(() => {
         isRendered = true;
         axiosInstance
-            .get(`/followers/${user_id}`)
+            .get(`/followers/${user.user_id}`)
             .then(res => {
                 if (isRendered) {
                     setFriends(res.data);
@@ -58,13 +79,13 @@ export default function ProfileRightbar() {
         return () => {
             isRendered = false;
         };
-    }, [user_id, ignored]);
+    }, [user, ignored]);
 
-    //Get all following
+    //Get param user followed by me
     useEffect(() => {
         isRendered = true;
         axiosInstance
-            .get(`/followers`)
+            .get(`/followers/${user.user_id}/${user_id}`)
             .then(res => {
                 if (isRendered) {
                     setUserFriends(res.data);
@@ -75,23 +96,23 @@ export default function ProfileRightbar() {
         return () => {
             isRendered = false;
         };
-    }, [ignored]);
-
-    const curProfileUser = userId?.find((m) => m);   //visited page user
-    //Check if my user is following current profile user
-    const followedUser = userFriends?.find((m) => m.followed === curProfileUser?.user_id && m.follower === user.user_id);
+    }, [user, ignored]);
 
     //Follow a user
     const handleFollow = async () => {
         //Send message to socket.io
-        socket.current.emit("sendNotification", {
+        socket.current.emit("sendFollowNotice", {
             followerId: user.user_id,
-            followedId: curProfileUser?.user_id,
+            followedId: user_id,
             activity: "followed you",
+        });
+        socket.current.emit("sendFollowing", {
+            followerId: user.user_id,
+            followedId: user_id,
         });
         const followUser = {
             follower: user.user_id,
-            followed: curProfileUser.user_id,
+            followed: userId.user_id,
             user_id: user.user_id
         }
         try {
@@ -102,7 +123,7 @@ export default function ProfileRightbar() {
         //Send notification
         const followUserNotice = {
             follower_id: user.user_id,
-            followed_id: curProfileUser.user_id,
+            followed_id: userId.user_id,
             activities: "followed you"
         }
         try {
@@ -114,7 +135,7 @@ export default function ProfileRightbar() {
         //Send notification count
         const followCount = {
             follower_id: user.user_id,
-            followed_id: curProfileUser.user_id,
+            followed_id: userId.user_id,
             activities: "followed you"
         }
         try {
@@ -122,19 +143,19 @@ export default function ProfileRightbar() {
         } catch (err) {
             console.log(err);
         }
-        setBtnDisable(true);
-        setTimeout(() => {
-            setBtnDisable(false);
-            forceUpdate();
-        }, 2000)
     };
 
     //Unfollow a user
+    const [followingUser, setFollowingUser] = useState();
+    useEffect(() => {
+        const followingUsr = userFriends?.find((f) => f.followed === user_id)
+        setFollowingUser(followingUsr);
+    }, [userFriends]);
     const handleUnfollow = async () => {
         try {
-            await axiosInstance.delete("/followers", {
+            await axiosInstance.delete(`/followers/${followingUser?.followed}`, {
                 data: {
-                    id: followedUser.id
+                    followed: followingUser?.followed
                 }
 
             });
@@ -155,68 +176,61 @@ export default function ProfileRightbar() {
     return (
         <div className="profile_rightbar_container">
             {
-                (!curProfileUser?.user_id || curProfileUser?.user_id !== user.user_id) &&
+                (userId?.user_id !== user.user_id) &&
                 <div className="followControl">
-                    {
-                        followedUser ?
-                            <button className="rightbarFollowButton" onClick={handleUnfollow}>
-                                Unfollow
-                                <Remove />
-                            </button>
-                            :
-                            <button disabled={btnDisable === true} className="rightbarFollowButton" onClick={() => { handleFollow() }}>
-                                Follow
-                                <Add />
-                            </button>
+                    {followingUser ?
+                        <button className="rightbarFollowButton" onClick={handleUnfollow}>
+                            Unfollow
+                            <Remove />
+                        </button>
+                        :
+                        <button className="rightbarFollowButton" onClick={() => { handleFollow() }}>
+                            Follow
+                            <Add />
+                        </button>
                     }
                 </div>
             }
             <h4>User Information</h4>
             <div className="rightbarInfo">
-                {
-                    userId?.map((userInfo, id) =>
-                        <div key={id}>
-                            <div className="ProfileRightbarInfo">
-                                <span className="ProfileRightbarInfoKey">Country:</span>
-                                <span className="rightbarInfoValue">{userInfo?.country}</span>
-                            </div>
-                            <div className="ProfileRightbarInfo">
-                                <span className="ProfileRightbarInfoKey">State:</span>
-                                <span className="rightbarInfoValue">{userInfo?.state}</span>
-                            </div>
-                            <div className="ProfileRightbarInfo">
-                                <span className="ProfileRightbarInfoKey">City:</span>
-                                <span className="rightbarInfoValue">{userInfo?.city}</span>
-                            </div>
-                            <div className="ProfileRightbarInfo">
-                                <span className="ProfileRightbarInfoKey">Gender:</span>
-                                <span className="rightbarInfoValue">{userInfo?.gender}</span>
-                            </div>
-                            <div className="ProfileRightbarInfo">
-                                <span className="ProfileRightbarInfoKey">Sexuality:</span>
-                                <span className="rightbarInfoValue">{userInfo?.sexuality}</span>
-                            </div>
-                            <div className="ProfileRightbarInfo">
-                                <span className="ProfileRightbarInfoKey">Interested in:</span>
-                                <span className="rightbarInfoValue">{userInfo?.interest}</span>
-                            </div>
-                            <div className="ProfileRightbarInfo">
-                                <span className="ProfileRightbarInfoKey">Relationship:</span>
-                                <span className="rightbarInfoValue">{userInfo?.relationship}</span>
-                            </div>
-                            <div className="ProfileRightbarInfo">
-                                <span className="ProfileRightbarInfoKey">Age:</span>
-                                {
-                                    userCurAge > 0 &&
-                                    <span className="rightbarInfoValue">{userCurAge}</span>
-                                }
-                            </div>
-                        </div>
-                    )
-                }
+                <div className="ProfileRightbarInfo">
+                    <span className="ProfileRightbarInfoKey">Country:</span>
+                    <span className="rightbarInfoValue">{userId?.country}</span>
+                </div>
+                <div className="ProfileRightbarInfo">
+                    <span className="ProfileRightbarInfoKey">State:</span>
+                    <span className="rightbarInfoValue">{userId?.state}</span>
+                </div>
+                <div className="ProfileRightbarInfo">
+                    <span className="ProfileRightbarInfoKey">City:</span>
+                    <span className="rightbarInfoValue">{userId?.city}</span>
+                </div>
+                <div className="ProfileRightbarInfo">
+                    <span className="ProfileRightbarInfoKey">Gender:</span>
+                    <span className="rightbarInfoValue">{userId?.gender}</span>
+                </div>
+                <div className="ProfileRightbarInfo">
+                    <span className="ProfileRightbarInfoKey">Sexuality:</span>
+                    <span className="rightbarInfoValue">{userId?.sexuality}</span>
+                </div>
+                <div className="ProfileRightbarInfo">
+                    <span className="ProfileRightbarInfoKey">Interested in:</span>
+                    <span className="rightbarInfoValue">{userId?.interest}</span>
+                </div>
+                <div className="ProfileRightbarInfo">
+                    <span className="ProfileRightbarInfoKey">Relationship:</span>
+                    <span className="rightbarInfoValue">{userId?.relationship}</span>
+                </div>
+                <div className="ProfileRightbarInfo">
+                    <span className="ProfileRightbarInfoKey">Age:</span>
+                    {
+                        userCurAge > 0 &&
+                        <span className="rightbarInfoValue">{userCurAge}</span>
+                    }
+                </div>
             </div>
             <div>
-                {(!user.user_id || user.user_id === curProfileUser?.user_id) &&
+                {(!user.user_id || user.user_id === userId?.user_id) &&
                     <>
                         <h4>User friends</h4>
                         <div className="rightbarFollowings">
@@ -232,4 +246,3 @@ export default function ProfileRightbar() {
         </div>
     );
 };
-

@@ -17,14 +17,14 @@ export default function UserLocation() {
     const [userState, setUserState] = useState("");
     const [userCity, setUserCity] = useState("");
     const axiosInstance = axios.create({
-        baseURL: process.env.REACT_APP_API_URL,
+        baseURL: process.env.REACT_APP_COUNTRY_URL,
     });
 
     //Fetch countries
     useEffect(() => {
         const getAllCountries = async () => {
             try {
-                const res = await axios.get("/countries");
+                const res = await axiosInstance.get("/countries");
                 setGetCountries(res.data)
             } catch (err) {
                 console.log(err)

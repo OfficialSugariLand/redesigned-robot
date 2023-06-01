@@ -4,7 +4,7 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { format } from "timeago.js";
 
-export default function Follownotice({ followCount, followedDrop, forceUpdate }) {
+export default function Follownotice({ followers }) {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const [followerUsers, setFollowerUsers] = useState([]);
     const axiosInstance = axios.create({
@@ -14,46 +14,25 @@ export default function Follownotice({ followCount, followedDrop, forceUpdate })
     //Followed Users
     useEffect(() => {
         const getActivityImage = async () => {
-            const res = await axiosInstance.get("/users/" + followCount?.follower_id);
+            const res = await axiosInstance.get("/users/" + followers?.follower_id);
             setFollowerUsers(res.data);
         }
         getActivityImage();
-    }, [followCount]);
-
-    // delete followed count
-    useEffect(() => {
-        setTimeout(() => {
-            if (followedDrop === true) {
-                const deleteNotification = async () => {
-                    try {
-                        await axiosInstance.delete("/follownotice/" + followCount?.id, {
-                            data: {
-                                id: followCount?.id,
-                            },
-                        });
-                    } catch (err) {
-                        console.log(err);
-                    }
-                }
-                deleteNotification();
-            }
-        }, 500);
-        //forceUpdate();
-    })
+    }, [followers]);
 
     return (
         <div className="followed">
             {
                 followerUsers?.map((u, id) =>
                     <div className="user_followed_container" key={id}>
-                        <Link to={`/profile/${followCount?.follower_id}`}>
+                        <Link to={`/profile/${followers?.follower_id}`}>
                             <img src={u.profilePicture ? PF + u.profilePicture
                                 : PF + "person/1658876240053sugarisland.jpeg"} alt=""
                             />
                         </Link>
                         <span className="username_contain">{u?.username}</span>
-                        <span className="activities_contain">{followCount?.activities}</span>
-                        <span className="followed_date_format">{format(followCount?.date_time)}</span>
+                        <span className="activities_contain">{followers?.activities}</span>
+                        <span className="followed_date_format">{format(followers?.date_time)}</span>
                     </div>
                 )
             }

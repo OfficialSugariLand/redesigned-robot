@@ -29,16 +29,16 @@ router.post("/", async (req, res) => {
 
 
 //Unlike a post
-router.delete("/:post_id", (req, res) => {
-    const values = [
-        req.body.id
-    ];
+router.delete("/:liker/:post_id", (req, res) => {
+    const liker = req.params.liker;
     const post_id = req.params.post_id;
-    const q = " DELETE FROM likes WHERE id = ?";
-    db.query(q, [values, post_id], (err, data) => {
-        if (err) return res.send(err);
-        return res.json(data);
-    });
+    db.query(`DELETE FROM likes WHERE liker = ${liker} AND post_id = ${post_id}`,
+        (err, result) => {
+            if (err) {
+                console.log("Not found")
+            }
+            res.send(result)
+        });
 });
 
 

@@ -24,7 +24,7 @@ export default function Signup() {
         repeatPassword: "",
         profilePicture: "",
         coverPicture: "",
-        isAdmin: "false",
+        isVerified: "false",
         desc: "",
         dob: '',
         gender: "",

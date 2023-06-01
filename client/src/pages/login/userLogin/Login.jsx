@@ -10,16 +10,18 @@ import { Link } from "react-router-dom";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 
 export default function Login() {
-  const email = useRef();
+  const phone_num = useRef();
   const password = useRef();
   const { isFetching, dispatch } = useContext(AuthContext);
   const handleClick = (e) => {
     e.preventDefault();
-    loginCall({ email: email.current.value, password: password.current.value }, dispatch);
+    loginCall({ phone_num: phone_num.current.value, password: password.current.value }, dispatch);
 
   };
 
-  const [openEye, setOpenEye] = useState(false)
+  const [openEye, setOpenEye] = useState(false);
+
+  //const PHONE_REGEX = new RegExp(/"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"/gmi);
 
   //handle click state
   const handleClickEye = () => {
@@ -37,7 +39,7 @@ export default function Login() {
         <div className="user-Login-Right">
           <form className="login_box" onSubmit={handleClick}>
             <div className="user-Login-Input">
-              <input placeholder="Email" type={"email"} required className="login-Inputs" ref={email} />
+              <input placeholder="Phone number" type="" required className="login-Inputs" ref={phone_num} />
               <FaUserAlt className="user-icons" />
               <div className="user_icons_divider">|</div>
               <input placeholder="Password" type={(openEye === false) ? "password" : "text"} required minLength={6} className="login-Inputs" ref={password} />
@@ -50,7 +52,7 @@ export default function Login() {
               </div>
             </div>
             <div className="forgot-password">
-              <Link to={"/forgot-password"}>
+              <Link to={"/forgotpassword"}>
                 <span className="forgot-password-text">Forgot Password?</span>
               </Link>
             </div>

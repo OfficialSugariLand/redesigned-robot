@@ -371,17 +371,11 @@
                 }
             }
 
-            /* body.show_notify {
-                display: flex;
-                position: fixed !important;
-                overflow: hidden !important;
-            } */
-
             .show_textOpen {
                 display: flex;
                 position: absolute;
                 background: themed(bgSoft);
-                width: 13rem;
+                width: 16rem;
                 height: 17rem;
                 top: 4.3rem;
                 border-radius: 0rem 0rem 0.5rem 0.5rem;

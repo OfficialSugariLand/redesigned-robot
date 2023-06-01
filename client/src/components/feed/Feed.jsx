@@ -37,17 +37,6 @@ export default function Feed({ username }) {
       isRendered = false;
     };
   }, [user, ignored]);
-  /* useEffect(() => {
-    const fetchPosts = async () => {
-      const res = await axiosInstance.get("/posts/friends/" + user.user_id);
-      setLoading(true)
-      setFriendPosts(res.data.sort((p1, p2) => {
-        return new Date(p2.date_time) - new Date(p1.date_time);
-      })
-      );
-    };
-    fetchPosts();
-  }, [user, ignored]); */
 
   //Remove duplicates
   const newPosts = friendPosts?.filter((ele, ind) => ind === friendPosts?.findIndex(elem => elem.id === ele.id &&
@@ -58,7 +47,7 @@ export default function Feed({ username }) {
       <div className="feedWrapper">
         {(!user_id || user_id === user?.user_id) && <Share username={username} forceUpdate={forceUpdate} />}
         {newPosts.map((p, id) => (
-          <Post post={p} currentUser={user} key={id} ignored={ignored} forceUpdate={forceUpdate} />
+          <Post post={p} currentUser={user} key={id} forceUpdate={forceUpdate} />
         ))}
       </div>
     </div>

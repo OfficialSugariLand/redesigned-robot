@@ -3,6 +3,7 @@
 .view_posts {
     @include themify($themes) {
         display: flex;
+        flex-direction: column;
         position: fixed;
         width: 100%;
         height: 100vh;

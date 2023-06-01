@@ -1,7 +1,7 @@
 import "./proPosts.scss";
 import { format } from "timeago.js";
 import { AuthContext } from "../../../context/AuthContext";
-import { useContext, useEffect, useReducer, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Delete, MoreVert } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
 import { BsSuitHeart } from "react-icons/bs";
@@ -9,11 +9,12 @@ import HeartFilled from "../../../components/post/img/heartFilled.svg";
 import { BiArrowBack } from "react-icons/bi";
 import { useRef } from "react";
 import axios from "axios";
+import socketIOClient from "socket.io-client";
 
-export default function ProPosts({ post, user_id, ignored, forceUpdate }) {
+export default function ProPosts({ post, ignored, forceUpdate }) {
+    const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const { user } = useContext(AuthContext);
     const [postUser, setPostUser] = useState();
-    const PF = process.env.REACT_APP_PUBLIC_FOLDER;
     const [postEditModal, setPostEditModal] = useState(false);
     const [postEditDropdown, setPostEditDropdown] = useState(false);
     const [readMore, setReadMore] = useState(false);
@@ -22,11 +23,45 @@ export default function ProPosts({ post, user_id, ignored, forceUpdate }) {
     const [currentDesc, setCurrentDesc] = useState(post.desc);
     const [loaded, setLoaded] = useState(false);
     const [postLike, setPostLike] = useState();
+    const [postLikeUsers, setPostLikeUsers] = useState();
     const liked = postLike?.length;
-    const postLikeUser = postLike?.find((p) => p.liker === user.user_id); //Posts liked by me
+    const [userFriends, setUserFriends] = useState([]);
+    const socket = useRef();
+    const [arrivalLikes, setArrivalLikes] = useState();
     const axiosInstance = axios.create({
         baseURL: process.env.REACT_APP_API_URL,
     });
+
+    useEffect(() => {
+        const postLikeUser = postLike?.find((p) => p.liker === user.user_id); //Posts liked by me
+        setPostLikeUsers(postLikeUser);
+    }, [postLike, user])
+
+    //Send to socket
+    useEffect(() => {
+        socket.current = socketIOClient("http://localhost:4000/");
+    }, []);
+
+    //Take from socket
+    useEffect(() => {
+        const socket = socketIOClient("http://localhost:4000/");
+
+        socket?.on("getLiker", (data) => {
+            setArrivalLikes({
+                liker: data.senderId,
+                post_id: data.postId,
+            });
+        });
+    }, []);
+
+    //Rerender likes when changes are made
+    useEffect(() => {
+        arrivalLikes &&
+            post?.id === arrivalLikes?.post_id && arrivalLikes?.liker === user.user_id &&
+            setPostLike((prev) => [...prev, arrivalLikes]);
+    }, [arrivalLikes, post.id, user]);
+
+    //console.log(arrivalLikes)
 
     //Get Post Users
     useEffect(() => {
@@ -52,6 +87,16 @@ export default function ProPosts({ post, user_id, ignored, forceUpdate }) {
 
     //Like a post
     const LikePosts = async () => {
+        socket.current.emit("sendLikes", {
+            senderId: user.user_id,
+            receiverId: post?.user_id,
+            postId: post?.id,
+            activity: "likes your post"
+        });
+        socket.current.emit("sendLiker", {
+            senderId: user.user_id,
+            postId: post?.id,
+        });
         const values = {
             liker: user.user_id,
             post_id: post?.id,
@@ -88,15 +133,15 @@ export default function ProPosts({ post, user_id, ignored, forceUpdate }) {
         catch (err) {
             console.log(err);
         }
-        forceUpdate();
     }
 
     //Unlike a post
     const UnlikePost = async () => {
         try {
-            await axiosInstance.delete("/likes/" + postLikeUser?.post_id, {
+            await axiosInstance.delete(`/likes/${user.user_id}/${postLikeUsers?.post_id}`, {
                 data: {
-                    id: postLikeUser?.id
+                    liker: user.user_id,
+                    post_id: postLikeUsers?.post_id
                 }
             });
         }
@@ -110,6 +155,22 @@ export default function ProPosts({ post, user_id, ignored, forceUpdate }) {
     const showAllBtn = () => {
         setReadMore(prevState => !prevState)
     };
+
+    //Check if my user is following post user
+    const followedUser = userFriends?.find((m) => m.followed === post?.user_id && m.follower === user.user_id);
+
+    //Get all following
+    useEffect(() => {
+        const getFriends = async () => {
+            try {
+                const friendList = await axiosInstance.get("/followers");
+                setUserFriends(friendList.data);
+            } catch (err) {
+                console.log(err);
+            }
+        };
+        getFriends();
+    }, []);
 
     //Post submit after edit
     const handlePostEdit = async (e) => {
@@ -131,8 +192,8 @@ export default function ProPosts({ post, user_id, ignored, forceUpdate }) {
         }
     };
 
-    //Observer
     useEffect(() => {
+        //https://www.youtube.com/watch?v=5L_XYLTjgiQ
         let observer = new window.IntersectionObserver(function (entries, self) {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
@@ -157,26 +218,13 @@ export default function ProPosts({ post, user_id, ignored, forceUpdate }) {
         image.src = image.dataset.src;
     }
 
-    //Click outside to close post edit
-    useEffect(() => {
-        let handler = (e) => {
-            if (!menuRef.current.contains(e.target)) {
-                setPostEditDropdown(false);
-            }
-        };
-        document.addEventListener("mousedown", handler);
-        return () => {
-            document.removeEventListener("mousedown", handler);
-        }
-    });
-
     //Delete a post
     const handleDelete = async () => {
         if (post?.user_id !== user.user_id) {
             console.log("Not your post")
         } else {
             try {
-                await axiosInstance.delete("/posts/" + post.id, {
+                await axiosInstance.delete(`/posts/${post.id}/${user.user_id}`, {
                     data: {
                         userId: user._id,
                     },
@@ -190,6 +238,20 @@ export default function ProPosts({ post, user_id, ignored, forceUpdate }) {
             forceUpdate()
         }, 1000)
     };
+
+    //Click outside to close post edit
+    useEffect(() => {
+        //https://www.youtube.com/watch?v=HfZ7pdhS43s
+        let handler = (e) => {
+            if (!menuRef.current.contains(e.target)) {
+                setPostEditDropdown(false);
+            }
+        };
+        document.addEventListener("mousedown", handler);
+        return () => {
+            document.removeEventListener("mousedown", handler);
+        }
+    });
 
     return (
         <div className={`proPosts ${loaded ? "loaded" : "loading"}`} src={""} data-src={PF + post.img} onLoad={() => setLoaded(true)}>
@@ -207,33 +269,28 @@ export default function ProPosts({ post, user_id, ignored, forceUpdate }) {
 
                     <span className="post_Date">{format(post.date_time)}</span>
                 </div>
-                {
-                    (!user_id || user_id === user.user_id) &&
-                    <>
-                        <div className="post_upper_right" onClick={() => setPostEditDropdown(prev => !prev)} ref={menuRef}>
-                            <MoreVert />
+                <div className="post_upper_right" onClick={() => setPostEditDropdown(prev => !prev)} ref={menuRef}>
+                    <MoreVert />
+                </div>
+                <div className={`post_edit_dropdown ${postEditDropdown ? 'show_edit_dropdown' : 'hide_edit_dropdown'}`} ref={menuRef}>
+                    <li title="Edit post" onClick={() => { setPostEditModal(prev => !prev) }}>
+                        <EditIcon />
+                    </li>
+                    <li title="Delete post" onClick={handleDelete}>
+                        <Delete />
+                    </li>
+                    <div className={`post_edit_container ${postEditModal ? "show_post_edit" : "hide_post_edit"}`}>
+                        <BiArrowBack onClick={() => { setPostEditModal(prev => !prev) }} />
+                        <div className="post_edit_wrapper">
+                            <input placeholder={""} value={currentDesc} ref={desc} onChange={(e) => setCurrentDesc(e.target.value)} />
                         </div>
-                        <div className={`post_edit_dropdown ${postEditDropdown ? 'show_edit_dropdown' : 'hide_edit_dropdown'}`} ref={menuRef}>
-                            <li title="Edit post" onClick={() => { setPostEditModal(prev => !prev) }}>
-                                <EditIcon />
-                            </li>
-                            <li title="Delete post" onClick={handleDelete}>
-                                <Delete />
-                            </li>
-                            <div className={`post_edit_container ${postEditModal ? "show_post_edit" : "hide_post_edit"}`}>
-                                <BiArrowBack onClick={() => { setPostEditModal(prev => !prev) }} />
-                                <div className="post_edit_wrapper">
-                                    <input placeholder={""} value={currentDesc} ref={desc} onChange={(e) => setCurrentDesc(e.target.value)} />
-                                </div>
-                                <form onSubmit={handlePostEdit}>
-                                    <div className="editPostRight">
-                                        <button type="submit">Update</button>
-                                    </div>
-                                </form>
+                        <form onSubmit={handlePostEdit}>
+                            <div className="editPostRight">
+                                <button type="submit">Update</button>
                             </div>
-                        </div>
-                    </>
-                }
+                        </form>
+                    </div>
+                </div>
             </div>
             <div className="postText_dotContainer">
                 <span className="spanText" id="readAll" onClick={showAllBtn}>{readMore ? post?.desc : post?.desc.substr(0, 200)}
@@ -252,51 +309,32 @@ export default function ProPosts({ post, user_id, ignored, forceUpdate }) {
                 <img src={PF + post.img} alt="" />
             </div>
             <div className="post_bottom">
-                <div className="post_bottom_left">
+                <>
                     {
-                        postLike?.length > 0 ?
-                            <>
-                                {
-                                    postLikeUser ?
-                                        <button onClick={UnlikePost}>
-                                            <img src={HeartFilled} alt="" />
-                                        </button>
-                                        :
-                                        <button onClick={() => { LikePosts(); }}>
-                                            <BsSuitHeart />
-                                        </button>
-                                }
-                                {
-                                    liked
-                                        ?
-                                        (
-                                            <div>
-                                                {liked > 1 ? (<span>{liked} likes</span>) : (<span>{liked} like</span>)}
-                                            </div>
-                                        )
-                                        :
-                                        ("")
-                                }
-                            </>
+                        postLikeUsers ?
+                            <button onClick={UnlikePost}>
+                                <img src={HeartFilled} alt="" />
+                            </button>
                             :
-                            <>
-                                <button onClick={() => { LikePosts(); }}>
-                                    <BsSuitHeart />
-                                </button>
-                                {
-                                    liked
-                                        ?
-                                        (
-                                            <div>
-                                                {liked > 1 ? (<span>{liked} likes</span>) : (<span>{liked} like</span>)}
-                                            </div>
-                                        )
-                                        :
-                                        ("")
-                                }
-                            </>
+                            <button onClick={() => { LikePosts() }}>
+                                <BsSuitHeart />
+                            </button>
                     }
-                </div>
+                </>
+
+                <>
+                    {
+                        liked
+                            ?
+                            (
+                                <div className="like_count">
+                                    {liked > 1 ? (<span>{liked} likes</span>) : (<span>{liked} like</span>)}
+                                </div>
+                            )
+                            :
+                            ("")
+                    }
+                </>
             </div>
         </div>
     )

@@ -6,7 +6,6 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        //height: 50px;
         background: themed(bgSoft);
         padding: 10px;
 
@@ -37,18 +36,64 @@
             align-items: center;
             gap: 10px;
 
+            .cancel_filebtn {
+                display: flex;
+                position: relative;
+
+                .btn_file_cancel {
+                    display: flex;
+                    position: absolute;
+                    background: #dc6868;
+                    right: 1px;
+                    width: 1rem;
+                    height: 1rem;
+                    border-radius: 50%;
+                    color: #7e3f3f;
+                    cursor: pointer;
+                }
+            }
+
             svg {
                 color: themed(textColor);
                 font-size: larger;
                 cursor: pointer;
             }
 
-            button {
+            .text_only_btn {
+                display: none;
                 border: none;
                 padding: 1rem 1.5rem;
                 color: themed(textColor);
                 background: linear-gradient(45deg, rgb(149, 87, 149), transparent);
-                //background: rgb(149 87 149);
+                border-radius: 0.4rem;
+                cursor: pointer;
+            }
+
+            .file_only_btn {
+                display: none;
+                border: none;
+                padding: 1rem 1.5rem;
+                color: themed(textColor);
+                background: linear-gradient(45deg, rgb(16, 53, 27), transparent);
+                border-radius: 0.4rem;
+                cursor: pointer;
+            }
+
+            .file_text_btn {
+                display: none;
+                border: none;
+                padding: 1rem 1.5rem;
+                color: themed(textColor);
+                background: linear-gradient(45deg, rgb(36, 26, 82), transparent);
+                border-radius: 0.4rem;
+                cursor: pointer;
+            }
+
+            .null_btn {
+                border: none;
+                padding: 1rem 1.5rem;
+                color: themed(textColor);
+                background: linear-gradient(45deg, rgb(165, 165, 165), transparent);
                 border-radius: 0.4rem;
                 cursor: pointer;
             }

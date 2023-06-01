@@ -1,0 +1,53 @@
+@import "../../../style.scss";
+
+
+.textUsers {
+    @include themify($themes) {
+        display: flex;
+        width: 100%;
+        height: 3.5rem;
+        background: themed(textUserbg);
+        padding: 0.2rem;
+        border-radius: 0.5rem;
+
+        .text_users_container {
+            display: flex;
+            width: 100%;
+
+            a {
+                display: flex;
+                width: 100%;
+                color: themed(textColor);
+                align-items: center;
+                gap: 0.3rem;
+
+                img {
+                    width: 2.5rem;
+                    height: 2.5rem;
+                    border-radius: 50%;
+
+                }
+
+                .textUser_cred {
+                    display: flex;
+                    flex-direction: column;
+                    width: 100%;
+
+                    .text_usern_time {
+                        display: flex;
+
+                        .text_date_time {
+                            display: flex;
+                            font-size: 10px;
+                            font-weight: 600;
+                            width: 100%;
+                            justify-content: flex-end;
+                        }
+                    }
+                }
+            }
+
+        }
+
+    }
+}

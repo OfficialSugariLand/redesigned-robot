@@ -116,7 +116,6 @@
                         bottom: 0;
                         align-items: center;
                         justify-content: center;
-
                         background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
                         backdrop-filter: blur(10px);
                         border-radius: 20px;
@@ -300,6 +299,7 @@
 
                 .change_user_input {
                     width: 100%;
+                    //height: 100vh;
                     position: absolute;
                     right: 0;
                     left: 0;
@@ -307,7 +307,6 @@
                     bottom: 0;
                     align-items: center;
                     justify-content: center;
-
                     background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
                     backdrop-filter: blur(10px);
                     border-radius: 20px;
@@ -404,30 +403,6 @@
             }
         }
 
-        @media screen and (max-width: 600px) {
-            &.location_settings {
-                height: 84vh;
-                position: relative;
-
-                .location_windows {
-                    display: none;
-                }
-
-                form .change_user_input .user_location_info {
-                    width: 90%;
-                    height: 60%;
-                }
-            }
-        }
-
-        @media screen and (min-width: 600px) {
-            &.location_settings {
-                .location_mobile {
-                    display: none;
-                }
-            }
-        }
-
         .info_success {
             display: flex;
             position: absolute;
@@ -464,6 +439,36 @@
 
         .hide_info_success {
             display: none;
+        }
+
+        @media screen and (max-width: 600px) {
+            &.location_settings {
+                height: 84vh;
+                position: relative;
+
+                .location_windows {
+                    display: none;
+                }
+
+                form .change_user_input .user_location_info {
+                    width: 90%;
+                    height: 60%;
+                }
+
+                .change_user_input {
+                    height: 100vh;
+                    border-radius: 0px !important;
+                }
+            }
+        }
+
+        @media screen and (min-width: 600px) {
+            &.location_settings {
+                .location_mobile {
+                    display: none;
+                }
+
+            }
         }
     }
 }
