@@ -300,6 +300,10 @@
         @media screen and (max-width: 600px) {
             &.post {
                 width: 100%;
+
+                .postImg_container {
+                    max-height: 25rem;
+                }
             }
         }
     }
