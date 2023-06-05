@@ -1,9 +1,9 @@
 import "./userGeneral.scss";
 import { useContext } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../../context/AuthContext";
 import Description from "./description/Description";
 import Password from "./passset/Password";
-import Username from "./children/Username";
+import Username from "./username/Username";
 import { Link } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
 

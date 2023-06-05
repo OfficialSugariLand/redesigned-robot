@@ -9,24 +9,30 @@ import { IoLogoWhatsapp } from "react-icons/io";
 
 export default function Contact() {
   return (
-    <div className="contact-us-page">
+    <div className="contactUs">
       <Topbar />
       <Header title="Contact us" image={SugarImg}>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        Doloremque tempore iste labore obcaecati provident dignissimos aut non atque,
-        vel eveniet.
+        Sugar iLand relies on your contributions to keep growing and it is her duty to listen to all users around the globe,
+        if there's any issue encountered please use of the methods below to reach out to technical department to fix the issue
+        in order to keep serving you a more user friendly application, in a single click below your report will be heard.
       </Header>
       <section className="contact">
-        <div className="container contact_container">
+        <div className="contact_container">
           <div className="contact_wrapper">
             <a href="mailto:sugariland@gmail.com" target="_blank" rel="noreferrer noopener">
-              <MdEmail />
+              <div className="messengerGmail">
+                <MdEmail />
+              </div>
             </a>
             <a href="http://m.me/100079946314990" target="_blank" rel="noreferrer noopener">
-              <BsMessenger />
+              <div className="messengerFB">
+                <BsMessenger />
+              </div>
             </a>
-            <a href="http://wa.me/+234" target="_blank" rel="noreferrer noopener">
-              <IoLogoWhatsapp />
+            <a href="http://wa.me/+2349166494702" target="_blank" rel="noreferrer noopener">
+              <div className="messengerWhatsapp">
+                <IoLogoWhatsapp />
+              </div>
             </a>
           </div>
         </div>

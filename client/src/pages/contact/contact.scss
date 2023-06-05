@@ -1,35 +1,76 @@
 @import "../../style.scss";
 
-.contact-us-page {
+.contactUs {
     @include themify($themes) {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+        width: 100vw;
         background: themed(bg);
 
-        .contact_container {
-            display: grid;
-            place-items: center;
-            padding: 1rem;
+        .contact {
+            display: flex;
+            height: 60%;
+            width: 100%;
+            justify-content: center;
+            align-items: flex-end;
 
-            .contact_wrapper {
-                width: fit-content;
-                display: flex;
-                gap: 2rem;
+            .contact_container {
+                place-items: center;
+                padding: 1rem;
 
-                a {
-                    background: themed(bgSoft);
-                    font-size: 2rem;
-                    border: 2px solid transparent;
-                    transition: var(--transition);
-                    padding: 1rem;
-                    border-radius: 1.5rem;
-                    color: themed(textColor);
-                }
+                .contact_wrapper {
+                    width: fit-content;
+                    display: flex;
+                    gap: 2rem;
 
-                a:hover {
-                    background: transparent;
-                    border-color: themed(textColor);
+                    a {
+                        background: themed(bgSoft);
+                        font-size: 2rem;
+                        border: 2px solid transparent;
+                        transition: var(--transition);
+                        padding: 1rem;
+                        border-radius: 1.5rem;
+                        color: themed(textColor);
+
+                        .messengerGmail {
+                            display: flex;
+
+                            svg {
+                                display: flex;
+                                color: rgb(247, 107, 123);
+                            }
+                        }
+
+                        .messengerFB {
+                            display: flex;
+
+                            svg {
+                                display: flex;
+                                color: rgb(107, 107, 247);
+                            }
+                        }
+
+                        .messengerWhatsapp {
+                            display: flex;
+
+                            svg {
+                                display: flex;
+                                color: rgb(107, 247, 147);
+                            }
+                        }
+
+                        &:hover {
+                            background: transparent;
+                            border-color: themed(textColor);
+                            transition: var(--transition);
+                        }
+                    }
                 }
             }
         }
+
+
     }
 
     @media screen and (max-width: 600px) {

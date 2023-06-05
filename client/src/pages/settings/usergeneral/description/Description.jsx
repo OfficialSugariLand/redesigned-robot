@@ -1,10 +1,10 @@
 import "./description.scss";
 import axios from 'axios';
 import React, { useContext, useRef, useState } from 'react'
-import { AuthContext } from '../../../context/AuthContext';
+import { AuthContext } from '../../../../context/AuthContext';
 import { BiArrowBack } from "react-icons/bi";
 import Backdrop from '@mui/material/Backdrop';
-import sugarilandlogo from "../../../components/topbar/sugarilandlogo/sugarilandlogo.png";
+import sugarilandlogo from "../../../../components/topbar/sugarilandlogo/sugarilandlogo.png";
 
 export default function Description() {
     const { user, updateUserDesc } = useContext(AuthContext);
@@ -73,7 +73,9 @@ export default function Description() {
             {
                 loading ?
                     <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open>
-                        <img className="sugariLand_logo_loader" src={sugarilandlogo} alt="" />
+                        <div className="sugar_loader_content">
+                            <img className="sugariLand_logo_loader" src={sugarilandlogo} alt="" />
+                        </div>
                     </Backdrop>
                     :
                     <div className="user_desc_container">

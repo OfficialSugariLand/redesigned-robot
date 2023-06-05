@@ -13,7 +13,7 @@ export default function About() {
       <Topbar />
       <Header title="About Us" image={HeaderImage} className="about_main_header">
         Sugar iLand connects you with people of same interest
-        to save you from boring life and awkward moments
+        to save you from awkward moments
       </Header>
       <section className="about_sugar">
         <div className="container sugar_about_container">

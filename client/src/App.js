@@ -17,7 +17,7 @@ import { DarkModeContext } from "./context/darkModeContext";
 import Signup from "./pages/register/signup/Signup";
 import TextBox from "./pages/textbox/userTextBox/TextBox";
 import SugarChats from "./pages/textbox/sugarChats/SugarChats";
-import UserGeneral from "./pages/settings/UserGeneral";
+import UserGeneral from "./pages/settings/usergeneral/UserGeneral";
 import UserPersonal from "./pages/settings/userpersonal/UserPersonal";
 import UserLocation from "./pages/settings/userlocation/UserLocation";
 import ForgotPass from "./pages/login/forgotPass/ForgotPass";

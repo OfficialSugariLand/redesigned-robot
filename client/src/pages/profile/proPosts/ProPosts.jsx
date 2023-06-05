@@ -10,6 +10,7 @@ import { BiArrowBack } from "react-icons/bi";
 import { useRef } from "react";
 import axios from "axios";
 import socketIOClient from "socket.io-client";
+import { useParams } from "react-router-dom";
 
 export default function ProPosts({ post, ignored, forceUpdate }) {
     const PF = process.env.REACT_APP_PUBLIC_FOLDER;
@@ -18,6 +19,7 @@ export default function ProPosts({ post, ignored, forceUpdate }) {
     const [postEditModal, setPostEditModal] = useState(false);
     const [postEditDropdown, setPostEditDropdown] = useState(false);
     const [readMore, setReadMore] = useState(false);
+    const user_id = useParams();
     const menuRef = useRef();
     const desc = useRef();
     const [currentDesc, setCurrentDesc] = useState(post.desc);
@@ -67,10 +69,12 @@ export default function ProPosts({ post, ignored, forceUpdate }) {
     useEffect(() => {
         const fetchUser = async () => {
             const res = await axiosInstance.get(`/users/${post?.user_id}`);
-            setPostUser(res.data);
+            setPostUser(res.data[0]);
         };
         fetchUser();
-    }, [post]);
+    }, [user_id]);
+
+    console.log(postUser)
 
     //Get post likes
     useEffect(() => {
@@ -254,62 +258,53 @@ export default function ProPosts({ post, ignored, forceUpdate }) {
     });
 
     return (
-        <div className={`proPosts ${loaded ? "loaded" : "loading"}`} src={""} data-src={PF + post.img} onLoad={() => setLoaded(true)}>
-            <div className="proPosts_upper_container">
-                <div className="proPosts_img_container">
-                    {
-                        postUser?.map((p, id) =>
-                            <div className="pro_post_img_usrname" key={id}>
-                                <img src={p.profilePicture ? PF + p.profilePicture :
-                                    PF + "person/1658876240053sugarisland.jpeg"} alt="" />
-                                <span className="postUsername">{p.username}</span>
-                            </div>
-                        )
-                    }
-
-                    <span className="post_Date">{format(post.date_time)}</span>
-                </div>
-                <div className="post_upper_right" onClick={() => setPostEditDropdown(prev => !prev)} ref={menuRef}>
-                    <MoreVert />
-                </div>
-                <div className={`post_edit_dropdown ${postEditDropdown ? 'show_edit_dropdown' : 'hide_edit_dropdown'}`} ref={menuRef}>
-                    <li title="Edit post" onClick={() => { setPostEditModal(prev => !prev) }}>
-                        <EditIcon />
-                    </li>
-                    <li title="Delete post" onClick={handleDelete}>
-                        <Delete />
-                    </li>
-                    <div className={`post_edit_container ${postEditModal ? "show_post_edit" : "hide_post_edit"}`}>
-                        <BiArrowBack onClick={() => { setPostEditModal(prev => !prev) }} />
-                        <div className="post_edit_wrapper">
-                            <input placeholder={""} value={currentDesc} ref={desc} onChange={(e) => setCurrentDesc(e.target.value)} />
+        <div className={`profile_post ${loaded ? "loaded" : "loading"}`} onLoad={() => setLoaded(true)}>
+            <div className="post_wrapper">
+                <div className="post_upper_container">
+                    <div className="postImgDrop_control">
+                        <img className="postUpper_Img" src={postUser?.profilePicture ? PF + postUser?.profilePicture
+                            : PF + "person/1658876240053sugarisland.jpeg"} alt=""
+                        />
+                        <div className="usrname_postTime">
+                            <span className="postUsername">{postUser?.username}</span>
+                            < span className="post_Date">{format(post.date_time)}</span>
                         </div>
-                        <form onSubmit={handlePostEdit}>
-                            <div className="editPostRight">
-                                <button type="submit">Update</button>
-                            </div>
-                        </form>
                     </div>
-                </div>
-            </div>
-            <div className="postText_dotContainer">
-                <span className="spanText" id="readAll" onClick={showAllBtn}>{readMore ? post?.desc : post?.desc.substr(0, 200)}
                     {
-                        post?.desc.length > 200 && "....."
+                        (!user.user_id || user.user_id === user.user_id) &&
+                        <div className="post_edit_delete" ref={menuRef}>
+                            <div className="post_upper_right" onClick={() => setPostEditDropdown(prev => !prev)} >
+                                <MoreVert />
+                            </div>
+                            <div className={`post_edit_dropdown ${postEditDropdown ? 'show_edit_dropdown' : 'hide_edit_dropdown'}`}>
+                                <li title="Edit post" onClick={() => { setPostEditModal(prev => !prev) }}>
+                                    <EditIcon />
+                                </li>
+                                <li title="Delete post" onClick={handleDelete}>
+                                    <Delete />
+                                </li>
+                                <div className={`post_edit_container ${postEditModal ? "show_post_edit" : "hide_post_edit"}`}>
+                                    <BiArrowBack onClick={() => { setPostEditModal(prev => !prev) }} />
+                                    <div className="post_edit_wrapper">
+                                        <input placeholder={""} value={currentDesc} ref={desc} onChange={(e) => setCurrentDesc(e.target.value)} />
+                                    </div>
+                                    <form onSubmit={handlePostEdit}>
+                                        <div className="editPostRight">
+                                            <button type="submit">Update</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
                     }
-                </span>
-                {
-                    post?.desc.length > 200 &&
-                    <button onClick={showAllBtn} id="readAll">
-                        {readMore ? "Read Less" : "...Read More"}
-                    </button>
-                }
-            </div>
-            <div className="post_photos">
-                <img src={PF + post.img} alt="" />
-            </div>
-            <div className="post_bottom">
-                <>
+                </div>
+                <div className="postText_dotContainer">
+
+                </div>
+                <div className="postImg_container">
+                    <img src={PF + post.img} alt="" />
+                </div>
+                <div className="post_bottom">
                     {
                         postLikeUsers ?
                             <button onClick={UnlikePost}>
@@ -320,9 +315,6 @@ export default function ProPosts({ post, ignored, forceUpdate }) {
                                 <BsSuitHeart />
                             </button>
                     }
-                </>
-
-                <>
                     {
                         liked
                             ?
@@ -334,7 +326,7 @@ export default function ProPosts({ post, ignored, forceUpdate }) {
                             :
                             ("")
                     }
-                </>
+                </div>
             </div>
         </div>
     )

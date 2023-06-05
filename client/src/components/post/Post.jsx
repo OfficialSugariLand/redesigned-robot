@@ -308,130 +308,109 @@ export default function Post({ post, forceUpdate }) {
     });
 
     return (
-        <div className={`post ${loaded ? "loaded" : "loading"}`} src={""} data-src={PF + post.img} onLoad={() => setLoaded(true)}>
-            {
-                post?.follower === user.user_id &&
-                <>
-                    <div className="post_upper_container">
-                        <div className="post_img_container">
-                            {
-                                postUser?.map((p, id) =>
-                                    <div key={id}>
-                                        <Link to={`/profile/${p.user_id}`}>
-                                            <img
-                                                src={p.profilePicture ? PF + p.profilePicture :
-                                                    PF + "person/1658876240053sugarisland.jpeg"} alt=""
-                                            />
-                                            <div className="usrname_postTime">
-                                                <span className="postUsername">{p.username}</span>
-                                                < span className="post_Date">{format(post.date_time)}</span>
-                                            </div>
-                                        </Link>
-                                        {(!p.user_id || p.user_id !== user.user_id) &&
-                                            <div className="view_profile_dropdown">
-                                                <img className="sugar_cover" src={ProfileImage} alt="Profile Cover" />
-                                                <img className="user_img_drop_view" src={p.profilePicture ? PF + p.profilePicture :
-                                                    PF + "person/1658876240053sugarisland.jpeg"} alt=""
-                                                />
-                                                <span>{p.username}</span>
+        <div className={`post ${loaded ? "loaded" : "loading"}`} onLoad={() => setLoaded(true)}>
+            <div className="post_wrapper">
+                <div className="post_upper_container">
+                    {
+                        postUser?.map((p, id) =>
+                            <div className="postImgDrop_control" key={id}>
+                                <Link to={`/profile/${p.user_id}`}>
+                                    <img className="postUpper_Img"
+                                        src={p.profilePicture ? PF + p.profilePicture :
+                                            PF + "person/1658876240053sugarisland.jpeg"} alt=""
+                                    />
+                                    <div className="usrname_postTime">
+                                        <span className="postUsername">{p.username}</span>
+                                        < span className="post_Date">{format(post.date_time)}</span>
+                                    </div>
+                                </Link>
+                                {(!p.user_id || p.user_id !== user.user_id) &&
+                                    <div className="view_profile_dropdown">
+                                        <img className="sugar_cover" src={ProfileImage} alt="Profile Cover" />
+                                        <img className="user_img_drop_view" src={p.profilePicture ? PF + p.profilePicture :
+                                            PF + "person/1658876240053sugarisland.jpeg"} alt=""
+                                        />
+                                        <span>{p.username}</span>
 
-                                                <div className="follow_control">
-                                                    {
-                                                        followedUser ?
-                                                            <button className="dropdown_follow_btn" onClick={handleUnfollow}>
-                                                                Unfollow
-                                                                <Remove />
-                                                            </button>
-                                                            :
-                                                            <button className="dropdown_follow_btn" onClick={handleFollow}>
-                                                                Follow
-                                                                <Add />
-                                                            </button>
-                                                    }
-                                                </div>
-                                            </div>
-                                        }
-                                    </div>
-                                )}
-                        </div>
-                        {
-                            (!user.user_id || user.user_id === user.user_id) &&
-                            <div className="post_edit_delete" ref={menuRef}>
-                                <div className="post_upper_right" onClick={() => setPostEditDropdown(prev => !prev)} >
-                                    <MoreVert />
-                                </div>
-                                <div className={`post_edit_dropdown ${postEditDropdown ? 'show_edit_dropdown' : 'hide_edit_dropdown'}`}>
-                                    <li title="Edit post" onClick={() => { setPostEditModal(prev => !prev) }}>
-                                        <EditIcon />
-                                    </li>
-                                    <li title="Delete post" onClick={handleDelete}>
-                                        <Delete />
-                                    </li>
-                                    <div className={`post_edit_container ${postEditModal ? "show_post_edit" : "hide_post_edit"}`}>
-                                        <BiArrowBack onClick={() => { setPostEditModal(prev => !prev) }} />
-                                        <div className="post_edit_wrapper">
-                                            <input placeholder={""} value={currentDesc} ref={desc} onChange={(e) => setCurrentDesc(e.target.value)} />
+                                        <div className="follow_control">
+                                            {
+                                                followedUser ?
+                                                    <button className="dropdown_follow_btn" onClick={handleUnfollow}>
+                                                        Unfollow
+                                                        <Remove />
+                                                    </button>
+                                                    :
+                                                    <button className="dropdown_follow_btn" onClick={handleFollow}>
+                                                        Follow
+                                                        <Add />
+                                                    </button>
+                                            }
                                         </div>
-                                        <form onSubmit={handlePostEdit}>
-                                            <div className="editPostRight">
-                                                <button type="submit">Update</button>
-                                            </div>
-                                        </form>
                                     </div>
+                                }
+                            </div>
+                        )
+                    }
+                    {
+                        (!user.user_id || user.user_id === user.user_id) &&
+                        <div className="post_edit_delete" ref={menuRef}>
+                            <div className="post_upper_right" onClick={() => setPostEditDropdown(prev => !prev)} >
+                                <MoreVert />
+                            </div>
+                            <div className={`post_edit_dropdown ${postEditDropdown ? 'show_edit_dropdown' : 'hide_edit_dropdown'}`}>
+                                <li title="Edit post" onClick={() => { setPostEditModal(prev => !prev) }}>
+                                    <EditIcon />
+                                </li>
+                                <li title="Delete post" onClick={handleDelete}>
+                                    <Delete />
+                                </li>
+                                <div className={`post_edit_container ${postEditModal ? "show_post_edit" : "hide_post_edit"}`}>
+                                    <BiArrowBack onClick={() => { setPostEditModal(prev => !prev) }} />
+                                    <div className="post_edit_wrapper">
+                                        <input placeholder={""} value={currentDesc} ref={desc} onChange={(e) => setCurrentDesc(e.target.value)} />
+                                    </div>
+                                    <form onSubmit={handlePostEdit}>
+                                        <div className="editPostRight">
+                                            <button type="submit">Update</button>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
-                        }
-                    </div>
-                    {/* Post texts */}
-                    <div className="postText_dotContainer">
-                        <span className="spanText" id="readAll" onClick={showAllBtn}>{readMore ? post?.desc : post?.desc.substr(0, 200)}
-                            {
-                                post?.desc.length > 200 && "....."
-                            }
-                        </span>
-                        {
-                            post?.desc.length > 200 &&
-                            <button onClick={showAllBtn} id="readAll">
-                                {readMore ? "Read Less" : "...Read More"}
-                            </button>
-                        }
-                    </div>
-                    {/* Open user's post */}
-                    <div className="post_photos">
-                        <Link to={`/posts/${post.user_id}/${post.img}`}>
-                            <img src={PF + post.img} alt="" />
-                        </Link>
-                    </div>
-                    <div className="post_bottom">
-                        <>
-                            {
-                                postLikeUsers ?
-                                    <button onClick={UnlikePost}>
-                                        <img src={HeartFilled} alt="" />
-                                    </button>
-                                    :
-                                    <button onClick={() => { LikePosts() }}>
-                                        <BsSuitHeart />
-                                    </button>
-                            }
-                        </>
+                        </div>
+                    }
+                </div>
+                <div className="postText_dotContainer">
 
-                        <>
-                            {
-                                liked
-                                    ?
-                                    (
-                                        <div className="like_count">
-                                            {liked > 1 ? (<span>{liked} likes</span>) : (<span>{liked} like</span>)}
-                                        </div>
-                                    )
-                                    :
-                                    ("")
-                            }
-                        </>
-                    </div>
-                </>
-            }
-        </div >
+                </div>
+                <div className="postImg_container">
+                    <Link to={`/posts/${post.user_id}/${post.img}`}>
+                        <img src={PF + post.img} alt="" />
+                    </Link>
+                </div>
+                <div className="post_bottom">
+                    {
+                        postLikeUsers ?
+                            <button onClick={UnlikePost}>
+                                <img src={HeartFilled} alt="" />
+                            </button>
+                            :
+                            <button onClick={() => { LikePosts() }}>
+                                <BsSuitHeart />
+                            </button>
+                    }
+                    {
+                        liked
+                            ?
+                            (
+                                <div className="like_count">
+                                    {liked > 1 ? (<span>{liked} likes</span>) : (<span>{liked} like</span>)}
+                                </div>
+                            )
+                            :
+                            ("")
+                    }
+                </div>
+            </div>
+        </div>
     )
 }

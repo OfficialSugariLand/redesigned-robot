@@ -1,8 +1,8 @@
 import "./settings.scss";
 import Topbar from "../../components/topbar/Topbar";
-import Description from "./description/Description";
-import Password from "./passset/Password";
-import Username from "./children/Username";
+import Description from "./usergeneral/description/Description";
+import Password from "./usergeneral/passset/Password";
+import Username from "./usergeneral/username/Username";
 import { useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { Link } from "react-router-dom";

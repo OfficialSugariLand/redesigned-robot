@@ -2,10 +2,11 @@ import './password.scss';
 import axios from 'axios';
 import bcrypt from "bcryptjs";
 import React, { useContext, useRef, useState } from 'react'
-import { AuthContext } from '../../../context/AuthContext';
+import { AuthContext } from '../../../../context/AuthContext';
 import { BiArrowBack } from "react-icons/bi";
 import { Visibility, VisibilityOff } from "@material-ui/icons";
 import Backdrop from '@mui/material/Backdrop';
+import sugarilandlogo from "../../../../components/topbar/sugarilandlogo/sugarilandlogo.png";
 
 export default function Password() {
     const { user, updateUserPassword } = useContext(AuthContext);
@@ -60,10 +61,6 @@ export default function Password() {
             updateUserPassword(hashedPassword, () => {
                 try {
                     axiosInstance.put(`/users/ownuser/pass/${user.user_id}`, users);
-                    setInterval(() => {
-                        setPassSubmitSuccess(true);
-                    }, 1000);
-
                     const setLoader = () => {
                         setLoading(true);
                         setTimeout(() => {
@@ -71,6 +68,9 @@ export default function Password() {
                         }, 1000)
                     }
                     setLoader();
+                    setInterval(() => {
+                        setPassSubmitSuccess(true);
+                    }, 1000);
                 } catch (err) {
                     console.log(err)
                 }
@@ -87,6 +87,9 @@ export default function Password() {
             {
                 loading ?
                     <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open>
+                        <div className="sugar_loader_content">
+                            <img className="sugariLand_logo_loader" src={sugarilandlogo} alt="" />
+                        </div>
                     </Backdrop>
                     :
                     <>

@@ -270,7 +270,7 @@ export default function UserPersonal() {
                                 </form>
                                 {/* To set the gender you're interested in */}
                                 <div className="user_gender">
-                                    <span>Your-Interest</span>
+                                    <span>Interested in</span>
                                     <span>{user.interest}</span>
                                     <button onClick={() => setEditUserInterest(prev => !prev)}>Edit</button>
                                 </div>

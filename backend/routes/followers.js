@@ -62,6 +62,18 @@ router.get("/:follower", (req, res) => {
         });
 });
 
+//For testing
+router.get("/testing/:follower", (req, res) => {
+    const follower = req.params.follower;
+    db.query("SELECT * FROM followers WHERE follower = ?", follower,
+        (err, result) => {
+            if (err) {
+                console.log("None found")
+            }
+            res.send(result)
+        });
+});
+
 //Get followed friends
 router.get("/:follower/:followed", (req, res) => {
     const follower = req.params.follower;

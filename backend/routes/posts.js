@@ -39,6 +39,17 @@ router.get("/:user_id", (req, res) => {
         });
 });
 
+//Get all posts
+router.get("/", (req, res) => {
+    db.query("SELECT * FROM posts",
+        (err, result) => {
+            if (err) {
+                console.log("Not found")
+            }
+            res.send(result)
+        });
+});
+
 //Get posts of user and friends
 router.get("/friends/:user_id", (req, res) => {
 

@@ -1,21 +1,14 @@
 @import "../../../style.scss";
 
-
-.proPosts {
+.profile_post {
     @include themify($themes) {
         display: flex;
-        flex-direction: column;
-        width: 35rem;
-        max-width: 35rem;
-        background: themed(bgSoft);
-        position: relative;
-        justify-content: center;
-        border-radius: 0.5rem;
-        transition: 150ms;
-        opacity: 0;
-        box-shadow: -1px 2px 16px 2px rgba(0, 0, 0, 0.51);
-        -webkit-box-shadow: -1px 2px 16px 2px rgba(0, 0, 0, 0.51);
-        -moz-box-shadow: -1px 2px 16px 2px rgba(0, 0, 0, 0.51);
+        width: 57%;
+        border: 1px solid themed(postBorder);
+        -webkit-box-shadow: 0px 0px 27px -5px rgba(0, 0, 0, 0.62);
+        box-shadow: 0px 0px 27px -5px rgba(0, 0, 0, 0.62);
+        border-radius: 0rem 0rem 0.5rem 0.5rem;
+        padding: 0.1rem;
 
         &.loading {
             filter: blur(10px);
@@ -28,225 +21,217 @@
             transition: filter 0.5s linear;
         }
 
-
-        .proPosts_upper_container {
+        .post_wrapper {
             display: flex;
-            position: relative;
             width: 100%;
-            height: 100%;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            justify-content: space-between;
-            padding: 0.9rem;
-            border-bottom: 1px solid themed(profileHeadBorder);
-            background: themed(bg);
-            color: themed(textColor);
-            border-radius: 10px 10px 0px 0px;
-            box-shadow: 0px 1px 5px 0px themed(homeLeftRightShadow);
 
-            .proPosts_img_container {
+            .post_upper_container {
                 display: flex;
-                gap: 0.6rem;
-                position: relative;
-
-                display: flex;
-                justify-content: center;
+                width: 100%;
+                height: 3rem;
                 align-items: center;
-                gap: 0.5rem;
-                color: themed(textColor);
-
-                .pro_post_img_usrname {
-                    display: flex;
-                    gap: 0.4rem;
-                    align-items: center;
-
-                    img {
-                        display: flex;
-                        width: 32px;
-                        height: 32px;
-                        border-radius: 50%;
-                        object-fit: cover;
-                        cursor: pointer;
-                    }
-                }
-
-                .post_Date {
-                    display: flex;
-                    font-size: 0.6rem;
-                    color: #b4adad;
-                }
-            }
-
-            .post_upper_right {
-                display: flex;
-                position: absolute;
-                right: 0.2rem;
-                background: themed(postMorevent);
-                border-radius: 50%;
-                border: 1px solid transparent;
-                transition: var(--transition);
-                cursor: pointer;
-
-                svg {
-                    color: themed(textColor);
-                    font-size: 2rem;
-                }
-
-                &:hover {
-                    background: rgb(173, 170, 170);
-                    border: 1px solid rgb(114, 110, 110);
-                    transition: var(--transition);
-                }
-            }
-
-            .post_edit_dropdown {
-                display: flex;
-                flex-direction: column;
-                position: absolute;
-                width: 7rem;
-                height: 10rem;
-                right: 0;
-                top: 4rem;
+                justify-content: space-between;
+                padding: 0.3rem;
+                border-bottom: 1px solid themed(profileHeadBorder);
                 background: themed(bg);
-                border-radius: 0px 0px 0.4rem 0.4rem;
-                transition: var(--transition);
-                justify-content: center;
-                align-items: center;
-                gap: 0.6rem;
+                color: themed(textColor);
+                //border-radius: 10px 10px 0px 0px;
+                box-shadow: 0px 1px 5px 0px themed(homeLeftRightShadow);
 
-                &.hide_edit_dropdown {
-                    display: none;
-                    transition: var(--transition);
-                }
-
-                &.show_edit_dropdown {
+                .postImgDrop_control {
                     display: flex;
-                    transition: var(--transition);
-                }
+                    position: relative;
 
-                li {
                     display: flex;
-                    width: 100%;
+                    align-items: center;
+                    gap: 0.5rem;
 
-                    svg {
-                        color: themed(textColor);
-                        background: gray;
-                        width: 100%;
-                        cursor: pointer;
-                    }
-                }
-
-                .post_edit_container {
-                    position: fixed;
-                    flex-direction: column;
-                    width: 100vw;
-                    height: 100vh;
-                    top: 4rem;
-                    left: 0;
-                    background: themed(bg);
-                    padding: 1rem;
-                    z-index: 9;
-
-                    &.hide_post_edit {
-                        display: none;
-                    }
-
-                    &.show_post_edit {
-                        display: flex;
-                    }
-
-                    svg {
+                    .postUpper_Img {
+                        width: 2.3rem;
+                        height: 2.3rem;
                         border-radius: 50%;
-                        width: 1.4rem;
-                        height: 1.4rem;
-                        color: themed(textColor);
+                    }
+
+                    .usrname_postTime {
+                        display: flex;
+                        gap: 1rem;
+
+                        .postUsername {
+                            display: flex;
+                            color: themed(textColor);
+                            font-weight: 550;
+                        }
+
+                        .post_Date {
+                            display: flex;
+                            color: themed(textColor);
+                            font-size: 0.6rem;
+                        }
+                    }
+                }
+
+                //Post Edit
+                .post_edit_delete {
+                    display: flex;
+
+                    .post_upper_right {
+                        display: flex;
+                        right: 0.2rem;
+                        background: themed(postMorevent);
+                        border-radius: 50%;
+                        border: 1px solid transparent;
+                        transition: var(--transition);
                         cursor: pointer;
+
+                        svg {
+                            color: themed(textColor);
+                            font-size: 2rem;
+                        }
 
                         &:hover {
-                            background: themed(bgSoft);
+                            background: rgb(173, 170, 170);
+                            border: 1px solid rgb(114, 110, 110);
+                            transition: var(--transition);
                         }
                     }
 
-                    .post_edit_wrapper {
+                    .post_edit_dropdown {
                         display: flex;
-                        width: 100%;
-                        align-items: center;
+                        flex-direction: column;
+                        position: absolute;
+                        width: 7rem;
+                        height: 10rem;
+                        right: 0;
+                        background: themed(bg);
+                        border-radius: 0px 0px 0.4rem 0.4rem;
+                        transition: var(--transition);
                         justify-content: center;
+                        align-items: center;
+                        gap: 0.6rem;
+
+                        &.hide_edit_dropdown {
+                            display: none;
+                            transition: var(--transition);
+                        }
+
+                        &.show_edit_dropdown {
+                            display: flex;
+                            transition: var(--transition);
+                        }
+
+                        li {
+                            display: flex;
+                            width: 100%;
+
+                            svg {
+                                color: themed(textColor);
+                                background: gray;
+                                width: 100%;
+                                cursor: pointer;
+                            }
+                        }
+
+                        .post_edit_container {
+                            position: fixed;
+                            flex-direction: column;
+                            width: 100vw;
+                            height: 100vh;
+                            top: 4rem;
+                            left: 0;
+                            background: themed(bg);
+                            padding: 1rem;
+                            z-index: 9;
+
+                            &.hide_post_edit {
+                                display: none;
+                            }
+
+                            &.show_post_edit {
+                                display: flex;
+                            }
+
+                            svg {
+                                border-radius: 50%;
+                                width: 1.4rem;
+                                height: 1.4rem;
+                                color: themed(textColor);
+                                cursor: pointer;
+
+                                &:hover {
+                                    background: themed(bgSoft);
+                                }
+                            }
+
+                            .post_edit_wrapper {
+                                display: flex;
+                                width: 100%;
+                                align-items: center;
+                                justify-content: center;
+                            }
+                        }
                     }
                 }
             }
-        }
 
-        .postText_dotContainer {
-            padding: 1rem;
-
-            .spanText {
-                color: themed(textColor);
-                transition: 1s ease;
-                transition-duration: 1s;
-                cursor: pointer;
+            .postText_dotContainer {
+                display: flex;
             }
 
-            button {
-                background: transparent;
-                color: rgb(171, 142, 171);
-                cursor: pointer;
-                font-size: 0.7rem;
-            }
-
-        }
-
-        .post_photos {
-            display: flex;
-            max-height: 43rem;
-            padding-bottom: 1rem;
-
-            img {
+            .postImg_container {
+                display: flex;
                 width: 100%;
-                height: 100%;
-                object-fit: contain;
-            }
-        }
+                max-height: 35rem;
+                background: themed(post);
+                justify-content: center;
 
-        .post_bottom {
-            display: flex;
-            padding: 0.5rem;
-            padding-top: 1rem;
-            border-top: 1px solid themed(profileHeadBorder);
-            box-shadow: 0px 1px 5px 3px themed(homeLeftRightShadow);
-            gap: 0.4rem;
-
-            button {
-                background: transparent;
+                img {
+                    display: flex;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
+                }
             }
 
-            img {
-                width: 25px;
-                height: 25px;
-                cursor: pointer;
-            }
+            .post_bottom {
+                display: flex;
+                width: 100%;
+                padding: 0.5rem;
+                padding-top: 1rem;
+                border-radius: 0rem 0rem 0.5rem 0.5rem;
+                border-top: 1px solid themed(profileHeadBorder);
+                box-shadow: 0px 1px 5px 3px themed(homeLeftRightShadow);
+                gap: 0.4rem;
 
-            svg {
-                color: themed(textColor);
-                font-size: 25px;
-                cursor: pointer;
-            }
+                button {
+                    background: transparent;
+                }
 
-            span {
-                font-size: 11px;
-                font-weight: 700;
-                color: themed(textColor);
-            }
-        }
+                img {
+                    width: 25px;
+                    height: 25px;
+                    cursor: pointer;
+                }
 
-        @media screen and (max-width: 1024px) {
-            &.proPosts {
-                width: 31rem !important;
+                svg {
+                    color: themed(textColor);
+                    font-size: 25px;
+                    cursor: pointer;
+                }
+
+                span {
+                    font-size: 11px;
+                    font-weight: 700;
+                    color: themed(textColor);
+                }
             }
         }
 
         @media screen and (max-width: 600px) {
-            &.proPosts {
-                width: 24rem !important;
+            &.profile_post {
+                width: 100%;
             }
         }
     }
