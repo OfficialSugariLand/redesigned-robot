@@ -5,7 +5,6 @@ import HeaderImage from "../about/images/rain_shower.jpg";
 import aboutSugarImg from "../about/images/about_sugar.jpg";
 import sugarVisionImg from "../about/images/sugar_vision.jpg";
 import sugarMissionImg from "../about/images/sugar_mission.jpg";
-/* import Sugar from "./images/Sugar_main_use.png"; */
 
 export default function About() {
   return (
