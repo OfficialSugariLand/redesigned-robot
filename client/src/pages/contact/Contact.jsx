@@ -17,7 +17,7 @@ export default function Contact() {
         in order to keep serving you a more user friendly application, in a single click below your report will be heard.
       </Header>
       <div className="contact_US">
-        <a href="mailto:sugariland@gmail.com" target="_blank" rel="noreferrer noopener">
+        <a href="mailto:officialsugariland@gmail.com" target="_blank" rel="noreferrer noopener">
           <div className="messengerGmail">
             <MdEmail />
           </div>
