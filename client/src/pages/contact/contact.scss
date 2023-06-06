@@ -1,6 +1,6 @@
 @import "../../style.scss";
 
-.contactUs {
+.contact {
     @include themify($themes) {
         display: flex;
         flex-direction: column;
@@ -8,64 +8,54 @@
         width: 100vw;
         background: themed(bg);
 
-        .contact {
+        .contact_US {
             display: flex;
             height: 60%;
             width: 100%;
             justify-content: center;
             align-items: flex-end;
+            gap: 1rem;
 
-            .contact_container {
-                place-items: center;
+            a {
+                background: themed(bgSoft);
+                font-size: 2rem;
+                border: 2px solid transparent;
+                transition: var(--transition);
                 padding: 1rem;
+                border-radius: 1.5rem;
+                color: themed(textColor);
 
-                .contact_wrapper {
-                    width: fit-content;
+                .messengerGmail {
                     display: flex;
-                    gap: 2rem;
 
-                    a {
-                        background: themed(bgSoft);
-                        font-size: 2rem;
-                        border: 2px solid transparent;
-                        transition: var(--transition);
-                        padding: 1rem;
-                        border-radius: 1.5rem;
-                        color: themed(textColor);
-
-                        .messengerGmail {
-                            display: flex;
-
-                            svg {
-                                display: flex;
-                                color: rgb(247, 107, 123);
-                            }
-                        }
-
-                        .messengerFB {
-                            display: flex;
-
-                            svg {
-                                display: flex;
-                                color: rgb(107, 107, 247);
-                            }
-                        }
-
-                        .messengerWhatsapp {
-                            display: flex;
-
-                            svg {
-                                display: flex;
-                                color: rgb(107, 247, 147);
-                            }
-                        }
-
-                        &:hover {
-                            background: transparent;
-                            border-color: themed(textColor);
-                            transition: var(--transition);
-                        }
+                    svg {
+                        display: flex;
+                        color: rgb(247, 107, 123);
                     }
+                }
+
+                .messengerFB {
+                    display: flex;
+
+                    svg {
+                        display: flex;
+                        color: rgb(107, 107, 247);
+                    }
+                }
+
+                .messengerWhatsapp {
+                    display: flex;
+
+                    svg {
+                        display: flex;
+                        color: rgb(107, 247, 147);
+                    }
+                }
+
+                &:hover {
+                    background: transparent;
+                    border-color: themed(textColor);
+                    transition: var(--transition);
                 }
             }
         }
@@ -74,13 +64,16 @@
     }
 
     @media screen and (max-width: 600px) {
-        .contact_wrapper {
-            gap: 1.5rem !important;
 
-            a {
-                padding: 1rem !important;
-                font-size: 1.2rem !important;
-                border-radius: 1rem !important;
+        &.contact {
+            .contact_US {
+                height: 50%;
+
+                a {
+                    padding: 1rem;
+                    font-size: 1.2rem;
+                    border-radius: 1rem;
+                }
             }
         }
 

@@ -1,5 +1,4 @@
 .header {
-    /* margin-top: 5rem; */
     height: 20rem;
     overflow: hidden;
     border-bottom: 2px solid var(--color-gray-400);
@@ -24,7 +23,7 @@
 
         .header_content {
             position: relative;
-            width: 80%;
+            width: 60%;
             margin: 0 auto;
             text-align: center;
             color: var(--color-gray-100);
@@ -42,7 +41,7 @@
 
 @media screen and (max-width: 600px) {
     .header {
-        height: fit-content;
+        //height: fit-content;
     }
 
     .header_content {
