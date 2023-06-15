@@ -1,5 +1,5 @@
 import "./forgotPass.scss";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useReducer, useRef, useState } from "react";
 import axios from "axios";
 import socketIOClient from "socket.io-client";

@@ -3,10 +3,13 @@
 
 .footer_activities {
     @include themify($themes) {
-        display: flex;
-        padding: 10px 20px;
+        display: none;
         height: 4rem;
         width: 100%;
+        position: sticky;
+        bottom: -3px;
+        left: 0;
+        padding: 10px 20px;
         background: themed(bgSoft);
         border-top: 1px solid rgb(189, 185, 185);
         justify-content: flex-end;
@@ -135,6 +138,12 @@
 
             }
 
+        }
+
+        @media screen and (max-width: 600px) {
+            &.footer_activities {
+                display: flex;
+            }
         }
     }
 }

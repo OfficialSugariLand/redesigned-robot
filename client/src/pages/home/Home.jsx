@@ -20,8 +20,7 @@ export default function Home() {
     }, []);
 
     return (
-        <div className="home">
-            <Topbar />
+        <>
             {
                 loading ?
                     <Backdrop sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }} open>
@@ -30,7 +29,8 @@ export default function Home() {
                         </div>
                     </Backdrop>
                     :
-                    <>
+                    <div className="home">
+                        <Topbar />
                         <div className="home_container">
                             <div className="home_left_container">
                                 <Sidebar />
@@ -47,11 +47,10 @@ export default function Home() {
                                 <Rightbar />
                             </div>
                         </div>
-                        <div className="footer_home">
-                            <Activity />
-                        </div>
-                    </>
+
+                        <Activity />
+                    </div>
             }
-        </div>
+        </>
     )
 }
